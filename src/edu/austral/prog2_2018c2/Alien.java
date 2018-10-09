@@ -4,6 +4,8 @@ import javax.swing.ImageIcon;
 
 public class Alien extends Sprite {
 
+
+    
     private Bomb bomb;
     private final String alienImg = "src/images/alien.png";
 
