@@ -1,8 +1,6 @@
 package edu.austral.prog2_2018c2;
 
 
-import com.sun.xml.internal.ws.server.sei.SEIInvokerTube;
-
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
@@ -77,10 +75,8 @@ public class Player extends Sprite implements Commons {
     }
 
     public void getBombed() {
-
         lives--;
-        setX(START_X);
-        setY(START_Y);
+
     }
 
     public int getLives() {
