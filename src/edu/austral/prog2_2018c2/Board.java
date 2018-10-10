@@ -303,6 +303,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     player.getBombed();
                     b.setDestroyed(true);
 
+
                     if (player.getLives() == 0) {
 
                         ImageIcon ii = new ImageIcon(explImg);
