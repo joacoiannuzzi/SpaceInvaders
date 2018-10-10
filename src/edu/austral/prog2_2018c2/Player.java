@@ -75,10 +75,8 @@ public class Player extends Sprite implements Commons {
     }
 
     public void getBombed() {
+
         lives--;
-        if (lives == 0) {
-            setDying(true);
-        }
     }
 
     public int getLives() {
