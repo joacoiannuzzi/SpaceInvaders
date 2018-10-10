@@ -3,6 +3,7 @@ package edu.austral.prog2_2018c2;
 public class AlienType {
 
     private String type;
+    private int points;
 
     public AlienType() {
 
@@ -11,12 +12,15 @@ public class AlienType {
         switch (n) {
             case 1:
                 type = "BigAlien";
+                points = 10;
                 break;
             case 2:
                 type = "MediumAlien";
+                points = 20;
                 break;
             case 3:
                 type = "SmallAlien";
+                points = 30;
                 break;
         }
     }

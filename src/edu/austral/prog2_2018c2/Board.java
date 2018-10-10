@@ -37,6 +37,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private int currentLevel = 1;
 
     private int alienSpeed = 1;
+    private int bombSpeed = 1;
 
     public Board() {
 
@@ -290,20 +291,26 @@ public class Board extends JPanel implements Runnable, Commons {
 
             if (player.isVisible() && !b.isDestroyed()) {
 
-//                if (bombX >= (playerX)
-//                        && bombX <= (playerX + PLAYER_WIDTH)
-//                        && bombY >= (playerY)
-//                        && bombY <= (playerY + PLAYER_HEIGHT)) {
-//                    ImageIcon ii = new ImageIcon(explImg);
-//                    player.setImage(ii.getImage());
-//                    player.setDying(true);
-//                    b.setDestroyed(true);
-//                }
+                if (bombX >= (playerX)
+                        && bombX <= (playerX + PLAYER_WIDTH)
+                        && bombY >= (playerY)
+                        && bombY <= (playerY + PLAYER_HEIGHT)) {
+
+                    player.getBombed();
+                    b.setDestroyed(true);
+
+                    if (player.getLives() == 0) {
+
+                        ImageIcon ii = new ImageIcon(explImg);
+                        player.setImage(ii.getImage());
+                        player.setDying(true);
+                    }
+                }
             }
 
             if (!b.isDestroyed()) {
 
-                b.setY(b.getY() + 1);
+                b.setY(b.getY() + bombSpeed);
 
                 if (b.getY() >= GROUND - BOMB_HEIGHT) {
                     b.setDestroyed(true);
@@ -386,6 +393,7 @@ public class Board extends JPanel implements Runnable, Commons {
         }
 
         alienSpeed++;
+        bombSpeed++;
 
         deaths = 0;
 

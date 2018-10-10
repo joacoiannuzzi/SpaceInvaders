@@ -35,6 +35,10 @@ public class Alien extends Sprite {
         return bomb;
     }
 
+    public AlienType getAlienType() {
+        return alienType;
+    }
+
     public class Bomb extends Sprite {
 
         private final String bombImg = "src/images/bomb.png";
