@@ -12,6 +12,7 @@ public class Player extends Sprite implements Commons {
 
     private final String playerImg = "src/images/player.png";
     private int width;
+    private int lives = 3;
 
     public Player() {
 
@@ -71,4 +72,17 @@ public class Player extends Sprite implements Commons {
             dx = 0;
         }
     }
+
+    public void getBombed() {
+        lives--;
+        if (lives < 0) {
+            setDying(true);
+        }
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+
 }

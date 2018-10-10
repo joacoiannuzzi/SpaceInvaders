@@ -10,7 +10,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -33,6 +32,11 @@ public class Board extends JPanel implements Runnable, Commons {
     private String message = "Game Over";
 
     private Thread animator;
+
+    private int totalLevels = 5;
+    private int currentLevel = 1;
+
+    private int alienSpeed = 1;
 
     public Board() {
 
@@ -61,8 +65,8 @@ public class Board extends JPanel implements Runnable, Commons {
 
         aliens = new ArrayList<>();
 
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 6; j++) {
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 3; j++) {
 
                 Alien alien = new Alien(ALIEN_INIT_X + 18 * j, ALIEN_INIT_Y + 18 * i);
                 aliens.add(alien);
@@ -174,11 +178,17 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void animationCycle() {
 
-        if (deaths == NUMBER_OF_ALIENS_TO_DESTROY) {
+        if (deaths == NUMBER_OF_ALIENS_TO_DESTROY && currentLevel == totalLevels) {
 
             ingame = false;
             message = "Game won!";
         }
+
+        if (deaths == NUMBER_OF_ALIENS_TO_DESTROY && currentLevel != totalLevels) {
+
+            levelUp();
+        }
+
 
         // player
         player.act();
@@ -209,7 +219,7 @@ public class Board extends JPanel implements Runnable, Commons {
             }
 
             int y = shot.getY();
-            y -= 4;
+            y -= 10;
 
             if (y < 0) {
                 shot.die();
@@ -254,7 +264,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     message = "Invasion!";
                 }
 
-                alien1.act(direction);
+                alien1.act(direction * alienSpeed);
             }
         }
 
@@ -280,15 +290,15 @@ public class Board extends JPanel implements Runnable, Commons {
 
             if (player.isVisible() && !b.isDestroyed()) {
 
-                if (bombX >= (playerX)
-                        && bombX <= (playerX + PLAYER_WIDTH)
-                        && bombY >= (playerY)
-                        && bombY <= (playerY + PLAYER_HEIGHT)) {
-                    ImageIcon ii = new ImageIcon(explImg);
-                    player.setImage(ii.getImage());
-                    player.setDying(true);
-                    b.setDestroyed(true);
-                }
+//                if (bombX >= (playerX)
+//                        && bombX <= (playerX + PLAYER_WIDTH)
+//                        && bombY >= (playerY)
+//                        && bombY <= (playerY + PLAYER_HEIGHT)) {
+//                    ImageIcon ii = new ImageIcon(explImg);
+//                    player.setImage(ii.getImage());
+//                    player.setDying(true);
+//                    b.setDestroyed(true);
+//                }
             }
 
             if (!b.isDestroyed()) {
@@ -360,5 +370,24 @@ public class Board extends JPanel implements Runnable, Commons {
                 }
             }
         }
+    }
+
+    public void levelUp() {
+        currentLevel++;
+
+        aliens.clear();
+
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 3; j++) {
+
+                Alien alien = new Alien(ALIEN_INIT_X + 18 * j, ALIEN_INIT_Y + 18 * i);
+                aliens.add(alien);
+            }
+        }
+
+        alienSpeed++;
+
+        deaths = 0;
+
     }
 }
