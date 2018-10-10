@@ -1,6 +1,8 @@
 package edu.austral.prog2_2018c2;
 
 
+import com.sun.xml.internal.ws.server.sei.SEIInvokerTube;
+
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
@@ -11,9 +13,9 @@ public class Player extends Sprite implements Commons {
     private final int START_X = 270;
 
     private final String playerImg = "src/images/player.png";
-    private int width;
+    protected int width;
 
-    private int lives = 3;
+    protected int lives = 3;
 
     public Player() {
 
@@ -75,12 +77,20 @@ public class Player extends Sprite implements Commons {
     }
 
     public void getBombed() {
-        lives--;
 
+        lives--;
+        int n = randomWithRange(2, 356);
+        setX(n);
     }
 
     public int getLives() {
         return lives;
+    }
+
+    int randomWithRange(int min, int max)
+    {
+        int range = (max - min) + 1;
+        return (int)(Math.random() * range) + min;
     }
 
 
