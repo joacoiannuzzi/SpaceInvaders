@@ -22,6 +22,9 @@ public class Board extends JPanel implements Runnable, Commons {
     private Player player;
     private Shot shot;
 
+    private ArrayList<Shield> shields;
+    private int shieldQuantity = 4;
+
     private final int ALIEN_INIT_X = 150;
     private final int ALIEN_INIT_Y = 5;
     private int direction = -1;
@@ -40,7 +43,6 @@ public class Board extends JPanel implements Runnable, Commons {
     private int bombSpeed = 1;
 
     private int playerPoints = 0;
-    private int shields = 4;
 
     public Board() {
 
@@ -75,6 +77,13 @@ public class Board extends JPanel implements Runnable, Commons {
                 Alien alien = new Alien(ALIEN_INIT_X + 18 * j, ALIEN_INIT_Y + 18 * i);
                 aliens.add(alien);
             }
+        }
+
+        shields = new ArrayList<>();
+
+        for (int i = 0; i < shieldQuantity; i++) {
+            Shield shield = new Shield();
+            shields.add(shield);
         }
 
         player = new Player();
@@ -117,6 +126,22 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
+    public void drawShield(Graphics g) {
+
+        for (Shield shield : shields) {
+            if (player.isVisible()) {
+
+                g.drawImage(shield.getImage(), shield.getX(), shield.getY(), this);
+            }
+
+            if (shield.isDying()) {
+
+                shield.die();
+            }
+        }
+
+    }
+
     public void drawShot(Graphics g) {
 
         if (shot.isVisible()) {
@@ -153,6 +178,7 @@ public class Board extends JPanel implements Runnable, Commons {
             drawPlayer(g);
             drawShot(g);
             drawBombing(g);
+            drawShield(g);
         }
 
         Toolkit.getDefaultToolkit().sync();
