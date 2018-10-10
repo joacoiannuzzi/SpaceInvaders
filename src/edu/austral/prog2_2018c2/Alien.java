@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 public class Alien extends Sprite {
 
     private Bomb bomb;
-    private final String alienImg = "src/images/alien.png";
+    private String alienImg = "src/images/alien.png";
     private AlienType alienType;
 
     public Alien(int x, int y) {
@@ -16,6 +16,7 @@ public class Alien extends Sprite {
     private void initAlien(int x, int y) {
 
         this.alienType = new AlienType();
+        alienImg = alienType.getImage();
 
         this.x = x;
         this.y = y;

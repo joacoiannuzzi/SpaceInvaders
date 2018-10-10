@@ -39,6 +39,9 @@ public class Board extends JPanel implements Runnable, Commons {
     private int alienSpeed = 1;
     private int bombSpeed = 1;
 
+    private int playerPoints = 0;
+    private int shields = 4;
+
     public Board() {
 
         initBoard();
@@ -214,6 +217,7 @@ public class Board extends JPanel implements Runnable, Commons {
                         alien.setImage(ii.getImage());
                         alien.setDying(true);
                         deaths++;
+                        playerPoints += alien.getAlienType().getPoints();
                         shot.die();
                     }
                 }
@@ -380,10 +384,10 @@ public class Board extends JPanel implements Runnable, Commons {
     }
 
     public void levelUp() {
+
         currentLevel++;
 
         aliens.clear();
-
         for (int i = 0; i < 1; i++) {
             for (int j = 0; j < 3; j++) {
 
