@@ -81,8 +81,6 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void drawAliens(Graphics g) {
 
-        Iterator it = aliens.iterator();
-
         for (Alien alien: aliens) {
 
             if (alien.isVisible()) {
@@ -201,8 +199,7 @@ public class Board extends JPanel implements Runnable, Commons {
                             && shotX <= (alienX + ALIEN_WIDTH)
                             && shotY >= (alienY)
                             && shotY <= (alienY + ALIEN_HEIGHT)) {
-                        ImageIcon ii
-                                = new ImageIcon(explImg);
+                        ImageIcon ii = new ImageIcon(explImg);
                         alien.setImage(ii.getImage());
                         alien.setDying(true);
                         deaths++;
@@ -230,12 +227,9 @@ public class Board extends JPanel implements Runnable, Commons {
             if (x >= BOARD_WIDTH - BORDER_RIGHT && direction != -1) {
 
                 direction = -1;
-                Iterator i1 = aliens.iterator();
 
-                while (i1.hasNext()) {
-
-                    Alien a2 = (Alien) i1.next();
-                    a2.setY(a2.getY() + GO_DOWN);
+                for (Alien alien1 : aliens) {
+                    alien1.setY(alien1.getY() + GO_DOWN);
                 }
             }
 
@@ -243,32 +237,24 @@ public class Board extends JPanel implements Runnable, Commons {
 
                 direction = 1;
 
-                Iterator i2 = aliens.iterator();
-
-                while (i2.hasNext()) {
-
-                    Alien a = (Alien) i2.next();
-                    a.setY(a.getY() + GO_DOWN);
+                for (Alien alien1 : aliens) {
+                    alien1.setY(alien1.getY() + GO_DOWN);
                 }
             }
         }
 
-        Iterator it = aliens.iterator();
+        for (Alien alien1 : aliens) {
 
-        while (it.hasNext()) {
+            if (alien1.isVisible()) {
 
-            Alien alien = (Alien) it.next();
-
-            if (alien.isVisible()) {
-
-                int y = alien.getY();
+                int y = alien1.getY();
 
                 if (y > GROUND - ALIEN_HEIGHT) {
                     ingame = false;
                     message = "Invasion!";
                 }
 
-                alien.act(direction);
+                alien1.act(direction);
             }
         }
 
@@ -298,8 +284,7 @@ public class Board extends JPanel implements Runnable, Commons {
                         && bombX <= (playerX + PLAYER_WIDTH)
                         && bombY >= (playerY)
                         && bombY <= (playerY + PLAYER_HEIGHT)) {
-                    ImageIcon ii
-                            = new ImageIcon(explImg);
+                    ImageIcon ii = new ImageIcon(explImg);
                     player.setImage(ii.getImage());
                     player.setDying(true);
                     b.setDestroyed(true);
