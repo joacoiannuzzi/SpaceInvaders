@@ -42,6 +42,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private int currentLevel = 1;
 
     private int UFO_spawn = 0;
+    private int UFO_spawn_time = (int) System.currentTimeMillis();
 
     private int alienSpeed = 1;
     private int bombSpeed = 1;
@@ -350,11 +351,9 @@ public class Board extends JPanel implements Runnable, Commons {
             }
         }
 
-        if (UFO_spawn == 2){
+        if (UFO_spawn > 2 && UFO_spawn_time >= 45000 && UFO_spawn_time <= 60000){
 
             ufo.setVisible(true);
-
-            UFO_spawn = 0;
 
             ufo.setX(0);
             ufo.setY(0);
