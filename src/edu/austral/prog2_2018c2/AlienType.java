@@ -29,6 +29,7 @@ public class AlienType {
     }
 
     public AlienType(String ufo) {
+
         type = "UFO";
 
         int range = (300 - 50) + 1;

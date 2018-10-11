@@ -13,6 +13,16 @@ public class Alien extends Sprite {
         initAlien(x, y);
     }
 
+    public Alien(String ufo) {
+        alienType = new AlienType("");
+        alienImg = alienType.getImage();
+        ImageIcon ii = new ImageIcon(alienImg);
+        setImage(ii.getImage());
+
+        this.x = 0;
+        this.y = 0;
+    }
+
     private void initAlien(int x, int y) {
 
         this.alienType = new AlienType();

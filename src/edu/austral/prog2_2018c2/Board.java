@@ -21,6 +21,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private ArrayList<Alien> aliens;
     private Player player;
     private Shot shot;
+    private Alien ufo;
 
     private ArrayList<Shield> shields;
     private int shieldsToRemove = 0;
@@ -77,6 +78,8 @@ public class Board extends JPanel implements Runnable, Commons {
         shields = new ArrayList<>();
         newShields();
 
+        ufo = new Alien("");
+
         player = new Player();
         shot = new Shot();
 
@@ -103,17 +106,18 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
-    /*public void drawUFO(Graphics g){
-        if (Alien_UFO.isVisible()) {
+    public void drawUFO(Graphics g){
 
-            g.drawImage(Alien_UFO.getImage(), Alien_UFO.getX(), Alien_UFO.getY(), this);
+        if (ufo.isVisible()) {
+
+            g.drawImage(ufo.getImage(), ufo.getX(), ufo.getY(), this);
         }
 
-        if (Alien_UFO.isDying()) {
+        if (ufo.isDying()) {
 
-            Alien_UFO.die();
+            ufo.die();
         }
-    }*/
+    }
 
     public void drawPlayer(Graphics g) {
 
@@ -184,6 +188,7 @@ public class Board extends JPanel implements Runnable, Commons {
             drawShields(g);
             drawAliens(g);
             drawPlayer(g);
+            drawUFO(g);
         }
 
         Toolkit.getDefaultToolkit().sync();
