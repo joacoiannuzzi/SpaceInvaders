@@ -18,7 +18,7 @@ public class AlienType {
             case 2:
                 type = "MediumAlien";
                 points = 20;
-                image = "src/images/small_alien.png";
+                image = "src/images/medium_alien.png";
                 break;
             case 3:
                 type = "SmallAlien";
@@ -26,6 +26,14 @@ public class AlienType {
                 image = "src/images/small_alien.png";
                 break;
         }
+    }
+
+    public AlienType(String ufo) {
+        type = "UFO";
+
+        //points = 10;  un random con los puntos
+
+        image = "src/images/duck.png";
     }
 
     public String getType() {

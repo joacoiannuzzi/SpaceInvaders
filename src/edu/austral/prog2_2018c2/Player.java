@@ -79,8 +79,6 @@ public class Player extends Sprite implements Commons {
     public void getBombed() {
 
         lives--;
-//        int n = randomWithRange(2, 341);
-//        setX(n);
     }
 
     public int getLives() {

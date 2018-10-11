@@ -16,6 +16,7 @@ public interface Commons {
     public static final int PLAYER_WIDTH = 15;
     public static final int PLAYER_HEIGHT = 10;
     public static final int SHIELD_WIDTH = 36;
+    public static final int SHIELD_HEIGHT = 36;
     public static final int SHIELD_LIVES = 1;
 
 }
