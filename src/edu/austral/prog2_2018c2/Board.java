@@ -243,6 +243,38 @@ public class Board extends JPanel implements Runnable, Commons {
                         shot.die();
                     }
                 }
+
+                for (Shield shield : shields) {
+
+                    int shieldX = shield.getX();
+                    int shieldY = shield.getY();
+
+                    if (shield.isVisible() && shot.isVisible()) {
+
+                        if (shotX >= (shieldX)
+                                && shotX <= (shieldX + SHIELD_WIDTH)
+                                && shotY >= (shieldY)
+                                && shotY <= (shieldY + SHIELD_HEIGHT)) {
+
+                            shotQuantity++;
+
+                            if (shotQuantity == 5) {
+                                shield.getBombed();
+                                shotQuantity = 0;
+                            }
+
+                            shot.die();
+
+
+                            if (shield.getLives() == 0) {
+
+                                ImageIcon ii = new ImageIcon(explImg);
+                                shield.setImage(ii.getImage());
+                                shield.setDying(true);
+                            }
+                        }
+                    }
+                }
             }
 
             int y = shot.getY();

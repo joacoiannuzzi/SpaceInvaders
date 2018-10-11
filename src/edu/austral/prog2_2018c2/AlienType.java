@@ -28,6 +28,14 @@ public class AlienType {
         }
     }
 
+    public AlienType(String ufo) {
+        type = "UFO";
+
+        //points = 10;  un random con los puntos
+
+        image = "src/images/duck.png";
+    }
+
     public String getType() {
         return type;
     }
