@@ -7,21 +7,19 @@ public class Shield extends Player {
     private final String shieldImg = "src/images/shield.png";
 
 
-    public Shield() {
+    public Shield(int x, int y) {
 
         this.lives = 50;
-        initShield();
+        initShield(x, y);
     }
 
-    public void initShield() {
+    public void initShield(int x, int y) {
 
         ImageIcon ii = new ImageIcon(shieldImg);
 
-        width = ii.getImage().getWidth(null);
-
         setImage(ii.getImage());
-        setX(5);
-        setY(200);
+        setX(x);
+        setY(y);
     }
 
     @Override
