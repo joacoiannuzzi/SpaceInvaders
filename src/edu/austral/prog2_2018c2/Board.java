@@ -166,11 +166,12 @@ public class Board extends JPanel implements Runnable, Commons {
         if (ingame) {
 
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
+
+            drawShot(g);
+            drawBombing(g);
             drawShields(g);
             drawAliens(g);
             drawPlayer(g);
-            drawShot(g);
-            drawBombing(g);
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -322,6 +323,7 @@ public class Board extends JPanel implements Runnable, Commons {
                         && bombY <= (playerY + PLAYER_HEIGHT)) {
 
                     player.getBombed();
+                    player.setX(shieldDetect());
                     b.setDestroyed(true);
 
 
@@ -446,7 +448,7 @@ public class Board extends JPanel implements Runnable, Commons {
         newAliens();
 
         shields.clear();
-        if (currentLevel != 5) {
+        if (currentLevel != totalLevels) {
 
             newShields();
             shieldsToRemove++;
@@ -495,6 +497,28 @@ public class Board extends JPanel implements Runnable, Commons {
         else {
             shieldRemove();
         }
+    }
+
+    public int shieldDetect() {
+
+        int counter = 0;
+
+        for (Shield shield : shields) {
+            if (shield.isVisible()) {
+                 counter++;
+            }
+        }
+
+        if (counter == 0) {
+            return player.getX();
+        }
+
+        int n = randomWithRange(0, 3);
+
+        if (shields.get(n).isVisible()) {
+            return shields.get(n).getX() + (SHIELD_WIDTH - PLAYER_WIDTH) / 2;
+        }
+        return shieldDetect();
     }
 
 
