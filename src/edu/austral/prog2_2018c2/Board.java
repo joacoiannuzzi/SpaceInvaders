@@ -328,7 +328,6 @@ public class Board extends JPanel implements Runnable, Commons {
                     }
                 }
             }
-
             for (Shield shield : shields) {
 
                 int shieldX = shield.getX();
@@ -453,7 +452,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void newAliens() {
         aliens = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
 
                 Alien alien = new Alien(ALIEN_INIT_X + 18 * j, ALIEN_INIT_Y + 18 * i);
