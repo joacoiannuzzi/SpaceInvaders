@@ -41,6 +41,8 @@ public class Board extends JPanel implements Runnable, Commons {
     private int totalLevels = 5;
     private int currentLevel = 1;
 
+    private int UFO_spawn = 0;
+
     private int alienSpeed = 1;
     private int bombSpeed = 1;
     private int shotQuantity = 0;
@@ -317,6 +319,8 @@ public class Board extends JPanel implements Runnable, Commons {
                 for (Alien alien1 : aliens) {
                     alien1.setY(alien1.getY() + GO_DOWN);
                 }
+
+                UFO_spawn++;
             }
 
             if (x <= BORDER_LEFT && direction != 1) {
@@ -326,6 +330,9 @@ public class Board extends JPanel implements Runnable, Commons {
                 for (Alien alien1 : aliens) {
                     alien1.setY(alien1.getY() + GO_DOWN);
                 }
+
+                UFO_spawn++;
+
             }
         }
 
@@ -343,6 +350,19 @@ public class Board extends JPanel implements Runnable, Commons {
                 alien1.act(direction * alienSpeed);
             }
         }
+
+        if (UFO_spawn == 2){
+
+            ufo.setVisible(true);
+
+            UFO_spawn = 0;
+
+            ufo.setX(0);
+            ufo.setY(0);
+
+        }
+
+        ufo.act(2);
 
         // bombs
         Random generator = new Random();
