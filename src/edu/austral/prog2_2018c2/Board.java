@@ -41,6 +41,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
     private int alienSpeed = 1;
     private int bombSpeed = 1;
+    private int shotQuantity = 0;
 
     private int playerPoints = 0;
 
@@ -71,8 +72,8 @@ public class Board extends JPanel implements Runnable, Commons {
 
         aliens = new ArrayList<>();
 
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 6; j++) {
 
                 Alien alien = new Alien(ALIEN_INIT_X + 18 * j, ALIEN_INIT_Y + 18 * i);
                 aliens.add(alien);
@@ -174,11 +175,11 @@ public class Board extends JPanel implements Runnable, Commons {
         if (ingame) {
 
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
+            drawShields(g);
             drawAliens(g);
             drawPlayer(g);
             drawShot(g);
             drawBombing(g);
-            drawShields(g);
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -351,7 +352,13 @@ public class Board extends JPanel implements Runnable, Commons {
                             && bombY >= (shieldY)
                             && bombY <= (shieldY)) {
 
-                        shield.getBombed();
+                        shotQuantity++;
+
+                        if (shotQuantity == 5) {
+                            shield.getBombed();
+                            shotQuantity = 0;
+                        }
+
                         b.setDestroyed(true);
 
 

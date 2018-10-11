@@ -24,7 +24,11 @@ public class Shield extends Player {
 
     @Override
     public void getBombed() {
-        lives--;
+        lives = (int) (lives - SHIELD_LIVES * 0.1);
+
+        if (lives < 0 ) {
+            lives = 0;
+        }
     }
 
 
