@@ -9,7 +9,7 @@ public class Shield extends Player {
 
     public Shield(int x, int y) {
 
-        this.lives = 50;
+        this.lives = 1;
         initShield(x, y);
     }
 

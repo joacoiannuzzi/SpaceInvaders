@@ -82,7 +82,7 @@ public class Board extends JPanel implements Runnable, Commons {
         shields = new ArrayList<>();
 
         for (int i = 0; i < shieldQuantity; i++) {
-            Shield shield = new Shield(60 + 66 * i, 230);
+            Shield shield = new Shield(40 + 80 * i, 230);
             shields.add(shield);
         }
 
@@ -339,6 +339,32 @@ public class Board extends JPanel implements Runnable, Commons {
                 }
             }
 
+            for (Shield shield : shields) {
+
+                int shieldX = shield.getX();
+                int shieldY = shield.getY();
+
+                if (shield.isVisible() && !b.isDestroyed()) {
+
+                    if (bombX >= (shieldX)
+                            && bombX <= (shieldX + SHIELD_WIDTH)
+                            && bombY >= (shieldY)
+                            && bombY <= (shieldY + SHIELD_HEIGHT)) {
+
+                        shield.getBombed();
+                        b.setDestroyed(true);
+
+
+                        if (shield.getLives() == 0) {
+
+                            ImageIcon ii = new ImageIcon(explImg);
+                            shield.setImage(ii.getImage());
+                            shield.setDying(true);
+                        }
+                    }
+                }
+            }
+
             if (!b.isDestroyed()) {
 
                 b.setY(b.getY() + bombSpeed);
@@ -347,6 +373,11 @@ public class Board extends JPanel implements Runnable, Commons {
                     b.setDestroyed(true);
                 }
             }
+        }
+
+        //shields
+        for (Shield shield : shields) {
+
         }
     }
 
