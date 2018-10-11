@@ -349,7 +349,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     if (bombX >= (shieldX)
                             && bombX <= (shieldX + SHIELD_WIDTH)
                             && bombY >= (shieldY)
-                            && bombY <= (shieldY + SHIELD_HEIGHT)) {
+                            && bombY <= (shieldY)) {
 
                         shield.getBombed();
                         b.setDestroyed(true);
