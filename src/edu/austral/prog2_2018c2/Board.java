@@ -444,13 +444,11 @@ public class Board extends JPanel implements Runnable, Commons {
 
         currentLevel++;
 
-        aliens.clear();
-        newAliens();
+        changeAliens();
 
-        shields.clear();
         if (currentLevel != totalLevels) {
 
-            newShields();
+            changeShields();
             shieldsToRemove++;
 
             for (int i = 0; i < shieldsToRemove; i++) {
@@ -476,11 +474,53 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
+    public void changeAliens() {
+
+        int n = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 6; j++) {
+
+                Alien alien = aliens.get(n);
+
+                alien.changeAlienType();
+                alien.setX(ALIEN_INIT_X + 18 * j);
+                alien.setY(ALIEN_INIT_Y + 18 * i);
+                ImageIcon ii = new ImageIcon(alien.getAlienType().getImage());
+                alien.setImage(ii.getImage());
+                alien.setVisible(true);
+                alien.setDying(false);
+
+                Alien.Bomb bomb = alien.getBomb();
+                bomb.setDestroyed(true);
+
+                n++;
+
+            }
+        }
+    }
+
     public void newShields() {
 
         for (int i = 0; i < 4; i++) {
             Shield shield = new Shield(shieldSpace + (SHIELD_WIDTH + shieldSpace) * i, 230);
             shields.add(shield);
+        }
+    }
+
+    public void changeShields(){
+
+        int n = 0;
+
+        for (int i = 0; i < 4; i++) {
+
+            Shield shield = shields.get(n);
+            shield.restoreLives();
+            ImageIcon ii = new ImageIcon("src/images/shield.png");
+            shield.setImage(ii.getImage());
+            shield.setDying(false);
+            shield.setVisible(true);
+            n++;
+
         }
     }
 

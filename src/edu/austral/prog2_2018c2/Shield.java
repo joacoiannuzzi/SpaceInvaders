@@ -31,4 +31,8 @@ public class Shield extends Player {
         }
     }
 
+    public void restoreLives() {
+        this.lives = SHIELD_LIVES;
+    }
+
 }

@@ -40,6 +40,10 @@ public class Alien extends Sprite {
         return alienType;
     }
 
+    public void changeAlienType() {
+        this.alienType = new AlienType();
+    }
+
     public class Bomb extends Sprite {
 
         private final String bombImg = "src/images/bomb.png";
