@@ -79,7 +79,7 @@ public class Player extends Sprite implements Commons {
     public void getBombed() {
 
         lives--;
-        int n = randomWithRange(2, 356);
+        int n = randomWithRange(2, 341);
         setX(n);
     }
 
@@ -87,7 +87,7 @@ public class Player extends Sprite implements Commons {
         return lives;
     }
 
-    int randomWithRange(int min, int max)
+    public int randomWithRange(int min, int max)
     {
         int range = (max - min) + 1;
         return (int)(Math.random() * range) + min;

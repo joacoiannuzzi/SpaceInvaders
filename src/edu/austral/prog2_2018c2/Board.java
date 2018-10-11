@@ -126,7 +126,7 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
-    public void drawShield(Graphics g) {
+    public void drawShields(Graphics g) {
 
         for (Shield shield : shields) {
             if (player.isVisible()) {
@@ -178,7 +178,7 @@ public class Board extends JPanel implements Runnable, Commons {
             drawPlayer(g);
             drawShot(g);
             drawBombing(g);
-            drawShield(g);
+            drawShields(g);
         }
 
         Toolkit.getDefaultToolkit().sync();

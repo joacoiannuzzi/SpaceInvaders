@@ -21,6 +21,13 @@ public class Shield extends Player {
 
         setImage(ii.getImage());
         setX(5);
-        setY(270);
+        setY(200);
     }
+
+    @Override
+    public void getBombed() {
+        lives--;
+    }
+
+
 }
