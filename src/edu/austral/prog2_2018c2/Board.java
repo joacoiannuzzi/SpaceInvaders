@@ -23,7 +23,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private Shot shot;
 
     private ArrayList<Shield> shields;
-    private int shieldQuantity = 4;
+    private int shieldRemoved = 0;
 
     private final int ALIEN_INIT_X = 150;
     private final int ALIEN_INIT_Y = 5;
@@ -457,11 +457,31 @@ public class Board extends JPanel implements Runnable, Commons {
             shields.add(shield);
         }
 
+        for (int i = 0; i < shieldRemoved; i++) {
+            shieldRemove();
+        }
 
         alienSpeed++;
         bombSpeed++;
 
         deaths = 0;
 
+    }
+
+    public void shieldRemove() {
+        int n = randomWithRange(0, 3);
+
+        if (shields.get(n).isVisible()) {
+            shields.get(n).setDying(true);
+        }
+        else {
+            shieldRemove();
+        }
+    }
+
+
+    public int randomWithRange(int min, int max) {
+        int range = (max - min) + 1;
+        return (int)(Math.random() * range) + min;
     }
 }
