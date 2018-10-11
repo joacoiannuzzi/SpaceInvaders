@@ -13,12 +13,12 @@ public class AlienType {
             case 1:
                 type = "BigAlien";
                 points = 10;
-                image = "src/images/duck.png";
+                image = "src/images/big_alien.png";
                 break;
             case 2:
                 type = "MediumAlien";
                 points = 20;
-                image = "src/images/alien.png";
+                image = "src/images/small_alien.png";
                 break;
             case 3:
                 type = "SmallAlien";
