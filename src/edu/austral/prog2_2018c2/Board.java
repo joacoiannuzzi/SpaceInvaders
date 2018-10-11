@@ -24,6 +24,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
     private ArrayList<Shield> shields;
     private int shieldsToRemove = 0;
+    private int shieldSpace = (BOARD_WIDTH - 4 * SHIELD_WIDTH) / 5;
 
     private final int ALIEN_INIT_X = 150;
     private final int ALIEN_INIT_Y = 5;
@@ -88,7 +89,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void drawAliens(Graphics g) {
 
-        for (Alien alien: aliens) {
+        for (Alien alien : aliens) {
 
             if (alien.isVisible()) {
 
@@ -119,6 +120,7 @@ public class Board extends JPanel implements Runnable, Commons {
     public void drawShields(Graphics g) {
 
         for (Shield shield : shields) {
+
             if (shield.isVisible()) {
 
                 g.drawImage(shield.getImage(), shield.getX(), shield.getY(), this);
@@ -183,9 +185,9 @@ public class Board extends JPanel implements Runnable, Commons {
         g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
 
         g.setColor(new Color(0, 32, 48));
-        g.fillRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
+        g.fillRect(50, BOARD_WIDTH / 2 - 60, BOARD_WIDTH - 100, 100);
         g.setColor(Color.white);
-        g.drawRect(50, BOARD_WIDTH / 2 - 30, BOARD_WIDTH - 100, 50);
+        g.drawRect(50, BOARD_WIDTH / 2 - 60, BOARD_WIDTH - 100, 100);
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
@@ -193,7 +195,10 @@ public class Board extends JPanel implements Runnable, Commons {
         g.setColor(Color.white);
         g.setFont(small);
         g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2,
-                BOARD_WIDTH / 2);
+                BOARD_WIDTH / 2 - 20);
+
+        g.drawString("Score: " + playerPoints, (BOARD_WIDTH - metr.stringWidth("Score: " + playerPoints)) / 2,
+                (BOARD_WIDTH / 2) + 10);
     }
 
     public void animationCycle() {
@@ -328,6 +333,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     }
                 }
             }
+
             for (Shield shield : shields) {
 
                 int shieldX = shield.getX();
@@ -338,7 +344,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     if (bombX >= (shieldX)
                             && bombX <= (shieldX + SHIELD_WIDTH)
                             && bombY >= (shieldY)
-                            && bombY <= (shieldY)) {
+                            && bombY <= (shieldY + 50)) {
 
                         shotQuantity++;
 
@@ -370,6 +376,7 @@ public class Board extends JPanel implements Runnable, Commons {
             }
         }
     }
+
 
     @Override
     public void run() {
@@ -435,13 +442,19 @@ public class Board extends JPanel implements Runnable, Commons {
 
         currentLevel++;
 
+        aliens.clear();
         newAliens();
 
-        newShields();
+        shields.clear();
+        if (currentLevel != 5) {
 
-//        for (int i = 0; i < shieldsToRemove; i++) {
-//            shieldRemove();
-//        }
+            newShields();
+            shieldsToRemove++;
+
+            for (int i = 0; i < shieldsToRemove; i++) {
+                shieldRemove();
+            }
+        }
 
         alienSpeed++;
         bombSpeed++;
@@ -451,8 +464,8 @@ public class Board extends JPanel implements Runnable, Commons {
     }
 
     public void newAliens() {
-        aliens = new ArrayList<>();
-        for (int i = 0; i < 6; i++) {
+
+        for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
 
                 Alien alien = new Alien(ALIEN_INIT_X + 18 * j, ALIEN_INIT_Y + 18 * i);
@@ -462,9 +475,9 @@ public class Board extends JPanel implements Runnable, Commons {
     }
 
     public void newShields() {
-        shields = new ArrayList<>();
+
         for (int i = 0; i < 4; i++) {
-            Shield shield = new Shield(40 + 80 * i, 230);
+            Shield shield = new Shield(shieldSpace + (SHIELD_WIDTH + shieldSpace) * i, 230);
             shields.add(shield);
         }
     }
@@ -473,9 +486,11 @@ public class Board extends JPanel implements Runnable, Commons {
         int n = randomWithRange(0, 3);
 
         if (shields.get(n).isVisible()) {
+
             shields.get(n).setDying(true);
             ImageIcon ii = new ImageIcon(explImg);
             shields.get(n).setImage(ii.getImage());
+            shields.get(n).die();
         }
         else {
             shieldRemove();
