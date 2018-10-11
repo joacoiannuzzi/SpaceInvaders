@@ -71,21 +71,10 @@ public class Board extends JPanel implements Runnable, Commons {
     public void gameInit() {
 
         aliens = new ArrayList<>();
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 6; j++) {
-
-                Alien alien = new Alien(ALIEN_INIT_X + 18 * j, ALIEN_INIT_Y + 18 * i);
-                aliens.add(alien);
-            }
-        }
+        newAliens();
 
         shields = new ArrayList<>();
-
-        for (int i = 0; i < 4; i++) {
-            Shield shield = new Shield(40 + 80 * i, 230);
-            shields.add(shield);
-        }
+        newShields();
 
         player = new Player();
         shot = new Shot();
@@ -447,22 +436,9 @@ public class Board extends JPanel implements Runnable, Commons {
 
         currentLevel++;
 
-        aliens.clear();
-        for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 3; j++) {
+        newAliens();
 
-                Alien alien = new Alien(ALIEN_INIT_X + 18 * j, ALIEN_INIT_Y + 18 * i);
-                aliens.add(alien);
-            }
-        }
-
-
-        shields.clear();
-        for (int i = 0; i < 4; i++) {
-
-            Shield shield = new Shield(40 + 80 * i, 230);
-            shields.add(shield);
-        }
+        newShields();
 
         for (int i = 0; i < shieldRemoved; i++) {
             shieldRemove();
@@ -473,6 +449,25 @@ public class Board extends JPanel implements Runnable, Commons {
 
         deaths = 0;
 
+    }
+
+    public void newAliens() {
+        aliens.clear();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 6; j++) {
+
+                Alien alien = new Alien(ALIEN_INIT_X + 18 * j, ALIEN_INIT_Y + 18 * i);
+                aliens.add(alien);
+            }
+        }
+    }
+
+    public void newShields() {
+        shields.clear();
+        for (int i = 0; i < 4; i++) {
+            Shield shield = new Shield(40 + 80 * i, 230);
+            shields.add(shield);
+        }
     }
 
     public void shieldRemove() {
