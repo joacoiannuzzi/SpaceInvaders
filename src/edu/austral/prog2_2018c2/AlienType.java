@@ -7,7 +7,7 @@ public class AlienType {
 
     public AlienType() {
 
-        int n = (int) (Math.random() * 3 + 1);
+        int n = randomWithRange(1, 3);
 
         switch (n) {
             case 1:
@@ -29,11 +29,19 @@ public class AlienType {
     }
 
     public AlienType(String ufo) {
+
         type = "UFO";
 
-        //points = 10;  un random con los puntos
+        points = randomWithRange(50, 300);
 
-        image = "src/images/duck.png";
+        int n = randomWithRange(1, 10);
+
+        if (n == 1) {
+            image = "src/images/duck.png";
+        } else {
+            image = "src/images/alien.png";
+        }
+
     }
 
     public String getType() {
@@ -46,5 +54,10 @@ public class AlienType {
 
     public String getImage() {
         return image;
+    }
+
+    public int randomWithRange(int min, int max) {
+        int range = (max - min) + 1;
+        return (int)(Math.random() * range) + min;
     }
 }
