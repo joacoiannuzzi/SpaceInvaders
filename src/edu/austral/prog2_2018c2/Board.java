@@ -305,7 +305,6 @@ public class Board extends JPanel implements Runnable, Commons {
         }
 
         // aliens
-
         for (Alien alien: aliens) {
 
             int x = alien.getX();

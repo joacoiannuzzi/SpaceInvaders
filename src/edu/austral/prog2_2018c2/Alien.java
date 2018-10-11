@@ -18,6 +18,7 @@ public class Alien extends Sprite {
         alienImg = alienType.getImage();
         ImageIcon ii = new ImageIcon(alienImg);
         setImage(ii.getImage());
+        setVisible(false);
 
         this.x = 0;
         this.y = 0;
