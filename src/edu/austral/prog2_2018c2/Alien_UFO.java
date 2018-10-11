@@ -7,7 +7,7 @@ public class Alien_UFO {
         int n = (int) (Math.random() * 10 + 1);
 
         if (n == 1) {
-             String alienImg = "src/images/Duck.png";
+             String alienImg = "src/images/duck.png";
         } else {
              String alienImg = "src/images/alien.png";
         }

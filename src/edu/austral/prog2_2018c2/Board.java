@@ -23,7 +23,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private Shot shot;
 
     private ArrayList<Shield> shields;
-    private int shieldRemoved = 0;
+    private int shieldsToRemove = 0;
 
     private final int ALIEN_INIT_X = 150;
     private final int ALIEN_INIT_Y = 5;
@@ -440,9 +440,9 @@ public class Board extends JPanel implements Runnable, Commons {
 
         newShields();
 
-        for (int i = 0; i < shieldRemoved; i++) {
-            shieldRemove();
-        }
+//        for (int i = 0; i < shieldsToRemove; i++) {
+//            shieldRemove();
+//        }
 
         alienSpeed++;
         bombSpeed++;
@@ -452,7 +452,7 @@ public class Board extends JPanel implements Runnable, Commons {
     }
 
     public void newAliens() {
-        aliens.clear();
+        aliens = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
 
@@ -463,7 +463,7 @@ public class Board extends JPanel implements Runnable, Commons {
     }
 
     public void newShields() {
-        shields.clear();
+        shields = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             Shield shield = new Shield(40 + 80 * i, 230);
             shields.add(shield);
@@ -475,6 +475,8 @@ public class Board extends JPanel implements Runnable, Commons {
 
         if (shields.get(n).isVisible()) {
             shields.get(n).setDying(true);
+            ImageIcon ii = new ImageIcon(explImg);
+            shields.get(n).setImage(ii.getImage());
         }
         else {
             shieldRemove();
