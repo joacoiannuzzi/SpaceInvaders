@@ -81,7 +81,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
         shields = new ArrayList<>();
 
-        for (int i = 0; i < shieldQuantity; i++) {
+        for (int i = 0; i < 4; i++) {
             Shield shield = new Shield(40 + 80 * i, 230);
             shields.add(shield);
         }
@@ -129,7 +129,7 @@ public class Board extends JPanel implements Runnable, Commons {
     public void drawShields(Graphics g) {
 
         for (Shield shield : shields) {
-            if (player.isVisible()) {
+            if (shield.isVisible()) {
 
                 g.drawImage(shield.getImage(), shield.getX(), shield.getY(), this);
             }
@@ -374,11 +374,6 @@ public class Board extends JPanel implements Runnable, Commons {
                 }
             }
         }
-
-        //shields
-        for (Shield shield : shields) {
-
-        }
     }
 
     @Override
@@ -453,6 +448,15 @@ public class Board extends JPanel implements Runnable, Commons {
                 aliens.add(alien);
             }
         }
+
+
+        shields.clear();
+        for (int i = 0; i < 4; i++) {
+
+            Shield shield = new Shield(40 + 80 * i, 230);
+            shields.add(shield);
+        }
+
 
         alienSpeed++;
         bombSpeed++;
