@@ -27,5 +27,4 @@ public class Shield extends Player {
         lives--;
     }
 
-
 }
