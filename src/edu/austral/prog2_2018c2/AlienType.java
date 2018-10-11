@@ -18,7 +18,7 @@ public class AlienType {
             case 2:
                 type = "MediumAlien";
                 points = 20;
-                image = "src/images/small_alien.png";
+                image = "src/images/medium_alien.png";
                 break;
             case 3:
                 type = "SmallAlien";
