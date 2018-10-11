@@ -103,6 +103,18 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
+    /*public void drawUFO(Graphics g){
+        if (Alien_UFO.isVisible()) {
+
+            g.drawImage(Alien_UFO.getImage(), Alien_UFO.getX(), Alien_UFO.getY(), this);
+        }
+
+        if (Alien_UFO.isDying()) {
+
+            Alien_UFO.die();
+        }
+    }*/
+
     public void drawPlayer(Graphics g) {
 
         if (player.isVisible()) {
