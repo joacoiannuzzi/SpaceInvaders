@@ -7,7 +7,7 @@ public class AlienType {
 
     public AlienType() {
 
-        int n = (int) (Math.random() * 3 + 1);
+        int n = 3 ;// (int) (Math.random() * 3 + 1);
 
         switch (n) {
             case 1:
