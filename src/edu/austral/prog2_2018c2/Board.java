@@ -253,6 +253,23 @@ public class Board extends JPanel implements Runnable, Commons {
             int shotX = shot.getX();
             int shotY = shot.getY();
 
+            if (ufo.isVisible() && shot.isVisible()) {
+
+                int ufoX = ufo.getX();
+                int ufoY = ufo.getY();
+
+                if (shotX >= (ufoX)
+                        && shotX <= (ufoX + UFO_WIDTH)
+                        && shotY >= (ufoY)
+                        && shotY <= (ufoY + UFO_HEIGHT)) {
+                    ImageIcon ii = new ImageIcon(explImg);
+                    ufo.setImage(ii.getImage());
+                    ufo.setDying(true);
+                    playerPoints += ufo.getAlienType().getPoints();
+                    shot.die();
+                }
+            }
+
             for (Alien alien: aliens) {
 
                 int alienX = alien.getX();
@@ -364,9 +381,9 @@ public class Board extends JPanel implements Runnable, Commons {
         // ufo
         long time = System.currentTimeMillis() - ufoSpawnTimer;
 
-        if (ufoSpawnCount > 1 && time >= 3000 && time <= 60000) {
+        if (ufoSpawnCount > 1 && time >= 7000 && time <= 60000) {
 
-            int random = randomWithRange(1,3);
+            int random = randomWithRange(1,5);
             if (random == 1) {
                 ufoSpawn();
             }
