@@ -13,17 +13,17 @@ public class AlienType {
             case 1:
                 type = "BigAlien";
                 points = 10;
-                image = "src/images/big_alien.png";
+                image = "src/images/big_alien.gif";
                 break;
             case 2:
                 type = "MediumAlien";
                 points = 20;
-                image = "src/images/medium_alien.png";
+                image = "src/images/medium_alien.gif";
                 break;
             case 3:
                 type = "SmallAlien";
                 points = 30;
-                image = "src/images/small_alien.png";
+                image = "src/images/small_alien.gif";
                 break;
         }
     }
@@ -37,7 +37,7 @@ public class AlienType {
 
         points = i;
 
-        int range_J = (10 - 1) + 1;
+        int range_J = (1 - 1) + 1;
         int j = (int)(Math.random() * range) + 1;
 
         if(j == 1){
@@ -46,7 +46,7 @@ public class AlienType {
 
         }else{
 
-            image = "src/images/alien.png";
+            image = "src/images/alienng";
         }
 
     }
