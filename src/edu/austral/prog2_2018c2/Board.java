@@ -41,8 +41,9 @@ public class Board extends JPanel implements Runnable, Commons {
     private int totalLevels = 5;
     private int currentLevel = 1;
 
-    private int UFO_spawn = 0;
-    private long UFO_spawn_time = System.currentTimeMillis();
+    private int ufoSpawnCount = 0;
+    private long ufoSpawnTimer = System.currentTimeMillis();
+    private int ufoDirection = 1;
 
     private int alienSpeed = 1;
     private int bombSpeed = 1;
@@ -320,7 +321,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     alien1.setY(alien1.getY() + GO_DOWN);
                 }
 
-                UFO_spawn++;
+                ufoSpawnCount++;
             }
 
             if (x <= BORDER_LEFT && direction != 1) {
@@ -331,7 +332,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     alien1.setY(alien1.getY() + GO_DOWN);
                 }
 
-                UFO_spawn++;
+                ufoSpawnCount++;
 
             }
         }
@@ -351,18 +352,46 @@ public class Board extends JPanel implements Runnable, Commons {
             }
         }
 
-            if (UFO_spawn >= 2 && (System.currentTimeMillis() - UFO_spawn_time) >= 45000 && System.currentTimeMillis() - UFO_spawn_time <= 60000) {
 
-                ufo.setVisible(true);
+        // ufo
+        long time = System.currentTimeMillis() - ufoSpawnTimer;
 
-                ufo.setX(0);
-                ufo.setY(0);
+        if (ufoSpawnCount > 1 && time >= 2000 && time <= 60000){
 
-                UFO_spawn_time = System.currentTimeMillis();
+            ufo.changeAlienType("");
+            ufo.setDying(false);
+            ufo.setVisible(true);
 
+            ufoSpawnCount = 0;
+
+            int random = randomWithRange(1, 2);
+            if (random == 1) {
+                ufoDirection = 1;
+                ufo.setX(-1 * UFO_WIDTH);
+            }
+            else {
+                ufoDirection = -1;
+                ufo.setX(BOARD_WIDTH + UFO_WIDTH);
             }
 
-            ufo.act(2);
+            ufoSpawnTimer = System.currentTimeMillis();
+        }
+
+        if (time > 60000) {
+            ufoSpawnTimer = System.currentTimeMillis();
+        }
+
+        if (ufo.isVisible()) {
+            ufo.act(ufoDirection * 2);
+        }
+
+        int x = ufo.getX();
+        if (x > BOARD_WIDTH && ufoDirection == 1) {
+            ufo.setDying(true);
+        }
+        if (x < -2 * UFO_WIDTH && ufoDirection == -1) {
+            ufo.setDying(true);
+        }
 
         // bombs
         Random generator = new Random();
@@ -635,6 +664,4 @@ public class Board extends JPanel implements Runnable, Commons {
         int range = (max - min) + 1;
         return (int)(Math.random() * range) + min;
     }
-
-
 }
