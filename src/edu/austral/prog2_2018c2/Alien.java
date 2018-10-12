@@ -55,6 +55,10 @@ public class Alien extends Sprite {
         this.alienType = new AlienType();
     }
 
+    public void changeAlienType(String ufo) {
+        this.alienType = new AlienType("");
+    }
+
     public class Bomb extends Sprite {
 
         private final String bombImg = "src/images/bomb.png";

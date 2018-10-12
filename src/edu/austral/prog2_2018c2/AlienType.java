@@ -32,19 +32,14 @@ public class AlienType {
 
         type = "UFO";
 
-        int range = (300 - 50) + 1;
-        int i = (int)(Math.random() * range) + 50;
+        points = randomWithRange(50, 300);
 
-        points = i;
-
-        int range_J = (10 - 1) + 1;
-        int j = (int)(Math.random() * range) + 1;
-
-        if(j == 1){
+        int j = randomWithRange(1, 10);
+        if (j == 1) {
 
             image = "src/images/duck.png";
-
-        }else{
+        }
+        else {
 
             image = "src/images/alien.png";
         }
@@ -61,5 +56,10 @@ public class AlienType {
 
     public String getImage() {
         return image;
+    }
+
+    public int randomWithRange(int min, int max) {
+        int range = (max - min) + 1;
+        return (int)(Math.random() * range) + min;
     }
 }
