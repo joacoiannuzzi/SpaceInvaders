@@ -38,15 +38,16 @@ public class AlienType {
         points = i;
 
         int range_J = (1 - 1) + 1;
-        int j = (int)(Math.random() * range) + 1;
+        int j = (int)(Math.random() * range_J) + 1;
 
-        if(j == 1){
+        if (j == 1){
 
             image = "src/images/duck.png";
 
-        }else{
+        }
+        else {
 
-            image = "src/images/alienng";
+            image = "src/images/alien";
         }
 
     }

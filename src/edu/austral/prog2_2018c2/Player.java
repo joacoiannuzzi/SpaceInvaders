@@ -1,11 +1,11 @@
 package edu.austral.prog2_2018c2;
 
 
-import com.sun.xml.internal.ws.server.sei.SEIInvokerTube;
-
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
+
+import com.sun.xml.internal.ws.server.sei.SEIInvokerTube;
 
 public class Player extends Sprite implements Commons {
 

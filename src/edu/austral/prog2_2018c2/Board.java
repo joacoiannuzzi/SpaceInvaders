@@ -151,7 +151,6 @@ public class Board extends JPanel implements Runnable, Commons {
                 shield.die();
             }
         }
-
     }
 
     public void drawShot(Graphics g) {
@@ -202,6 +201,14 @@ public class Board extends JPanel implements Runnable, Commons {
     public void gameOver() {
 
         Graphics g = this.getGraphics();
+
+        ImageIcon ii = new ImageIcon(explImg);
+
+        for (Alien alien : aliens) {
+            alien.setImage(ii.getImage());
+            alien.setDying(true);
+        }
+        drawAliens(g);
 
         g.setColor(Color.black);
         g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
@@ -303,7 +310,8 @@ public class Board extends JPanel implements Runnable, Commons {
 
             if (y < 0) {
                 shot.die();
-            } else {
+            }
+            else {
                 shot.setY(y);
             }
         }
@@ -356,28 +364,19 @@ public class Board extends JPanel implements Runnable, Commons {
         // ufo
         long time = System.currentTimeMillis() - ufoSpawnTimer;
 
-        if (ufoSpawnCount > 1 && time >= 2000 && time <= 60000){
+        if (ufoSpawnCount > 1 && time >= 3000 && time <= 60000) {
 
-            ufo.changeAlienType("");
-            ufo.setDying(false);
-            ufo.setVisible(true);
-
-            ufoSpawnCount = 0;
-
-            int random = randomWithRange(1, 2);
+            int random = randomWithRange(1,3);
             if (random == 1) {
-                ufoDirection = 1;
-                ufo.setX(-1 * UFO_WIDTH);
+                ufoSpawn();
             }
-            else {
-                ufoDirection = -1;
-                ufo.setX(BOARD_WIDTH + UFO_WIDTH);
-            }
-
-            ufoSpawnTimer = System.currentTimeMillis();
         }
 
-        if (time > 60000) {
+        if (ufoSpawnCount > 1 && time > 60000) {
+
+            ufoSpawn();
+        }
+        if (time == 60000) {
             ufoSpawnTimer = System.currentTimeMillis();
         }
 
@@ -444,7 +443,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     if (bombX >= (shieldX)
                             && bombX <= (shieldX + SHIELD_WIDTH)
                             && bombY >= (shieldY)
-                            && bombY <= (shieldY + 50)) {
+                            && bombY <= (shieldY + SHIELD_HEIGHT)) {
 
                         shotQuantity++;
 
@@ -557,6 +556,8 @@ public class Board extends JPanel implements Runnable, Commons {
         alienSpeed++;
         bombSpeed++;
 
+        ufoSpawnCount = 0;
+
         deaths = 0;
 
     }
@@ -607,17 +608,13 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void changeShields(){
 
-        int n = 0;
+        for (Shield shield: shields) {
 
-        for (int i = 0; i < 4; i++) {
-
-            Shield shield = shields.get(n);
             shield.restoreLives();
             ImageIcon ii = new ImageIcon("src/images/shield.png");
             shield.setImage(ii.getImage());
             shield.setDying(false);
             shield.setVisible(true);
-            n++;
 
         }
     }
@@ -650,13 +647,35 @@ public class Board extends JPanel implements Runnable, Commons {
         if (counter == 0) {
             return player.getX();
         }
+        return chooseShield();
+    }
 
+    public int chooseShield() {
         int n = randomWithRange(0, 3);
 
         if (shields.get(n).isVisible()) {
             return shields.get(n).getX() + (SHIELD_WIDTH - PLAYER_WIDTH) / 2;
         }
-        return shieldDetect();
+        return chooseShield();
+    }
+
+    public void ufoSpawn() {
+
+        ufo.changeAlienType("");
+        ufo.setDying(false);
+        ufo.setVisible(true);
+
+        int random = randomWithRange(1, 2);
+        if (random == 1) {
+            ufoDirection = 1;
+            ufo.setX(-1 * UFO_WIDTH);
+        }
+        else {
+            ufoDirection = -1;
+            ufo.setX(BOARD_WIDTH + UFO_WIDTH);
+        }
+
+        ufoSpawnTimer = System.currentTimeMillis();
     }
 
 
