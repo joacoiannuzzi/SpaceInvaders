@@ -31,6 +31,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private final int ALIEN_INIT_Y = 5;
     private int direction = -1;
     private int deaths = 0;
+    private int shotStrake = 0;
 
     private boolean ingame = true;
     private final String explImg = "src/images/explosion.png";
@@ -190,6 +191,7 @@ public class Board extends JPanel implements Runnable, Commons {
             g.setColor(Color.green);
             g.drawString("Score:"+playerPoints,20,300);
             g.drawString("lives:"+player.getLives(),280,300);
+            g.drawString("Streak:"+shotStrake,140,300);
 
             drawShot(g);
             drawBombing(g);
@@ -290,6 +292,7 @@ public class Board extends JPanel implements Runnable, Commons {
                         alien.setDying(true);
                         deaths++;
                         playerPoints += alien.getAlienType().getPoints();
+                        shotStrake++;
                         shot.die();
                     }
                 }
@@ -307,6 +310,7 @@ public class Board extends JPanel implements Runnable, Commons {
                                 && shotY <= (shieldY + SHIELD_HEIGHT)) {
 
                             shotQuantity++;
+                            shotStrake=0;
 
                             if (shotQuantity == 5) {
                                 shield.getBombed();
@@ -332,6 +336,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
             if (y < 0) {
                 shot.die();
+                shotStrake=0;
             }
             else {
                 shot.setY(y);
