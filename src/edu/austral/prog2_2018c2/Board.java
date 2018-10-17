@@ -182,9 +182,14 @@ public class Board extends JPanel implements Runnable, Commons {
         g.fillRect(0, 0, d.width, d.height);
         g.setColor(Color.green);
 
+
         if (ingame) {
 
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
+            g.setFont(new Font("TimesRoman",Font.PLAIN,14));
+            g.setColor(Color.green);
+            g.drawString("Score:"+playerPoints,20,300);
+            g.drawString("lives:"+player.getLives(),280,300);
 
             drawShot(g);
             drawBombing(g);
