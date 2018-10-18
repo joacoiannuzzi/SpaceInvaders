@@ -12,6 +12,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -51,6 +53,9 @@ public class Board extends JPanel implements Runnable, Commons {
     private int shotQuantity = 0;
 
     private int playerPoints = 0;
+
+    private Clip clip;
+    private String ruta = "src/sounds/";
 
     public Board() {
 
@@ -206,6 +211,8 @@ public class Board extends JPanel implements Runnable, Commons {
     }
 
     public void gameOver() {
+
+        sonido("game_over");
 
         Graphics g = this.getGraphics();
 
@@ -587,6 +594,18 @@ public class Board extends JPanel implements Runnable, Commons {
 
         deaths = 0;
 
+    }
+
+    public void sonido(String archivo){
+        try {
+
+            clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(getClass().getResourceAsStream(ruta + archivo + ".wav")));
+            clip.start();
+
+        } catch (Exception e){
+            System.out.println("no funca");
+        }
     }
 
     public void newAliens() {
