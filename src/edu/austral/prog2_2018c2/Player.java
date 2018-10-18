@@ -12,7 +12,7 @@ public class Player extends Sprite implements Commons {
     private final int START_Y = 280;
     private final int START_X = 270;
 
-    private final String playerImg = "src/images/player.png";
+    private final String playerImg = "src/images/resize.png";
     protected int width;
 
     protected int lives = 3;
