@@ -2,7 +2,7 @@ package edu.austral.prog2_2018c2;
 
 public class AlienType {
 
-    private String type, image;
+    private String type, image, specific_type;
     private int points;
 
     public AlienType() {
@@ -42,12 +42,14 @@ public class AlienType {
 
         if (j == 1){
 
+            specific_type = "duck";
             image = "src/images/duck.png";
 
         }
         else {
 
-            image = "src/images/alien";
+            specific_type = "alien";
+            image = "src/images/alien.png";
         }
 
     }
@@ -62,5 +64,9 @@ public class AlienType {
 
     public String getImage() {
         return image;
+    }
+
+    public String getSpecific_type() {
+        return specific_type;
     }
 }

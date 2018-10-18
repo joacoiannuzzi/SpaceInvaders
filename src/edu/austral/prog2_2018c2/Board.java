@@ -52,6 +52,9 @@ public class Board extends JPanel implements Runnable, Commons {
     private int bombSpeed = 1;
     private int shotQuantity = 0;
 
+    private long immunity = System.currentTimeMillis();
+    private boolean immunity_active = false;
+
     private int playerPoints = 0;
 
     private Clip clip;
@@ -301,6 +304,18 @@ public class Board extends JPanel implements Runnable, Commons {
                         playerPoints += alien.getAlienType().getPoints();
                         shotStrake++;
                         shot.die();
+
+                        if (shotStrake == 4){
+
+                            immunity_active = true;
+                            System.out.println("you are immune for 4 seconds");
+                            setImmunity();
+                            ImageIcon ii_2 = new ImageIcon("src/images/ship_shielded.png");
+                            player.setImage(ii_2.getImage());
+
+                        }
+
+
                     }
                 }
 
@@ -446,7 +461,7 @@ public class Board extends JPanel implements Runnable, Commons {
             int playerX = player.getX();
             int playerY = player.getY();
 
-            if (player.isVisible() && !b.isDestroyed()) {
+            if (player.isVisible() && !b.isDestroyed() && immunity_active == false) {
 
                 if (bombX >= (playerX)
                         && bombX <= (playerX + PLAYER_WIDTH)
@@ -604,7 +619,7 @@ public class Board extends JPanel implements Runnable, Commons {
             clip.start();
 
         } catch (Exception e){
-            System.out.println("no funca");
+            //System.out.println("no funca");
         }
     }
 
@@ -728,5 +743,22 @@ public class Board extends JPanel implements Runnable, Commons {
     public int randomWithRange(int min, int max) {
         int range = (max - min) + 1;
         return (int)(Math.random() * range) + min;
+    }
+
+    //power-up
+
+        //immunity
+    public void setImmunity(){
+
+        long timer_millis = System.currentTimeMillis() - immunity;
+
+        if (timer_millis >= 4000){
+
+            immunity_active = false;
+            System.out.println("you are no longer immune");
+            ImageIcon ii = new ImageIcon("src/images/resize.png");
+            player.setImage(ii.getImage());
+            timer_millis = 0;
+        }
     }
 }
