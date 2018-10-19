@@ -4,42 +4,60 @@ import javax.swing.ImageIcon;
 
 public class Alien extends Sprite {
 
+    private static int speed = 1;
+    private static int direction;
+
+    public static void increaseSpeed() {
+        speed++;
+    }
+
     protected Bomb bomb;
-    protected String alienImg = "src/images/small_alien.png";
+    private String alienImg;
     private AlienType alienType;
 
-    public Alien(int x, int y) {
-
-        initAlien(x, y);
+    public Alien() {
+        name = "ALIEN";
+        bomb = new Bomb();
     }
 
-    public Alien(String ufo) {
-        alienType = new AlienType("");
-        alienImg = alienType.getImage();
-        ImageIcon ii = new ImageIcon(alienImg);
-        setImage(ii.getImage());
-        setVisible(false);
-
-        this.x = 0;
-        this.y = 0;
-    }
-
-    private void initAlien(int x, int y) {
+    public void initAlien(int x, int y) {
 
         this.alienType = new AlienType();
         alienImg = alienType.getImage();
 
-        this.x = x;
-        this.y = y;
-
-        bomb = new Bomb(x, y);
         ImageIcon ii = new ImageIcon(alienImg);
         setImage(ii.getImage());
+        width = ii.getImage().getWidth(null);
+        height = ii.getImage().getHeight(null);
+        this.x = x;
+        this.y = y;
+        setVisible(true);
+        setDying(false);
+        direction = -1;
     }
 
-    public void act(int direction) {
+    public void act() {
 
-        this.x += direction;
+        this.x += direction * speed;
+    }
+
+    public boolean changeDirection() {
+
+        if ((x >= BOARD_WIDTH - ALIEN_WITDH - 10 && direction != -1)
+                || (x <= 10 && direction != 1)) {
+
+            direction = -1 * direction;
+            //y += GO_DOWN;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean touchGround() {
+        if (y > GROUND - height) {
+            return true;
+        }
+        return false;
     }
 
     public Bomb getBomb() {
@@ -51,42 +69,4 @@ public class Alien extends Sprite {
         return alienType;
     }
 
-    public void changeAlienType() {
-        this.alienType = new AlienType();
-    }
-
-    public void changeAlienType(String ufo) {
-        this.alienType = new AlienType("");
-    }
-
-    public class Bomb extends Sprite {
-
-        private final String bombImg = "src/images/bomb.png";
-        private boolean destroyed;
-
-        public Bomb(int x, int y) {
-
-            initBomb(x, y);
-        }
-
-        private void initBomb(int x, int y) {
-
-            setDestroyed(true);
-            this.x = x;
-            this.y = y;
-            ImageIcon ii = new ImageIcon(bombImg);
-            setImage(ii.getImage());
-
-        }
-
-        public void setDestroyed(boolean destroyed) {
-
-            this.destroyed = destroyed;
-        }
-
-        public boolean isDestroyed() {
-
-            return destroyed;
-        }
-    }
 }

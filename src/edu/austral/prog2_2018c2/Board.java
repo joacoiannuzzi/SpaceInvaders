@@ -12,8 +12,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -23,20 +21,16 @@ public class Board extends JPanel implements Runnable, Commons {
     private ArrayList<Alien> aliens;
     private Player player;
     private Shot shot;
-    private Alien ufo;
-
+    private Ufo ufo;
     private ArrayList<Shield> shields;
     private int shieldsToRemove = 0;
-    private int shieldSpace = (BOARD_WIDTH - 4 * SHIELD_WIDTH) / 5;
 
-    private final int ALIEN_INIT_X = 150;
-    private final int ALIEN_INIT_Y = 5;
+    private final int ALIEN_INIT_X = 200;
+    private final int ALIEN_INIT_Y = 37;
     private int direction = -1;
-    private int deaths = 0;
-    private int shotStrake = 0;
+    private int kills = 0;
 
     private boolean ingame = true;
-    private final String explImg = "src/images/explosion.png";
     private String message = "Game Over";
 
     private Thread animator;
@@ -44,21 +38,13 @@ public class Board extends JPanel implements Runnable, Commons {
     private int totalLevels = 5;
     private int currentLevel = 1;
 
-    private int ufoSpawnCount = 0;
-    private long ufoSpawnTimer = System.currentTimeMillis();
-    private int ufoDirection = 1;
+    private long ufoSpawnTimer;
 
-    private int alienSpeed = 1;
-    private int bombSpeed = 1;
-    private int shotQuantity = 0;
+    private int delay = DELAY;
 
-    private long immunity = System.currentTimeMillis();
-    private boolean immunity_active = false;
-
-    private int playerPoints = 0;
-
-    private Clip clip;
-    private String ruta = "src/sounds/";
+    private long powerTimer;
+    private boolean powered = false;
+    private long timer;
 
     public Board() {
 
@@ -86,14 +72,21 @@ public class Board extends JPanel implements Runnable, Commons {
     public void gameInit() {
 
         aliens = new ArrayList<>();
-        newAliens();
+        for (int i = 0; i < 24; i++) {
+            aliens.add(new Alien());
+        }
+        generateAliens();
 
         shields = new ArrayList<>();
-        newShields();
+        for (int i = 0; i < 4; i++) {
+            shields.add(new Shield());
+        }
+        generateShields();
 
-        ufo = new Alien("");
+        ufo = new Ufo();
 
         player = new Player();
+
         shot = new Shot();
 
         if (animator == null || !ingame) {
@@ -119,7 +112,7 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
-    public void drawUFO(Graphics g){
+    public void drawUFO(Graphics g) {
 
         if (ufo.isVisible()) {
 
@@ -174,13 +167,34 @@ public class Board extends JPanel implements Runnable, Commons {
 
         for (Alien a : aliens) {
 
-            Alien.Bomb b = a.getBomb();
+            Bomb b = a.getBomb();
 
-            if (!b.isDestroyed()) {
+            if (b.isVisible()) {
 
                 g.drawImage(b.getImage(), b.getX(), b.getY(), this);
             }
         }
+    }
+
+    public void drawTexts(Graphics g) {
+
+        Font small = new Font("Helvetica", Font.BOLD, 15);
+        FontMetrics metr = this.getFontMetrics(small);
+        g.setFont(small);
+
+        g.drawString("Score: " + player.getPoints(), 0,
+                BOARD_HEIGHT - 24);
+
+        g.drawString("Lives: " + player.getLives(),
+                BOARD_WIDTH - metr.stringWidth("Lives: " + player.getLives()),
+                BOARD_HEIGHT - 24);
+
+        g.drawString("Level " + currentLevel,
+                (BOARD_WIDTH - metr.stringWidth("Level " + currentLevel)) / 2,
+                BOARD_HEIGHT - 24);
+
+        g.drawString("Streak: " + shot.getStreak(), 0, BOARD_HEIGHT - 45);
+
     }
 
     @Override
@@ -191,15 +205,12 @@ public class Board extends JPanel implements Runnable, Commons {
         g.fillRect(0, 0, d.width, d.height);
         g.setColor(Color.green);
 
-
         if (ingame) {
 
+            g.drawString("Powered: " + powered, 0, 170);
+            g.drawString("Timer: " + timer, 0, 150);
+
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
-            g.setFont(new Font("TimesRoman",Font.PLAIN,14));
-            g.setColor(Color.green);
-            g.drawString("Score:"+playerPoints,20,300);
-            g.drawString("lives:"+player.getLives(),280,300);
-            g.drawString("Streak:"+shotStrake,140,300);
 
             drawShot(g);
             drawBombing(g);
@@ -207,6 +218,7 @@ public class Board extends JPanel implements Runnable, Commons {
             drawAliens(g);
             drawPlayer(g);
             drawUFO(g);
+            drawTexts(g);
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -214,8 +226,6 @@ public class Board extends JPanel implements Runnable, Commons {
     }
 
     public void gameOver() {
-
-        sonido("game_over");
 
         Graphics g = this.getGraphics();
 
@@ -231,35 +241,51 @@ public class Board extends JPanel implements Runnable, Commons {
         g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
 
         g.setColor(new Color(0, 32, 48));
-        g.fillRect(50, BOARD_WIDTH / 2 - 60, BOARD_WIDTH - 100, 100);
+        g.fillRect(50, BOARD_HEIGHT / 2 - 50, BOARD_WIDTH - 100, 100);
         g.setColor(Color.white);
-        g.drawRect(50, BOARD_WIDTH / 2 - 60, BOARD_WIDTH - 100, 100);
+        g.drawRect(50, BOARD_HEIGHT / 2 - 50, BOARD_WIDTH - 100, 100);
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
 
         g.setColor(Color.white);
         g.setFont(small);
-        g.drawString(message, (BOARD_WIDTH - metr.stringWidth(message)) / 2,
-                BOARD_WIDTH / 2 - 20);
+        g.drawString(message,
+                (BOARD_WIDTH - metr.stringWidth(message)) / 2,
+                BOARD_HEIGHT / 2 - 15);
 
-        g.drawString("Score: " + playerPoints, (BOARD_WIDTH - metr.stringWidth("Score: " + playerPoints)) / 2,
-                (BOARD_WIDTH / 2) + 10);
+        g.drawString("Score: " + player.getPoints(),
+                (BOARD_WIDTH - metr.stringWidth("Score: " + player.getPoints())) / 2,
+                (BOARD_HEIGHT) / 2 + 15);
     }
 
     public void animationCycle() {
 
-        if (deaths == NUMBER_OF_ALIENS_TO_DESTROY && currentLevel == totalLevels) {
+        if (kills == NUMBER_OF_ALIENS_TO_DESTROY) {
 
-            ingame = false;
-            message = "Game won!";
+            if (currentLevel == totalLevels) {
+                ingame = false;
+                message = "Game won!";
+            } else {
+                levelUp();
+            }
         }
 
-        if (deaths == NUMBER_OF_ALIENS_TO_DESTROY && currentLevel != totalLevels) {
+        // power ups
+        if (powered) {
 
-            levelUp();
+            long powerEndTime = System.currentTimeMillis() - powerTimer;
+            int random = randomWithRange(1, 70);
+
+            if ((powerEndTime >= 3000 && powerEndTime <= 5000 && random == 1)
+                    || (powerEndTime > 5000)) {
+
+                powered = false;
+                shot.resetStreak();
+                powerTimer = 0;
+
+            }
         }
-
 
         // player
         player.act();
@@ -267,260 +293,94 @@ public class Board extends JPanel implements Runnable, Commons {
         // shot
         if (shot.isVisible()) {
 
-            int shotX = shot.getX();
-            int shotY = shot.getY();
+            if (shot.hit(ufo)) {
 
-            if (ufo.isVisible() && shot.isVisible()) {
-
-                int ufoX = ufo.getX();
-                int ufoY = ufo.getY();
-
-                if (shotX >= (ufoX)
-                        && shotX <= (ufoX + UFO_WIDTH)
-                        && shotY >= (ufoY)
-                        && shotY <= (ufoY + UFO_HEIGHT)) {
-                    ImageIcon ii = new ImageIcon(explImg);
-                    ufo.setImage(ii.getImage());
-                    ufo.setDying(true);
-                    playerPoints += ufo.getAlienType().getPoints();
-                    shot.die();
-                }
+                player.addPoints(ufo.getPoints());
             }
 
-            for (Alien alien: aliens) {
+            for (Alien alien : aliens) {
 
-                int alienX = alien.getX();
-                int alienY = alien.getY();
+                if (shot.hit(alien)) {
 
-                if (alien.isVisible() && shot.isVisible()) {
-                    if (shotX >= (alienX)
-                            && shotX <= (alienX + ALIEN_WIDTH)
-                            && shotY >= (alienY)
-                            && shotY <= (alienY + ALIEN_HEIGHT)) {
-                        ImageIcon ii = new ImageIcon(explImg);
-                        alien.setImage(ii.getImage());
-                        alien.setDying(true);
-                        deaths++;
-                        playerPoints += alien.getAlienType().getPoints();
-                        shotStrake++;
-                        shot.die();
+                    kills++;
+                    player.addPoints(alien.getAlienType().getPoints());
 
-                        if (shotStrake == 4){
+                    if (!powered) {
+                        shot.increaseStreak();
 
-                            immunity_active = true;
-                            System.out.println("you are immune for 4 seconds");
-                            setImmunity();
-                            ImageIcon ii_2 = new ImageIcon("src/images/ship_shielded.png");
-                            player.setImage(ii_2.getImage());
-
+                        if (shot.getStreak() == 4) {
+                            powered = true;
+                            powerTimer = System.currentTimeMillis();
                         }
-
-
-                    }
-                }
-
-                for (Shield shield : shields) {
-
-                    int shieldX = shield.getX();
-                    int shieldY = shield.getY();
-
-                    if (shield.isVisible() && shot.isVisible()) {
-
-                        if (shotX >= (shieldX)
-                                && shotX <= (shieldX + SHIELD_WIDTH)
-                                && shotY >= (shieldY)
-                                && shotY <= (shieldY + SHIELD_HEIGHT)) {
-
-                            shotQuantity++;
-                            shotStrake=0;
-
-                            if (shotQuantity == 5) {
-                                shield.getBombed();
-                                shotQuantity = 0;
-                            }
-
-                            shot.die();
-
-
-                            if (shield.getLives() == 0) {
-
-                                ImageIcon ii = new ImageIcon(explImg);
-                                shield.setImage(ii.getImage());
-                                shield.setDying(true);
-                            }
-                        }
-                    }
-                }
-            }
-
-            int y = shot.getY();
-            y -= 10;
-
-            if (y < 0) {
-                shot.die();
-                shotStrake=0;
-            }
-            else {
-                shot.setY(y);
-            }
-        }
-
-        // aliens
-        for (Alien alien: aliens) {
-
-            int x = alien.getX();
-
-            if (x >= BOARD_WIDTH - BORDER_RIGHT && direction != -1) {
-
-                direction = -1;
-
-                for (Alien alien1 : aliens) {
-                    alien1.setY(alien1.getY() + GO_DOWN);
-                }
-
-                ufoSpawnCount++;
-            }
-
-            if (x <= BORDER_LEFT && direction != 1) {
-
-                direction = 1;
-
-                for (Alien alien1 : aliens) {
-                    alien1.setY(alien1.getY() + GO_DOWN);
-                }
-
-                ufoSpawnCount++;
-
-            }
-        }
-
-        for (Alien alien1 : aliens) {
-
-            if (alien1.isVisible()) {
-
-                int y = alien1.getY();
-
-                if (y > GROUND - ALIEN_HEIGHT) {
-                    ingame = false;
-                    message = "Invasion!";
-                }
-
-                alien1.act(direction * alienSpeed);
-            }
-        }
-
-
-        // ufo
-        long time = System.currentTimeMillis() - ufoSpawnTimer;
-
-        if (ufoSpawnCount > 1 && time >= 7000 && time <= 60000) {
-
-            int random = randomWithRange(1,5);
-            if (random == 1) {
-                ufoSpawn();
-            }
-        }
-
-        if (ufoSpawnCount > 1 && time > 60000) {
-
-            ufoSpawn();
-        }
-        if (time == 60000) {
-            ufoSpawnTimer = System.currentTimeMillis();
-        }
-
-        if (ufo.isVisible()) {
-            ufo.act(ufoDirection * 2);
-        }
-
-        int x = ufo.getX();
-        if (x > BOARD_WIDTH && ufoDirection == 1) {
-            ufo.setDying(true);
-        }
-        if (x < -2 * UFO_WIDTH && ufoDirection == -1) {
-            ufo.setDying(true);
-        }
-
-        // bombs
-        Random generator = new Random();
-
-        for (Alien alien: aliens) {
-
-            int shot = generator.nextInt(15);
-            Alien.Bomb b = alien.getBomb();
-
-            if (shot == CHANCE && alien.isVisible() && b.isDestroyed()) {
-
-                b.setDestroyed(false);
-                b.setX(alien.getX());
-                b.setY(alien.getY());
-            }
-
-            int bombX = b.getX();
-            int bombY = b.getY();
-            int playerX = player.getX();
-            int playerY = player.getY();
-
-            if (player.isVisible() && !b.isDestroyed() && immunity_active == false) {
-
-                if (bombX >= (playerX)
-                        && bombX <= (playerX + PLAYER_WIDTH)
-                        && bombY >= (playerY)
-                        && bombY <= (playerY + PLAYER_HEIGHT)) {
-
-                    player.getBombed();
-                    player.setX(shieldDetect());
-                    b.setDestroyed(true);
-
-
-                    if (player.getLives() == 0) {
-
-                        ImageIcon ii = new ImageIcon(explImg);
-                        player.setImage(ii.getImage());
-                        player.setDying(true);
                     }
                 }
             }
 
             for (Shield shield : shields) {
 
-                int shieldX = shield.getX();
-                int shieldY = shield.getY();
+                if (shot.hit(shield)) {
 
-                if (shield.isVisible() && !b.isDestroyed()) {
-
-                    if (bombX >= (shieldX)
-                            && bombX <= (shieldX + SHIELD_WIDTH)
-                            && bombY >= (shieldY)
-                            && bombY <= (shieldY + SHIELD_HEIGHT)) {
-
-                        shotQuantity++;
-
-                        if (shotQuantity == 5) {
-                            shield.getBombed();
-                            shotQuantity = 0;
-                        }
-
-                        b.setDestroyed(true);
-
-
-                        if (shield.getLives() == 0) {
-
-                            ImageIcon ii = new ImageIcon(explImg);
-                            shield.setImage(ii.getImage());
-                            shield.setDying(true);
-                        }
-                    }
+                    shot.resetStreak();
                 }
             }
 
-            if (!b.isDestroyed()) {
+            shot.act();
+        }
 
-                b.setY(b.getY() + bombSpeed);
+        // aliens
+        for (Alien alien : aliens) {
 
-                if (b.getY() >= GROUND - BOMB_HEIGHT) {
-                    b.setDestroyed(true);
+            if (alien.changeDirection()) {
+
+               for (Alien alien1 : aliens) {
+                   alien1.setY(alien1.getY() + GO_DOWN);
+               }
+            }
+            //alien.changeDirection();
+
+            if (alien.isVisible()) {
+
+                if (alien.touchGround()) {
+                    ingame = false;
+                    message = "Invasion!";
                 }
+
+                alien.act();
+            }
+        }
+
+        // ufo
+        if (!ufo.isVisible()) {
+
+            long ufoTimer = System.currentTimeMillis() - ufoSpawnTimer;
+            timer = System.currentTimeMillis() - ufoSpawnTimer;
+
+            if (ufo.spawn(ufoTimer)) {
+                ufoSpawnTimer = System.currentTimeMillis();
+            }
+        }
+        if (ufo.isVisible()) {
+            ufo.act();
+        }
+
+        // bombs
+        for (Alien alien : aliens) {
+
+            Bomb b = alien.getBomb();
+
+            b.initBomb(alien);
+
+            if (b.isVisible()) {
+
+                for (Shield shield : shields) {
+                    b.hit(shield);
+                }
+
+                if (b.hit(player)) {
+                    shieldDetect();
+                }
+
+                b.act();
             }
         }
     }
@@ -532,6 +392,7 @@ public class Board extends JPanel implements Runnable, Commons {
         long beforeTime, timeDiff, sleep;
 
         beforeTime = System.currentTimeMillis();
+        ufoSpawnTimer = System.currentTimeMillis();
 
         while (ingame) {
 
@@ -539,7 +400,7 @@ public class Board extends JPanel implements Runnable, Commons {
             animationCycle();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = DELAY - timeDiff;
+            sleep = delay - timeDiff;
 
             if (sleep < 0) {
                 sleep = 2;
@@ -579,7 +440,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
                 if (ingame) {
                     if (!shot.isVisible()) {
-                        shot = new Shot(x, y);
+                        shot.initShot(x, y);
                     }
                 }
             }
@@ -590,93 +451,47 @@ public class Board extends JPanel implements Runnable, Commons {
 
         currentLevel++;
 
-        changeAliens();
+        generateAliens();
 
         if (currentLevel != totalLevels) {
 
-            changeShields();
+            generateShields();
             shieldsToRemove++;
 
             for (int i = 0; i < shieldsToRemove; i++) {
                 shieldRemove();
             }
         }
-
-        alienSpeed++;
-        bombSpeed++;
-
-        ufoSpawnCount = 0;
-
-        deaths = 0;
-
-    }
-
-    public void sonido(String archivo){
-        try {
-
-            clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(getClass().getResourceAsStream(ruta + archivo + ".wav")));
-            clip.start();
-
-        } catch (Exception e){
-            //System.out.println("no funca");
-        }
-    }
-
-    public void newAliens() {
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 6; j++) {
-
-                Alien alien = new Alien(ALIEN_INIT_X + 18 * j, ALIEN_INIT_Y + 18 * i);
-                aliens.add(alien);
+        else {
+            for (Shield shield : shields) {
+                shield.die();
             }
         }
+
+        kills = 0;
+
+        delay -= 2;
+
     }
 
-    public void changeAliens() {
+    public void generateAliens() {
 
         int n = 0;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
-
-                Alien alien = aliens.get(n);
-
-                alien.changeAlienType();
-                alien.setX(ALIEN_INIT_X + 18 * j);
-                alien.setY(ALIEN_INIT_Y + 18 * i);
-                ImageIcon ii = new ImageIcon(alien.getAlienType().getImage());
-                alien.setImage(ii.getImage());
-                alien.setVisible(true);
-                alien.setDying(false);
-
-                Alien.Bomb bomb = alien.getBomb();
-                bomb.setDestroyed(true);
-
+                aliens.get(n).initAlien(ALIEN_INIT_X + 18 * j,
+                        ALIEN_INIT_Y + 18 * i);
                 n++;
-
             }
         }
     }
 
-    public void newShields() {
+    public void generateShields() {
 
+        int shieldSpace = (BOARD_WIDTH - 4 * shields.get(0).getWidth()) / 5;
         for (int i = 0; i < 4; i++) {
-            Shield shield = new Shield(shieldSpace + (SHIELD_WIDTH + shieldSpace) * i, 230);
-            shields.add(shield);
-        }
-    }
-
-    public void changeShields(){
-
-        for (Shield shield: shields) {
-
-            shield.restoreLives();
-            ImageIcon ii = new ImageIcon("src/images/shield.png");
-            shield.setImage(ii.getImage());
-            shield.setDying(false);
-            shield.setVisible(true);
-
+            Shield shield = shields.get(i);
+            shield.initShield(shieldSpace + (shield.getWidth() + shieldSpace) * i);
         }
     }
 
@@ -685,9 +500,6 @@ public class Board extends JPanel implements Runnable, Commons {
 
         if (shields.get(n).isVisible()) {
 
-            shields.get(n).setDying(true);
-            ImageIcon ii = new ImageIcon(explImg);
-            shields.get(n).setImage(ii.getImage());
             shields.get(n).die();
         }
         else {
@@ -695,7 +507,7 @@ public class Board extends JPanel implements Runnable, Commons {
         }
     }
 
-    public int shieldDetect() {
+    public void shieldDetect() {
 
         int counter = 0;
 
@@ -706,59 +518,19 @@ public class Board extends JPanel implements Runnable, Commons {
         }
 
         if (counter == 0) {
-            return player.getX();
+            return;
         }
-        return chooseShield();
+
+        player.setX(chooseShield());
     }
 
     public int chooseShield() {
         int n = randomWithRange(0, 3);
+        Shield shield = shields.get(n);
 
-        if (shields.get(n).isVisible()) {
-            return shields.get(n).getX() + (SHIELD_WIDTH - PLAYER_WIDTH) / 2;
+        if (shield.isVisible()) {
+            return shield.getX() + (shield.getWidth() - player.getWidth()) / 2;
         }
         return chooseShield();
-    }
-
-    public void ufoSpawn() {
-
-        ufo.changeAlienType("");
-        ufo.setDying(false);
-        ufo.setVisible(true);
-
-        int random = randomWithRange(1, 2);
-        if (random == 1) {
-            ufoDirection = 1;
-            ufo.setX(-1 * UFO_WIDTH);
-        }
-        else {
-            ufoDirection = -1;
-            ufo.setX(BOARD_WIDTH + UFO_WIDTH);
-        }
-
-        ufoSpawnTimer = System.currentTimeMillis();
-    }
-
-
-    public int randomWithRange(int min, int max) {
-        int range = (max - min) + 1;
-        return (int)(Math.random() * range) + min;
-    }
-
-    //power-up
-
-        //immunity
-    public void setImmunity(){
-
-        long timer_millis = System.currentTimeMillis() - immunity;
-
-        if (timer_millis >= 4000){
-
-            immunity_active = false;
-            System.out.println("you are no longer immune");
-            ImageIcon ii = new ImageIcon("src/images/resize.png");
-            player.setImage(ii.getImage());
-            timer_millis = 0;
-        }
     }
 }

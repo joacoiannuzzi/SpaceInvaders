@@ -1,15 +1,20 @@
 package edu.austral.prog2_2018c2;
 
+import javax.swing.*;
 import java.awt.Image;
 
-public class Sprite {
+public class Sprite implements Commons {
 
     private boolean visible;
     private Image image;
-    protected int x;
-    protected int y;
-    protected boolean dying;
-    protected int dx;
+    int x;
+    int y;
+    private boolean dying;
+    int dx;
+    int width;
+    int height;
+    String name;
+
 
     public Sprite() {
 
@@ -69,5 +74,32 @@ public class Sprite {
     public boolean isDying() {
 
         return this.dying;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void getShot() {
+
+        ImageIcon ii = new ImageIcon(explImg);
+        setImage(ii.getImage());
+        setDying(true);
     }
 }

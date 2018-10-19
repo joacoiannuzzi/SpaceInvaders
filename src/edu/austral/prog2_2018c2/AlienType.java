@@ -1,13 +1,13 @@
 package edu.austral.prog2_2018c2;
 
-public class AlienType {
+public class AlienType implements Commons {
 
-    private String type, image, specific_type;
+    private String type, image;
     private int points;
 
     public AlienType() {
 
-        int n = (int) (Math.random() * 3 + 1);
+        int n = randomWithRange(1, 3);
 
         switch (n) {
             case 1:
@@ -26,31 +26,6 @@ public class AlienType {
                 image = "src/images/small_alien.png";
                 break;
         }
-    }
-
-    public AlienType(String ufo) {
-
-        type = "UFO";
-
-        int range = (300 - 50) + 1;
-        int i = (int)(Math.random() * range) + 50;
-
-        points = i;
-
-        int range_J = (1 - 1) + 1;
-        int j = (int)(Math.random() * range_J) + 1;
-
-        if (j == 1){
-
-            specific_type = "duck";
-            image = "src/images/duck.png";
-
-        }
-        else {
-
-            specific_type = "alien";
-            image = "src/images/alien.png";
-        }
 
     }
 
@@ -64,9 +39,5 @@ public class AlienType {
 
     public String getImage() {
         return image;
-    }
-
-    public String getSpecific_type() {
-        return specific_type;
     }
 }

@@ -1,36 +1,30 @@
 package edu.austral.prog2_2018c2;
 
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
-
-import com.sun.xml.internal.ws.server.sei.SEIInvokerTube;
-
-public class Player extends Sprite implements Commons {
-
-    private final int START_Y = 280;
-    private final int START_X = 270;
+public class Player extends Sprite {
 
     private final String playerImg = "src/images/resize.png";
-    protected int width;
+    private int points = 0;
 
-    protected int lives = 3;
+    int lives = 3;
+    private int speed = 2;
 
     public Player() {
-
+        name = "PLAYER";
         initPlayer();
     }
 
     private void initPlayer() {
 
         ImageIcon ii = new ImageIcon(playerImg);
-
         width = ii.getImage().getWidth(null);
-
+        height = ii.getImage().getHeight(null);
         setImage(ii.getImage());
-        setX(START_X);
-        setY(START_Y);
+        setX((BOARD_WIDTH - width) / 2);
+        setY(GROUND - height);
     }
 
     public void act() {
@@ -41,8 +35,8 @@ public class Player extends Sprite implements Commons {
             x = 2;
         }
 
-        if (x >= BOARD_WIDTH - 2 * width) {
-            x = BOARD_WIDTH - 2 * width;
+        if (x >= BOARD_WIDTH - width) {
+            x = BOARD_WIDTH - width;
         }
     }
 
@@ -52,12 +46,12 @@ public class Player extends Sprite implements Commons {
 
         if (key == KeyEvent.VK_LEFT) {
 
-            dx = -2;
+            dx = -1 * speed;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
 
-            dx = 2;
+            dx = speed;
         }
     }
 
@@ -76,13 +70,29 @@ public class Player extends Sprite implements Commons {
         }
     }
 
-    public void getBombed() {
+    @Override
+    public void getShot() {
 
         lives--;
+
+        if (lives == 0) {
+            super.getShot();
+        }
+    }
+
+    public void addPoints(int points) {
+        this.points += points;
     }
 
     public int getLives() {
         return lives;
     }
 
+    public void increaseSpeed() {
+        this.speed++;
+    }
+
+    public int getPoints() {
+        return points;
+    }
 }
