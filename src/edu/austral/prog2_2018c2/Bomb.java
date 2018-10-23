@@ -17,16 +17,17 @@ public class Bomb extends Weapon {
         setImage(ii.getImage());
         width = ii.getImage().getWidth(null);
         height = ii.getImage().getHeight(null);
+//        x = 10;
+//        y = -1;
         die();
     }
 
-    public void initBomb(Alien alien) {
+    public void initBomb(int x, int y) {
 
-        if (randomWithRange(1, 14) == 5 && alien.isVisible() && !isVisible()) {
-
+        if (randomWithRange(1, 14) == 5 && !isVisible()) {
             setVisible(true);
-            x = alien.getX();
-            y = alien.getY();
+            this.x = x;
+            this.y = y;
         }
     }
 

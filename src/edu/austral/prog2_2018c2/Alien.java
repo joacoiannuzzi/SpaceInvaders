@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 public class Alien extends Sprite {
 
     private static int speed = 1;
-    private static int direction;
+    //private static int direction;
 
     public static void increaseSpeed() {
         speed++;
@@ -33,28 +33,33 @@ public class Alien extends Sprite {
         this.y = y;
         setVisible(true);
         setDying(false);
-        direction = -1;
+        bomb = new Bomb();
+        //direction = -1;
     }
 
-    public void act() {
+    public void initBomb() {
+        bomb.initBomb(x, y);
+    }
+
+    public void act(int direction) {
 
         this.x += direction * speed;
     }
 
-    public boolean changeDirection() {
-
-        if ((x >= BOARD_WIDTH - ALIEN_WITDH - 10 && direction != -1)
-                || (x <= 10 && direction != 1)) {
-
-            direction = -1 * direction;
-            //y += GO_DOWN;
-            return true;
-        }
-        return false;
-    }
+//    public boolean changeDirection() {
+//
+//        if ((x >= BOARD_WIDTH - ALIEN_WIDTH - 10 && direction != -1)
+//                || (x <= 10 && direction != 1)) {
+//
+//            direction = -1 * direction;
+//            //y += GO_DOWN;
+//            return true;
+//        }
+//        return false;
+//    }
 
     public boolean touchGround() {
-        if (y > GROUND - height) {
+        if (y + height >= GROUND) {
             return true;
         }
         return false;

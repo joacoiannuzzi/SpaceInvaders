@@ -96,10 +96,9 @@ public class Sprite implements Commons {
         return name;
     }
 
-    public void getShot() {
+    public void getHit() {
 
-        ImageIcon ii = new ImageIcon(explImg);
-        setImage(ii.getImage());
+        setImage(explosion.getImage());
         setDying(true);
     }
 }

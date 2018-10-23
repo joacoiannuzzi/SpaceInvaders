@@ -12,7 +12,7 @@ public class Weapon extends Sprite {
                     && y >= (entityY)
                     && y <= (entityY + entity.getHeight())) {
 
-                entity.getShot();
+                entity.getHit();
                 die();
                 return true;
             }

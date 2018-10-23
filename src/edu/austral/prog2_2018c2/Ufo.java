@@ -8,6 +8,8 @@ public class Ufo extends Sprite {
     private int points;
     private int direction;
     private int speed = 2;
+    private long timeToSpawn = randomWithRange(45000, 60000);
+    private long spawnTimer = System.currentTimeMillis();
 
     public Ufo() {
         name = "UFO";
@@ -18,11 +20,9 @@ public class Ufo extends Sprite {
         points = randomWithRange(50, 300);
 
         if (randomWithRange(1, 10) == 1) {
-
             UfoImg = "src/images/duck.png";
         }
         else {
-
             UfoImg = "src/images/alien.png";
         }
 
@@ -32,6 +32,7 @@ public class Ufo extends Sprite {
         height = ii.getImage().getHeight(null);
         setVisible(true);
         setDying(false);
+        timeToSpawn = randomWithRange(45000, 60000);
 
         int random = randomWithRange(1, 2);
         if (random == 1) {
@@ -46,24 +47,20 @@ public class Ufo extends Sprite {
 
     public void act() {
 
-        this.x += direction * speed;
-
-        if ((x > BOARD_WIDTH && direction == 1) || (x < -1 * width && direction == -1)) {
-            die();
+        if (isVisible()) {
+            this.x += direction * speed;
+            if ((x > BOARD_WIDTH && direction == 1) || (x < -width && direction == -1)) {
+                die();
+            }
         }
     }
 
-    public boolean spawn(long time) {
+    public void spawn() {
 
-        int random = randomWithRange(1, 500);
-
-        if ((time >= 45000 && time <= 60000 && random == 1)
-                || (time > 60000)) {
-
+        if (System.currentTimeMillis() - spawnTimer >= timeToSpawn && !isVisible()) {
             initUfo();
-            return true;
+            spawnTimer = System.currentTimeMillis();
         }
-        return false;
     }
 
     public int getPoints() {

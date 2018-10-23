@@ -29,7 +29,7 @@ public class Shield extends Sprite {
         setVisible(true);
     }
 
-    public void getShot() {
+    public void getHit() {
 
         shotQuantity++;
 
@@ -39,8 +39,8 @@ public class Shield extends Sprite {
 
             lives = (int) (lives - SHIELD_LIVES * 0.1);
 
-            if (lives < 0 || lives == 0) {
-                super.getShot();
+            if (lives <= 0) {
+                super.getHit();
             }
         }
 

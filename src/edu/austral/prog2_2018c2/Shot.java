@@ -5,7 +5,6 @@ import javax.swing.ImageIcon;
 public class Shot extends Weapon {
 
     private int speed = 4;
-    private int streak = 0;
 
     private final String shotImg = "src/images/shot.png";
     private final int H_SPACE = 6;
@@ -22,28 +21,15 @@ public class Shot extends Weapon {
         setVisible(true);
     }
 
-    public void act() {
+    public boolean act() {
         y -= speed;
 
-        if (y < 0) {
-            die();
-            streak = 0;
-        }
-        else {
+        if (y > 0) {
             setY(y);
+            return true;
         }
-    }
-
-    public int getStreak() {
-        return streak;
-    }
-
-    public void resetStreak() {
-        this.streak = 0;
-    }
-
-    public void increaseStreak() {
-        streak++;
+        die();
+        return false;
     }
 
 }
