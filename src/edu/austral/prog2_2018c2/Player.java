@@ -83,12 +83,13 @@ public class Player extends Sprite {
 
     @Override
     public void getHit() {
-        lives--;
+        if (!immunity) {
+            lives--;
 
-        if (lives == 0)
-            super.getHit();
+            if (lives == 0)
+                super.getHit();
+        }
     }
-
     public void attack(Ufo ufo) {
         if (shot.hit(ufo))
             points += ufo.getPoints();
@@ -115,6 +116,7 @@ public class Player extends Sprite {
     public void powerUp() {
         if (!powered && shotStreak == SHOT_STREAK) {
             powered = true;
+            immunity = true;
             powerTimer = System.currentTimeMillis();
             endPower = randomWithRange(3000, 5000);
         }
@@ -123,6 +125,7 @@ public class Player extends Sprite {
     public void unPower() {
         if (powered && System.currentTimeMillis() - powerTimer >= endPower) {
             powered = false;
+            immunity = false;
             shotStreak = 0;
             powerTimer = 0;
         }
@@ -170,5 +173,5 @@ public class Player extends Sprite {
         return shotStreak;
     }
 
-    public boolean isImmune(){return immunity = true;}
+    public boolean isImmune(){return immunity;}
 }

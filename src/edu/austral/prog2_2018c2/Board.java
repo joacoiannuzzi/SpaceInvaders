@@ -341,7 +341,7 @@ public class Board extends JPanel implements Runnable, Commons {
                 for (Shield shield : shields) {
                     bomb.hit(shield);
                 }
-                if (bomb.hit(player)) {
+                if (bomb.hit(player) && !player.isImmune()) {
                     shieldDetect();
                 }
                 bomb.act();
