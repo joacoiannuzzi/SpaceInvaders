@@ -218,15 +218,15 @@ public class Board extends JPanel implements Runnable, Commons {
         g.setColor(Color.black);
         g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
 
-        g.setColor(new Color(0, 32, 48));
-        g.fillRect(50, BOARD_HEIGHT / 2 - 50, BOARD_WIDTH - 100, 100);
-        g.setColor(Color.white);
-        g.drawRect(50, BOARD_HEIGHT / 2 - 50, BOARD_WIDTH - 100, 100);
+//        g.setColor(new Color(0, 32, 48));
+//        g.fillRect(50, BOARD_HEIGHT / 2 - 50, BOARD_WIDTH - 100, 100);
+//        g.setColor(Color.white);
+//        g.drawRect(50, BOARD_HEIGHT / 2 - 50, BOARD_WIDTH - 100, 100);
 
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = this.getFontMetrics(small);
 
-        g.setColor(Color.white);
+        g.setColor(Color.green);
         g.setFont(small);
         g.drawString(message,
                 (BOARD_WIDTH - metr.stringWidth(message)) / 2,

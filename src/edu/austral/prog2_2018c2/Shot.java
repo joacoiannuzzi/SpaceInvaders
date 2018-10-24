@@ -9,6 +9,7 @@ public class Shot extends Weapon {
     private final String shotImg = "src/images/shot.png";
     private final int H_SPACE = 6;
     private final int V_SPACE = 1;
+    private AudioPlayer shotSound = new AudioPlayer("/sounds/laser-gun.wav");
 
 
     public void initShot(int x, int y) {
@@ -19,6 +20,7 @@ public class Shot extends Weapon {
         setX(x + H_SPACE);
         setY(y - V_SPACE);
         setVisible(true);
+        shotSound.play();
     }
 
     public boolean act() {

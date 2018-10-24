@@ -8,11 +8,11 @@ public interface Commons {
     int GROUND = BOARD_HEIGHT - 80;
     int GO_DOWN = 15;
     int ALIEN_WIDTH = 13;
-    int NUMBER_OF_ALIENS_TO_DESTROY = 1;
+    int NUMBER_OF_ALIENS_TO_DESTROY = 24;
     int DELAY = 17;
     int SHIELD_LIVES = 10;
     int SHOT_STREAK = 4;
-    ImageIcon explosion = new ImageIcon("src/images/exp.gif");
+    ImageIcon explosion = new ImageIcon("src/images/explosion.png");
 
     default int randomWithRange(int min, int max) {
         int range = (max - min) + 1;
