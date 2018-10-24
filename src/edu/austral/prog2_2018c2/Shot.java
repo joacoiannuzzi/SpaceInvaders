@@ -9,7 +9,7 @@ public class Shot extends Weapon {
     private final String shotImg = "src/images/shot.png";
     private final int H_SPACE = 6;
     private final int V_SPACE = 1;
-    private AudioPlayer shotSound = new AudioPlayer("/sounds/laser-gun.wav");
+    private AudioPlayer shotSound = new AudioPlayer("/sounds/player-shot.wav");
 
 
     public void initShot(int x, int y) {

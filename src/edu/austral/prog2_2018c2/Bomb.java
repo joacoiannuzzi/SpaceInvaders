@@ -8,6 +8,7 @@ public class Bomb extends Weapon {
     public static void increaseSpeed() {
         speed++;
     }
+    AudioPlayer alienSound = new AudioPlayer("/sounds/alien-shot.wav");
 
     private final String bombImg = "src/images/bomb.png";
 
@@ -28,6 +29,7 @@ public class Bomb extends Weapon {
             setVisible(true);
             this.x = x;
             this.y = y;
+            alienSound.play();
         }
     }
 
