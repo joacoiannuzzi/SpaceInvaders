@@ -18,6 +18,7 @@ public class Player extends Sprite {
     private long powerTimer;
     private int endPower;
     private boolean immunity = false;
+    private boolean freezeInvaders = false;
 
     public Player() {
         name = "PLAYER";
@@ -116,18 +117,20 @@ public class Player extends Sprite {
     public void powerUp() {
         if (!powered && shotStreak == SHOT_STREAK) {
             powered = true;
-            immunity = true;
             powerTimer = System.currentTimeMillis();
             endPower = randomWithRange(3000, 5000);
+            immunity = true;
+            freezeInvaders = true;
         }
     }
 
     public void unPower() {
         if (powered && System.currentTimeMillis() - powerTimer >= endPower) {
             powered = false;
-            immunity = false;
             shotStreak = 0;
             powerTimer = 0;
+            immunity = false;
+            freezeInvaders = false;
         }
     }
 
@@ -174,4 +177,8 @@ public class Player extends Sprite {
     }
 
     public boolean isImmune(){return immunity;}
+
+    public boolean freezeInvaders() {
+        return freezeInvaders;
+    }
 }
