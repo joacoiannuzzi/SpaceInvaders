@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Player extends Sprite {
 
-    private final String playerImg = "src/images/resize.png";
+    private final String playerImg = "src/images/ship - Copy.png";
     private int points = 0;
     int lives = 3;
     private int speed = 2;
@@ -17,6 +17,7 @@ public class Player extends Sprite {
     private boolean powered = false;
     private long powerTimer;
     private int endPower;
+    private boolean immunity = false;
 
     public Player() {
         name = "PLAYER";
@@ -168,4 +169,6 @@ public class Player extends Sprite {
     public int getShotStreak() {
         return shotStreak;
     }
+
+    public boolean isImmune(){return immunity = true;}
 }
