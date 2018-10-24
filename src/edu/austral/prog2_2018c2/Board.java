@@ -208,7 +208,11 @@ public class Board extends JPanel implements Runnable, Commons {
     public void gameOver() {
 
         AudioPlayer failedSound = new AudioPlayer("/sounds/mission-failed.wav");
-        failedSound.play();
+        //AudioPlayer failedSound = new AudioPlayer("/sounds/mission-failed.wav");
+        if (message.equals("game won")) {
+        }else{
+            failedSound.play();
+        }
 
 
         Graphics g = this.getGraphics();

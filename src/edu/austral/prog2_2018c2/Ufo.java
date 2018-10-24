@@ -10,6 +10,7 @@ public class Ufo extends Sprite {
     private int speed = 2;
     private long timeToSpawn = randomWithRange(45000, 60000);
     private long spawnTimer = System.currentTimeMillis();
+    AudioPlayer quackSound = new AudioPlayer("/sounds/quack.wav");
 
     public Ufo() {
         name = "UFO";
@@ -21,6 +22,7 @@ public class Ufo extends Sprite {
 
         if (randomWithRange(1, 10) == 1) {
             UfoImg = "src/images/duck.png";
+            quackSound.play();
         }
         else {
             UfoImg = "src/images/alien.png";
