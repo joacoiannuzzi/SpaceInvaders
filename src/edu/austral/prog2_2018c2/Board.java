@@ -208,7 +208,11 @@ public class Board extends JPanel implements Runnable, Commons {
     public void gameOver() {
 
         AudioPlayer failedSound = new AudioPlayer("/sounds/mission-failed.wav");
-        failedSound.play();
+        //AudioPlayer failedSound = new AudioPlayer("/sounds/mission-failed.wav");
+        if (message.equals("game won")) {
+        }else{
+            failedSound.play();
+        }
 
 
         Graphics g = this.getGraphics();
@@ -316,7 +320,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
         for (Alien alien : aliens) {
 
-            if (alien.isVisible()) {
+            if (alien.isVisible() && !player.freezeInvaders()) {
 
                 if (alien.touchGround()) {
                     ingame = false;
@@ -328,11 +332,11 @@ public class Board extends JPanel implements Runnable, Commons {
 
         // bombs
         for (Alien alien: aliens) {
-            if (alien.isVisible()) {
+            if (alien.isVisible() && !player.freezeInvaders()) {
                 alien.initBomb();
             }
             Bomb bomb = alien.getBomb();
-            if (bomb.isVisible()) {
+            if (bomb.isVisible() && !player.freezeInvaders()) {
 
                 for (Shield shield : shields) {
                     bomb.hit(shield);
