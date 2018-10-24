@@ -208,8 +208,9 @@ public class Board extends JPanel implements Runnable, Commons {
     public void gameOver() {
 
         AudioPlayer failedSound = new AudioPlayer("/sounds/mission-failed.wav");
-        //AudioPlayer failedSound = new AudioPlayer("/sounds/mission-failed.wav");
+        AudioPlayer wonSound = new AudioPlayer("/sounds/won-sound.wav");
         if (message.equals("game won")) {
+            wonSound.play();
         }else{
             failedSound.play();
         }
@@ -410,6 +411,9 @@ public class Board extends JPanel implements Runnable, Commons {
                 }
                 if (key == KeyEvent.VK_G) {
                     ingame = false;
+                }
+                if (key == KeyEvent.VK_U) {
+                    ufo.initUfo();
                 }
             }
         }
