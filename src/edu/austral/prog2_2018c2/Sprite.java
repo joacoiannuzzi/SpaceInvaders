@@ -1,7 +1,8 @@
 package edu.austral.prog2_2018c2;
 
 import javax.swing.*;
-import java.awt.Image;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Sprite implements Commons {
 
@@ -13,7 +14,7 @@ public class Sprite implements Commons {
     int dx;
     int width;
     int height;
-    String name;
+    SpriteSheet sheet;
 
 
     public Sprite() {
@@ -41,10 +42,11 @@ public class Sprite implements Commons {
         this.image = image;
     }
 
-    public Image getImage() {
+    public Image getCurrentImage() {
 
         return image;
     }
+
 
     public void setX(int x) {
 
@@ -92,13 +94,24 @@ public class Sprite implements Commons {
         this.height = height;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void getHit() {
-
+        ImageIcon explosion = new ImageIcon("src/images/explosion.png");
         setImage(explosion.getImage());
         setDying(true);
+    }
+
+    public void draw(Graphics g) {
+        if (isVisible()) {
+
+            g.drawImage(getCurrentImage(), x, y, null);
+        }
+
+        if (isDying()) {
+            die();
+        }
+    }
+
+    public SpriteSheet getSheet() {
+        return sheet;
     }
 }

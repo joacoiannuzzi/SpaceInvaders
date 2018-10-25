@@ -1,21 +1,33 @@
 package edu.austral.prog2_2018c2;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Shot extends Weapon {
 
     private int speed = 4;
-
-    private final String shotImg = "src/images/shot.png";
     private final int H_SPACE = 6;
     private final int V_SPACE = 1;
     private AudioPlayer shotSound = new AudioPlayer("/sounds/player-shot.wav");
 
+    public Shot() {
 
-    public void initShot(int x, int y) {
+        BufferedImage shotImg = null;
+        try {
+            shotImg = ImageIO.read(getClass().getResourceAsStream("/images/shot.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setImage(shotImg);
+        width = shotImg.getWidth();
+        height = shotImg.getHeight();
+        die();
+    }
 
-        ImageIcon ii = new ImageIcon(shotImg);
-        setImage(ii.getImage());
+
+    public void appear(int x, int y) {
 
         setX(x + H_SPACE);
         setY(y - V_SPACE);
@@ -32,6 +44,10 @@ public class Shot extends Weapon {
         }
         die();
         return false;
+    }
+
+    public void animate() {
+
     }
 
 }

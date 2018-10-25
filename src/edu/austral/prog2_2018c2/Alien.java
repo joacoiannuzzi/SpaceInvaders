@@ -1,11 +1,11 @@
 package edu.austral.prog2_2018c2;
 
-import javax.swing.ImageIcon;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Alien extends Sprite {
 
     private static int speed = 1;
-    //private static int direction;
 
     public static void increaseSpeed() {
         speed++;
@@ -14,49 +14,39 @@ public class Alien extends Sprite {
     protected Bomb bomb;
     private String alienImg;
     private AlienType alienType;
+    private SpriteSheet sheet;
+    private Animation anim;
+    private int startX, startY;
 
-    public Alien() {
-        name = "ALIEN";
+    public Alien(int x, int y) {
         bomb = new Bomb();
+        startX = x;
+        startY = y;
+        reset();
     }
 
-    public void initAlien(int x, int y) {
+    public void reset() {
 
         this.alienType = new AlienType();
-        alienImg = alienType.getImage();
-
-        ImageIcon ii = new ImageIcon(alienImg);
-        setImage(ii.getImage());
-        width = ii.getImage().getWidth(null);
-        height = ii.getImage().getHeight(null);
-        this.x = x;
-        this.y = y;
+        this.anim = alienType.getAnimation();
+        this.width = alienType.getWidth();
+        this.height = alienType.getHeight();
+        this.x = startX;
+        this.y = startY;
         setVisible(true);
         setDying(false);
-        bomb = new Bomb();
-        //direction = -1;
+        bomb.reset(startX, startY);
     }
 
-    public void initBomb() {
-        bomb.initBomb(x, y);
+    public void shoot() {
+        bomb.appear(x, y);
     }
 
     public void act(int direction) {
 
         this.x += direction * speed;
+        anim.run();
     }
-
-//    public boolean changeDirection() {
-//
-//        if ((x >= BOARD_WIDTH - ALIEN_WIDTH - 10 && direction != -1)
-//                || (x <= 10 && direction != 1)) {
-//
-//            direction = -1 * direction;
-//            //y += GO_DOWN;
-//            return true;
-//        }
-//        return false;
-//    }
 
     public boolean touchGround() {
         if (y + height >= GROUND) {
@@ -74,4 +64,12 @@ public class Alien extends Sprite {
         return alienType;
     }
 
+
+    public BufferedImage getCurrentImage() {
+        return anim.getCurrentImage();
+    }
+
+    public Animation getAnim() {
+        return anim;
+    }
 }

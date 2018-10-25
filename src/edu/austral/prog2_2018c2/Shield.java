@@ -1,34 +1,34 @@
 package edu.austral.prog2_2018c2;
 
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 
 public class Shield extends Sprite {
 
     private final String shieldImg = "src/images/shield.png";
     private int lives;
     private int shotQuantity = 0;
+    private int startX;
 
-    public Shield() {
-        name = "SHIELD";
-        ImageIcon ii = new ImageIcon(shieldImg);
-        setImage(ii.getImage());
-        width = ii.getImage().getWidth(null);
-        height = ii.getImage().getHeight(null);
-        setY(GROUND - 60);
+    public Shield(int x) {
+        y = GROUND - 60;
+        this.startX = x;
+        reset();
     }
 
-    public void initShield(int x) {
+    public void reset() {
 
         ImageIcon ii = new ImageIcon(shieldImg);
         setImage(ii.getImage());
         width = ii.getImage().getWidth(null);
         height = ii.getImage().getHeight(null);
-        setX(x);
+        x = startX;
         lives = SHIELD_LIVES;
         setDying(false);
         setVisible(true);
     }
 
+    @Override
     public void getHit() {
 
         shotQuantity++;

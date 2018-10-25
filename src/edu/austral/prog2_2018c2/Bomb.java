@@ -1,6 +1,9 @@
 package edu.austral.prog2_2018c2;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Bomb extends Weapon {
 
@@ -8,28 +11,33 @@ public class Bomb extends Weapon {
     public static void increaseSpeed() {
         speed++;
     }
-    AudioPlayer alienSound = new AudioPlayer("/sounds/alien-shot.wav");
-
-    private final String bombImg = "src/images/bomb.png";
+    private final AudioPlayer bombSound = new AudioPlayer("/sounds/alien-shot.wav");
 
     public Bomb() {
+        BufferedImage bombImg = null;
+        try {
+            bombImg = ImageIO.read(getClass().getResourceAsStream("/images/bomb.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setImage(bombImg);
+        width = bombImg.getWidth();
+        height = bombImg.getHeight();
+    }
 
-        ImageIcon ii = new ImageIcon(bombImg);
-        setImage(ii.getImage());
-        width = ii.getImage().getWidth(null);
-        height = ii.getImage().getHeight(null);
-//        x = 10;
-//        y = -1;
+    public void reset(int x, int y) {
+        this.x = x;
+        this.y = y;
         die();
     }
 
-    public void initBomb(int x, int y) {
+    public void appear(int x, int y) {
 
         if (randomWithRange(1, 14) == 5 && !isVisible()) {
             setVisible(true);
             this.x = x;
             this.y = y;
-            alienSound.play();
+            bombSound.play();
         }
     }
 
@@ -37,7 +45,7 @@ public class Bomb extends Weapon {
 
         y += speed;
 
-        if (y >= GROUND - height) {
+        if (y + height >= GROUND) {
             die();
         }
     }

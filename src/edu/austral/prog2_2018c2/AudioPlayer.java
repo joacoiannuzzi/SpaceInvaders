@@ -17,11 +17,7 @@ public class AudioPlayer {
             clip.open(ais);
 
 
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedAudioFileException e) {
+        } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
             e.printStackTrace();
         }
 
@@ -32,6 +28,13 @@ public class AudioPlayer {
         stop();
         clip.setFramePosition(0);
         clip.start();
+    }
+
+    public void loop() {
+        if (clip == null) return;
+        stop();
+        clip.setFramePosition(0);
+        clip.loop(100);
     }
 
     public void stop() {
