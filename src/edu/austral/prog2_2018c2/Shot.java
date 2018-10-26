@@ -8,8 +8,6 @@ import java.io.IOException;
 public class Shot extends Weapon {
 
     private int speed = 4;
-    private final int H_SPACE = 6;
-    private final int V_SPACE = 1;
     private AudioPlayer shotSound = new AudioPlayer("/sounds/player-shot.wav");
 
     public Shot() {
@@ -29,8 +27,8 @@ public class Shot extends Weapon {
 
     public void appear(int x, int y) {
 
-        setX(x + H_SPACE);
-        setY(y - V_SPACE);
+        setX(x);
+        setY(y - 5);
         setVisible(true);
         shotSound.play();
     }
@@ -44,10 +42,6 @@ public class Shot extends Weapon {
         }
         die();
         return false;
-    }
-
-    public void animate() {
-
     }
 
 }

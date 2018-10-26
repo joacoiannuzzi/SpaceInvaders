@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 
 public class Player extends Sprite {
 
-    private final String playerImg = "src/images/ship - Copy.png";
+    private final String playerImg = "/images/ship - Copy.png";
     private int points = 0;
     int lives = 3;
     private int speed = 2;
@@ -21,12 +21,24 @@ public class Player extends Sprite {
     private boolean immunity = false;
     private boolean freezeInvaders = false;
     private boolean doubleDamage = false;
+    private Animation blue;
+    private SpriteSheet force;
+
 
     public Player() {
-        ImageIcon ii = new ImageIcon(playerImg);
-        width = ii.getImage().getWidth(null);
-        height = ii.getImage().getHeight(null);
-        setImage(ii.getImage());
+
+        force = new SpriteSheet("/images/force-sheet.png", 26, 32);
+        sheet = new SpriteSheet(playerImg, 18, 24);
+        blue = new Animation(2,
+                force.grabImage(1, 1),
+                force.grabImage(1, 2),
+                force.grabImage(1, 3),
+                force.grabImage(1, 4),
+                force.grabImage(1, 5),
+                force.grabImage(1,6));
+
+        width = sheet.grabImage(1, 1).getWidth();
+        height = sheet.grabImage(1, 1).getHeight();
         for (int i = 0; i < shots.length; i++) {
             shots[i] = new Shot();
 
@@ -44,6 +56,9 @@ public class Player extends Sprite {
 
         if (x >= BOARD_WIDTH - width) {
             x = BOARD_WIDTH - width;
+        }
+        if (immunity) {
+            blue.run();
         }
     }
 
@@ -64,11 +79,17 @@ public class Player extends Sprite {
         if (key == KeyEvent.VK_SPACE) {
 
             if (!shots[0].isVisible()) {
-                shots[0].appear(x, y);
+                if (doubleDamage) {
+                    shots[0].appear(x, y);
+                    shots[1].appear(x + width, y);
+                } else {
+                    shots[0].appear(x + width / 2, y);
+                }
             }
-            else if (!shots[1].isVisible() && doubleDamage) {
-                shots[1].appear(x, y);
-            }
+        }
+
+        if (key == KeyEvent.VK_P) {
+            power();
         }
 
     }
@@ -123,17 +144,20 @@ public class Player extends Sprite {
 
     public void powerUp() {
         if (!powered && shotStreak == SHOT_STREAK) {
-            powered = true;
-            powerTimer = System.currentTimeMillis();
-            endPower = randomWithRange(3000, 5000);
-            int random = randomWithRange(1, 10);
-            if (random < 7) {
-                immunity = true;
-            } else if (random < 9) {
-                doubleDamage = true;
-            } else if (random < 11) {
-                freezeInvaders = true;
-            }
+            power();
+        }
+    }
+    public void power() {
+        powered = true;
+        powerTimer = System.currentTimeMillis();
+        endPower = randomWithRange(3000, 5000);
+        int random = randomWithRange(1, 10);
+        if (random < 7) {
+            immunity = true;
+        } else if (random < 9) {
+            doubleDamage = true;
+        } else if (random < 11) {
+            freezeInvaders = true;
         }
     }
 
@@ -159,7 +183,11 @@ public class Player extends Sprite {
     }
 
     public void draw(Graphics g, FontMetrics metr) {
+        if (immunity) {
+            g.drawImage(getforce(), x - 4, y - 4, null);
+        }
         super.draw(g);
+
         for (Shot shot : shots) {
             shot.draw(g);
         }
@@ -175,6 +203,14 @@ public class Player extends Sprite {
         g.drawString("Aliens: " + (NUMBER_OF_ALIENS_TO_DESTROY - kills),
                 (BOARD_WIDTH - metr.stringWidth("Aliens: " + (NUMBER_OF_ALIENS_TO_DESTROY - kills))) / 2,
                 BOARD_HEIGHT - 45);
+    }
+
+    public BufferedImage getCurrentImage() {
+        return sheet.grabImage(1, 1);
+    }
+
+    public BufferedImage getforce() {
+        return blue.getCurrentImage();
     }
 
     public int getLives() {

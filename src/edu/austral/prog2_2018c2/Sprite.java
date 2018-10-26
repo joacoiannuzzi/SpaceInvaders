@@ -1,8 +1,10 @@
 package edu.austral.prog2_2018c2;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Sprite implements Commons {
 
@@ -95,8 +97,13 @@ public class Sprite implements Commons {
     }
 
     public void getHit() {
-        ImageIcon explosion = new ImageIcon("src/images/explosion.png");
-        setImage(explosion.getImage());
+        BufferedImage explosion = null;
+        try {
+            explosion = ImageIO.read(getClass().getResourceAsStream("/images/explosion2.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        setImage(explosion);
         setDying(true);
     }
 

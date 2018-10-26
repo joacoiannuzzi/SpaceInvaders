@@ -92,8 +92,6 @@ public class Board extends JPanel implements Runnable, Commons {
 
         if (ingame) {
 
-            g.drawString("powered: " + player.isPowered(), 0, 100);
-
             Font small = new Font("Helvetica", Font.BOLD, 15);
             FontMetrics metr = this.getFontMetrics(small);
             g.setFont(small);
@@ -258,7 +256,6 @@ public class Board extends JPanel implements Runnable, Commons {
         }
 
         // ufo
-        ufo.spawn();
         ufo.act();
     }
 

@@ -1,7 +1,5 @@
 package edu.austral.prog2_2018c2;
 
-import javax.swing.*;
-
 public interface Commons {
     int BOARD_WIDTH = 500;
     int BOARD_HEIGHT = 450;

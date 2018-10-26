@@ -50,14 +50,6 @@ public class Ufo extends Sprite {
         resetTimeToSpawn();
     }
 
-    public void spawn() {
-
-        if (System.currentTimeMillis() - spawnTimer >= timeToSpawn && !isVisible()) {
-            initUfo();
-            spawnTimer = System.currentTimeMillis();
-        }
-    }
-
     private void resetTimeToSpawn() {
         timeToSpawn = randomWithRange(45000, 60000);
     }
@@ -92,6 +84,11 @@ public class Ufo extends Sprite {
     }
 
     public void act() {
+
+        if (System.currentTimeMillis() - spawnTimer >= timeToSpawn && !isVisible()) {
+            initUfo();
+            spawnTimer = System.currentTimeMillis();
+        }
 
         if (isVisible()) {
             this.x += direction * speed;
