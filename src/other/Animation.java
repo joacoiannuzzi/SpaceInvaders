@@ -1,4 +1,4 @@
-package edu.austral.prog2_2018c2;
+package other;
 
 import java.awt.image.BufferedImage;
 

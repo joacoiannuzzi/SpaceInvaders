@@ -1,10 +1,15 @@
-package edu.austral.prog2_2018c2;
+package game;
+
+import highscore.LeaderBoard;
+import other.AudioPlayer;
+import sprites.*;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.swing.*;
 
@@ -15,6 +20,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private Player player;
     private Ufo ufo;
     private Shield[] shields;
+    private Shot[] shots = new Shot[2];
     private int shieldsToRemove = 0;
 
     private final int ALIEN_INIT_X = 200;
@@ -24,12 +30,16 @@ public class Board extends JPanel implements Runnable, Commons {
     private boolean ingame = true;
     private String message = "Game Over";
 
+
     private Thread animator;
 
     private int totalLevels = 5;
     private int currentLevel = 1;
 
     private int delay = DELAY;
+
+    String playerName;
+
 
     public Board() {
 
@@ -74,6 +84,9 @@ public class Board extends JPanel implements Runnable, Commons {
         ufo = new Ufo();
 
         player = new Player();
+        for (int i = 0; i < shots.length; i++) {
+            shots[i] = new Shot();
+        }
 
         if (animator == null || !ingame) {
 
@@ -90,14 +103,17 @@ public class Board extends JPanel implements Runnable, Commons {
         g.fillRect(0, 0, d.width, d.height);
         g.setColor(Color.green);
 
-        if (ingame) {
+        Font small = new Font("Helvetica", Font.BOLD, 15);
+        FontMetrics metr = this.getFontMetrics(small);
+        g.setFont(small);
 
-            Font small = new Font("Helvetica", Font.BOLD, 15);
-            FontMetrics metr = this.getFontMetrics(small);
-            g.setFont(small);
+        if (ingame) {
 
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
 
+            for (Shot shot : shots) {
+                shot.draw(g);
+            }
             for (Shield shield : shields) {
                 shield.draw(g);
             }
@@ -122,31 +138,24 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void gameOver() {
 
-        String sound;
-
         if (message.equals("Game won!")) {
-            sound = "/sounds/won-sound.wav";
+            AudioPlayer wonSound = new AudioPlayer("/sounds/won-sound.wav");
+            wonSound.play();
         } else {
-            sound = "/sounds/mission-failed.wav";
+            AudioPlayer lostSound = new AudioPlayer("/sounds/mission-failed.wav");
+            lostSound.play();
         }
-        AudioPlayer gameOverSound = new AudioPlayer(sound);
-        gameOverSound.play();
 
         Graphics g = this.getGraphics();
+
+        Font small = new Font("Helvetica", Font.BOLD, 14);
+        FontMetrics metr = this.getFontMetrics(small);
+        g.setFont(small);
 
         g.setColor(Color.black);
         g.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT);
 
-//        g.setColor(new Color(0, 32, 48));
-//        g.fillRect(50, BOARD_HEIGHT / 2 - 50, BOARD_WIDTH - 100, 100);
-//        g.setColor(Color.white);
-//        g.drawRect(50, BOARD_HEIGHT / 2 - 50, BOARD_WIDTH - 100, 100);
-
-        Font small = new Font("Helvetica", Font.BOLD, 14);
-        FontMetrics metr = this.getFontMetrics(small);
-
         g.setColor(Color.green);
-        g.setFont(small);
         g.drawString(message,
                 (BOARD_WIDTH - metr.stringWidth(message)) / 2,
                 BOARD_HEIGHT / 2 - 15);
@@ -154,6 +163,7 @@ public class Board extends JPanel implements Runnable, Commons {
         g.drawString("Score: " + player.getPoints(),
                 (BOARD_WIDTH - metr.stringWidth("Score: " + player.getPoints())) / 2,
                 (BOARD_HEIGHT) / 2 + 15);
+
     }
 
     public void levelScreen() {
@@ -185,14 +195,10 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void animationCycle() {
 
-        // power ups
-        player.powerDown();
-
         // player
         player.act();
 
-        // shot
-        Shot[] shots = player.getShots();
+        // shots
         for (Shot shot : shots) {
             if (shot.isVisible()) {
 
@@ -265,6 +271,8 @@ public class Board extends JPanel implements Runnable, Commons {
         long beforeTime, timeDiff, sleep;
         beforeTime = System.currentTimeMillis();
 
+        repaint();
+
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {
@@ -313,20 +321,31 @@ public class Board extends JPanel implements Runnable, Commons {
 
         @Override
         public void keyPressed(KeyEvent e) {
+
+            int key = e.getKeyCode();
+
             if (ingame) {
                 player.keyPressed(e);
 
-                int key = e.getKeyCode();
-                if (key == KeyEvent.VK_L) {
-                    levelUp();
+                if (key == KeyEvent.VK_SPACE) {
+
+                    if (!shots[0].isVisible()) {
+                        if (player.isDoubleDamage()) {
+                            shots[0].appear(player.getX(), player.getY());
+                            shots[1].appear(player.getX() + player.getWidth(), player.getY());
+                        } else {
+                            shots[0].appear(player.getX() + player.getWidth() / 2, player.getY());
+                        }
+                    }
                 }
                 if (key == KeyEvent.VK_G) {
                     ingame = false;
                 }
                 if (key == KeyEvent.VK_U) {
-                    ufo.initUfo();
+                    ufo.appear();
                 }
             }
+
         }
     }
 
@@ -352,9 +371,9 @@ public class Board extends JPanel implements Runnable, Commons {
         player.resetKills();
         player.resetPosition();
 
-//        Alien.increaseSpeed();
-//        Bomb.increaseSpeed();
-        delay -=2;
+        Alien.increaseSpeed();
+        Bomb.increaseSpeed();
+        //delay -=2;
 
         levelScreen();
     }

@@ -1,6 +1,9 @@
-package edu.austral.prog2_2018c2;
+package sprites;
 
-import java.awt.*;
+import other.Animation;
+import game.Commons;
+import other.SpriteSheet;
+
 import java.awt.image.BufferedImage;
 
 public class Alien extends Sprite {
@@ -49,7 +52,7 @@ public class Alien extends Sprite {
     }
 
     public boolean touchGround() {
-        if (y + height >= GROUND) {
+        if (y + height >= Commons.GROUND) {
             return true;
         }
         return false;

@@ -1,13 +1,14 @@
-package edu.austral.prog2_2018c2;
+package sprites;
+
+import other.AudioPlayer;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Shot extends Weapon {
 
-    private int speed = 4;
+    private int speed = 10;
     private AudioPlayer shotSound = new AudioPlayer("/sounds/player-shot.wav");
 
     public Shot() {

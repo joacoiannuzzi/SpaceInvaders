@@ -1,8 +1,8 @@
-package edu.austral.prog2_2018c2;
+package game;
 
 public interface Commons {
-    int BOARD_WIDTH = 500;
-    int BOARD_HEIGHT = 450;
+    int BOARD_WIDTH = 900;
+    int BOARD_HEIGHT = 700;
     int GROUND = BOARD_HEIGHT - 80;
     int GO_DOWN = 15;
     int ALIEN_WIDTH = 13;

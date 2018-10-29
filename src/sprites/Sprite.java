@@ -1,7 +1,9 @@
-package edu.austral.prog2_2018c2;
+package sprites;
+
+import game.Commons;
+import other.SpriteSheet;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -13,7 +15,6 @@ public class Sprite implements Commons {
     int x;
     int y;
     private boolean dying;
-    int dx;
     int width;
     int height;
     SpriteSheet sheet;

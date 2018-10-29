@@ -1,4 +1,8 @@
-package edu.austral.prog2_2018c2;
+package sprites;
+
+import other.Animation;
+import game.Commons;
+import other.SpriteSheet;
 
 public class AlienType implements Commons {
 

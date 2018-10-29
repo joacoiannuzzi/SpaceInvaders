@@ -1,7 +1,9 @@
-package edu.austral.prog2_2018c2;
+package sprites;
+
+import other.AudioPlayer;
+import game.Commons;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -45,7 +47,7 @@ public class Bomb extends Weapon {
 
         y += speed;
 
-        if (y + height >= GROUND) {
+        if (y + height >= Commons.GROUND) {
             die();
         }
     }

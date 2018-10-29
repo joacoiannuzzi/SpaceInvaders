@@ -1,4 +1,4 @@
-package edu.austral.prog2_2018c2;
+package other;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
@@ -30,11 +30,11 @@ public class AudioPlayer {
         clip.start();
     }
 
-    public void loop() {
+    public void loop(int count) {
         if (clip == null) return;
         stop();
         clip.setFramePosition(0);
-        clip.loop(100);
+        clip.loop(count);
     }
 
     public void stop() {

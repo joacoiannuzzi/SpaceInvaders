@@ -1,4 +1,8 @@
-package edu.austral.prog2_2018c2;
+package sprites;
+
+import other.Animation;
+import other.AudioPlayer;
+import other.SpriteSheet;
 
 import java.awt.image.BufferedImage;
 
@@ -54,7 +58,7 @@ public class Ufo extends Sprite {
         timeToSpawn = randomWithRange(45000, 60000);
     }
 
-    public void initUfo() {
+    public void appear() {
 
         points = randomWithRange(50, 300);
 
@@ -65,6 +69,7 @@ public class Ufo extends Sprite {
             quackSound.play();
         }
         else {
+            duck = false;
             width = ufoAnim.getCurrentImage().getWidth();
             height = ufoAnim.getCurrentImage().getHeight();
         }
@@ -86,7 +91,7 @@ public class Ufo extends Sprite {
     public void act() {
 
         if (System.currentTimeMillis() - spawnTimer >= timeToSpawn && !isVisible()) {
-            initUfo();
+            appear();
             spawnTimer = System.currentTimeMillis();
         }
 

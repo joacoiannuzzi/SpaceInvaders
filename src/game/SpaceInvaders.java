@@ -1,4 +1,4 @@
-package edu.austral.prog2_2018c2;
+package game;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;

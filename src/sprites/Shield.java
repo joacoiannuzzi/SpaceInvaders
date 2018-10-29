@@ -1,7 +1,8 @@
-package edu.austral.prog2_2018c2;
+package sprites;
+
+import game.Commons;
 
 import javax.swing.*;
-import java.awt.image.BufferedImage;
 
 public class Shield extends Sprite {
 
@@ -11,7 +12,7 @@ public class Shield extends Sprite {
     private int startX;
 
     public Shield(int x) {
-        y = GROUND - 60;
+        y = Commons.GROUND - 60;
         this.startX = x;
         reset();
     }
@@ -23,7 +24,7 @@ public class Shield extends Sprite {
         width = ii.getImage().getWidth(null);
         height = ii.getImage().getHeight(null);
         x = startX;
-        lives = SHIELD_LIVES;
+        lives = Commons.SHIELD_LIVES;
         setDying(false);
         setVisible(true);
     }
@@ -37,7 +38,7 @@ public class Shield extends Sprite {
 
             shotQuantity = 0;
 
-            lives = (int) (lives - SHIELD_LIVES * 0.1);
+            lives = (int) (lives - Commons.SHIELD_LIVES * 0.1);
 
             if (lives <= 0) {
                 super.getHit();
