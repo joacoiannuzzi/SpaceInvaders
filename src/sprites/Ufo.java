@@ -64,6 +64,7 @@ public class Ufo extends Sprite {
             width = DUCK_WIDTH;
             height = DUCK_HEIGHT;
             quackSound.playFromBeginning();
+            //quackSound.loop(2);
         }
         else {
             type = "ufo";
