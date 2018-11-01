@@ -31,8 +31,8 @@ public class Alien extends Sprite {
 
         this.alienType = new AlienType();
         this.anim = alienType.getAnimation();
-        this.width = alienType.getWidth();
-        this.height = alienType.getHeight();
+        this.width = 63;
+        this.height = 63;
         this.x = startX;
         this.y = startY;
         setVisible(true);
