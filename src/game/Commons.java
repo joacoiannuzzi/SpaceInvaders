@@ -2,11 +2,19 @@ package game;
 
 public interface Commons {
     int BOARD_WIDTH = 900;
-    int BOARD_HEIGHT = 700;
+    int BOARD_HEIGHT = (int) ((700d / 900d) * BOARD_WIDTH);
     int GROUND = BOARD_HEIGHT - 80;
     int GO_DOWN = 15;
-    int ALIEN_WIDTH = 63;
-    int SHIELD_WIDTH = 36;
+
+    int ALIEN_WIDTH = 60;
+    int ALIEN_HEIGHT = (int) ((54d / 60d) * ALIEN_WIDTH);
+
+    int SHIELD_WIDTH = 50;
+    int SHIELD_HEIGHT = (int) ((22d / 36d) * SHIELD_WIDTH);
+
+    int PLAYER_WIDTH = 25;
+    int PLAYER_HEIGHT = (int) ((160d / 120d) * PLAYER_WIDTH);
+
     int NUMBER_OF_ALIENS_TO_DESTROY = 24;
     int DELAY = 17;
     int SHIELD_LIVES = 10;

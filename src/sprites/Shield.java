@@ -14,7 +14,7 @@ public class Shield extends Sprite {
     BufferedImage shieldImg = ImageLoader.load("shield.png");
 
     public Shield(int x) {
-        y = GROUND - 60;
+        y = GROUND - 100;
         this.startX = x;
         reset();
     }
@@ -22,8 +22,8 @@ public class Shield extends Sprite {
     public void reset() {
 
         setImage(shieldImg);
-        width = shieldImg.getWidth();
-        height = shieldImg.getHeight();
+        width = SHIELD_WIDTH;
+        height = SHIELD_HEIGHT;
         x = startX;
         lives = Commons.SHIELD_LIVES;
         setDying(false);

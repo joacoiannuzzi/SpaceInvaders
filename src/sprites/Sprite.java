@@ -4,14 +4,13 @@ import game.Commons;
 import other.ImageLoader;
 import other.SpriteSheet;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Sprite implements Commons {
 
     private boolean visible;
-    private Image image;
+    private BufferedImage image;
     int x;
     int y;
     private boolean dying;
@@ -40,12 +39,12 @@ public class Sprite implements Commons {
         this.visible = visible;
     }
 
-    public void setImage(Image image) {
+    public void setImage(BufferedImage image) {
 
         this.image = image;
     }
 
-    public Image getCurrentImage() {
+    public BufferedImage getCurrentImage() {
 
         return image;
     }
@@ -106,7 +105,8 @@ public class Sprite implements Commons {
     public void draw(Graphics g) {
         if (isVisible()) {
 
-            g.drawImage(getCurrentImage(), x, y, null);
+            g.drawImage(getCurrentImage(), x, y, x + width, y + height, 0 , 0,
+                    getCurrentImage().getWidth(), getCurrentImage().getHeight(), null);
         }
 
         if (isDying()) {

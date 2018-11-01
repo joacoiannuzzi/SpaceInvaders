@@ -3,7 +3,6 @@ package sprites;
 
 import other.Animation;
 import game.Commons;
-import other.ImageLoader;
 import other.SpriteSheet;
 
 import java.awt.*;
@@ -25,16 +24,29 @@ public class Player extends Sprite {
     private boolean immunity = false;
     private boolean freezeInvaders = false;
     private boolean doubleDamage = false;
-    private Animation blue;
+    private Animation immunityForce;
     private SpriteSheet force;
     private boolean multipleShots = false;
+    private Animation left, center, right;
 
 
     public Player() {
 
         force = new SpriteSheet("force-sheet.png", 26, 32);
-        sheet = new SpriteSheet("space-ship.png", 18, 24);
-        blue = new Animation(1,
+        sheet = new SpriteSheet("ship-sheet.png", 120, 160);
+        left = new Animation(0,
+                sheet.grabImage(1, 1),
+                sheet.grabImage(2, 1),
+                sheet.grabImage(3, 1));
+        center = new Animation(0,
+                sheet.grabImage(1, 2),
+                sheet.grabImage(2, 2),
+                sheet.grabImage(3, 2));
+        right = new Animation(0,
+                sheet.grabImage(1, 3),
+                sheet.grabImage(2, 3),
+                sheet.grabImage(3, 3));
+        immunityForce = new Animation(1,
                 force.grabImage(1, 1),//mientras mas chico mas rapido
                 force.grabImage(1, 2),
                 force.grabImage(1, 3),
@@ -42,8 +54,8 @@ public class Player extends Sprite {
                 force.grabImage(1, 5),
                 force.grabImage(1,6));
 
-        width = sheet.grabImage(1, 1).getWidth();
-        height = sheet.grabImage(1, 1).getHeight();
+        width = PLAYER_WIDTH;
+        height = PLAYER_HEIGHT;
 
         for (int i = 0; i < shots.length; i++) {
             shots[i] = new Shot();
@@ -62,7 +74,7 @@ public class Player extends Sprite {
             x = BOARD_WIDTH - width;
         }
         if (immunity) {
-            blue.run();
+            immunityForce.run();
         }
         powerDown();
 
@@ -142,6 +154,9 @@ public class Player extends Sprite {
     public void getHit() {
         if (!immunity) {
             lives--;
+            right.run();
+            center.run();
+            left.run();
 
             if (lives == 0)
                 super.getHit();
@@ -160,7 +175,7 @@ public class Player extends Sprite {
         for (Shot shot : shots) {
             if (shot.hit(alien)) {
                 kills++;
-                points += alien.getAlienType().getPoints();
+                points += alien.getPoints();
 
                 if (!powered) {
                     shotStreak++;
@@ -215,8 +230,10 @@ public class Player extends Sprite {
 
     public void draw(Graphics g, FontMetrics metr) {
         super.draw(g);
+
         if (immunity) {
-            g.drawImage(getforce(), x - 4, y - 4, null);
+            g.drawImage(getforce(), x - 4, y - 4, x + width + 4, y + height + 4 ,
+                    0, 0, getforce().getWidth(), getforce().getHeight(), null);
         }
 
         for (Shot shot : shots) {
@@ -238,15 +255,15 @@ public class Player extends Sprite {
 
     public BufferedImage getCurrentImage() {
         if (direction == -1) {
-            return sheet.grabImage(1, 1);
+            return left.getCurrentImage();
         } else if (direction == 1) {
-            return sheet.grabImage(1, 3);
+            return right.getCurrentImage();
         }
-        return sheet.grabImage(1, 2);
+        return center.getCurrentImage();
     }
 
     public BufferedImage getforce() {
-        return blue.getCurrentImage();
+        return immunityForce.getCurrentImage();
     }
 
     public int getLives() {

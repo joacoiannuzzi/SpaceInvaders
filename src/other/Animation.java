@@ -24,11 +24,12 @@ public class Animation {
     }
 
     private void nextImage() {
-        currentImage = images[index];
         index++;
         if (index >= frames) {
             index = 0;
         }
+        currentImage = images[index];
+
     }
 
     public void reset() {

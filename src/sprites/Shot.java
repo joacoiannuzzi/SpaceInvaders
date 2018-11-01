@@ -25,7 +25,7 @@ public class Shot extends Weapon {
         setX(x);
         setY(y - 5);
         setVisible(true);
-        shotSound.play();
+        shotSound.playFromBeginning();
     }
 
     public boolean act() {

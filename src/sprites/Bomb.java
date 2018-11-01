@@ -1,12 +1,9 @@
 package sprites;
 
 import other.AudioPlayer;
-import game.Commons;
 import other.ImageLoader;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class Bomb extends Weapon {
 
@@ -35,7 +32,7 @@ public class Bomb extends Weapon {
             setVisible(true);
             this.x = x;
             this.y = y;
-            bombSound.play();
+            bombSound.playFromBeginning();
         }
     }
 

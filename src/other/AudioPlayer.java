@@ -23,7 +23,7 @@ public class AudioPlayer {
 
     }
 
-    public void play() {
+    public void playFromBeginning() {
         if (clip == null) return;
         stop();
         clip.setFramePosition(0);
@@ -44,5 +44,11 @@ public class AudioPlayer {
     public void close() {
         stop();
         clip.close();
+    }
+
+    public void resume() {
+        if (clip == null) return;
+        stop();
+        clip.start();
     }
 }

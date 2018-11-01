@@ -35,6 +35,8 @@ public class Board extends JPanel implements Runnable, Commons {
 
     private int delay = DELAY;
 
+    AudioPlayer gameSound = new AudioPlayer("Ape invaders.wav");
+
 
     public Board() {
 
@@ -61,12 +63,10 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void gameInit() {
 
-        AudioPlayer gameSound = new AudioPlayer("Ape Invaders.wav");
-
         aliens = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
-                aliens.add(new Alien(ALIEN_INIT_X + 50 * j,
+                aliens.add(new Alien(ALIEN_INIT_X + (ALIEN_WIDTH + 5) * j,
                         ALIEN_INIT_Y + 30 * i));
             }
         }
@@ -87,8 +87,6 @@ public class Board extends JPanel implements Runnable, Commons {
             animator = new Thread(this);
             animator.start();
         }
-
-        gameSound.loop(15);
     }
 
     @Override
@@ -131,12 +129,14 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void gameOver() {
 
+        gameSound.stop();
+
         if (message.equals("Game won!")) {
             AudioPlayer wonSound = new AudioPlayer("won-sound.wav");
-            wonSound.play();
+            wonSound.playFromBeginning();
         } else {
             AudioPlayer lostSound = new AudioPlayer("mission-failed.wav");
-            lostSound.play();
+            lostSound.playFromBeginning();
         }
 
         Graphics g = this.getGraphics();
@@ -161,6 +161,8 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void levelScreen() {
 
+        gameSound.stop();
+
         Graphics g = this.getGraphics();
 
         g.setColor(Color.black);
@@ -184,6 +186,7 @@ public class Board extends JPanel implements Runnable, Commons {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        gameSound.playFromBeginning();
     }
 
     public void animationCycle() {
@@ -204,7 +207,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
             if (alien.isVisible()) {
                 int alienX = alien.getX();
-                if ((alienX >= BOARD_WIDTH - ALIEN_WIDTH - 10 && direction != -1)
+                if ((alienX >= BOARD_WIDTH - alien.getWidth() - 10 && direction != -1)
                         || (alienX <= 10 && direction != 1)) {
 
                     direction = -direction;
@@ -263,6 +266,7 @@ public class Board extends JPanel implements Runnable, Commons {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        gameSound.playFromBeginning();
 
         while (ingame) {
 

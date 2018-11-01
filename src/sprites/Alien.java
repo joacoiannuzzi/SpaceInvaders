@@ -1,10 +1,10 @@
 package sprites;
 
 import other.Animation;
-import game.Commons;
 import other.SpriteSheet;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 public class Alien extends Sprite {
 
@@ -17,10 +17,28 @@ public class Alien extends Sprite {
     protected Bomb bomb;
     private AlienType alienType;
     private SpriteSheet sheet;
-    private Animation anim;
+    private HashMap<String, Animation> anim;
     private int startX, startY;
 
     public Alien(int x, int y) {
+        sheet = new SpriteSheet("alien-sheet.png", 60, 54);
+        anim = new HashMap<>();
+        anim.put("small", new Animation(15,
+                sheet.grabImage(3, 1),
+                sheet.grabImage(3, 2),
+                sheet.grabImage(3, 3)));
+        anim.put("medium", new Animation(15,
+                sheet.grabImage(2, 1),
+                sheet.grabImage(2, 2),
+                sheet.grabImage(2, 3)));
+        anim.put("big", new Animation(15,
+                sheet.grabImage(1, 1),
+                sheet.grabImage(1, 2),
+                sheet.grabImage(1, 3)));
+
+        this.width = ALIEN_WIDTH;
+        this.height = ALIEN_HEIGHT;
+
         bomb = new Bomb();
         startX = x;
         startY = y;
@@ -30,9 +48,7 @@ public class Alien extends Sprite {
     public void reset() {
 
         this.alienType = new AlienType();
-        this.anim = alienType.getAnimation();
-        this.width = alienType.getWidth();
-        this.height = alienType.getHeight();
+
         this.x = startX;
         this.y = startY;
         setVisible(true);
@@ -47,7 +63,7 @@ public class Alien extends Sprite {
     public void act(int direction) {
 
         this.x += direction * speed;
-        anim.run();
+        anim.get(alienType.getType()).run();
     }
 
     public boolean touchGround() {
@@ -68,10 +84,10 @@ public class Alien extends Sprite {
 
 
     public BufferedImage getCurrentImage() {
-        return anim.getCurrentImage();
+        return anim.get(alienType.getType()).getCurrentImage();
     }
 
-    public Animation getAnim() {
-        return anim;
+    public int getPoints() {
+        return alienType.getPoints();
     }
 }

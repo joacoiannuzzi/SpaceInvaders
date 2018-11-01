@@ -66,7 +66,7 @@ public class Ufo extends Sprite {
             duck = true;
             width = duckAnim.getCurrentImage().getWidth();
             height = duckAnim.getCurrentImage().getHeight();
-            quackSound.play();
+            quackSound.playFromBeginning();
         }
         else {
             duck = false;
