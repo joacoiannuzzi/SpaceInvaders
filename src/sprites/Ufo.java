@@ -5,6 +5,7 @@ import other.AudioPlayer;
 import other.SpriteSheet;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 public class Ufo extends Sprite {
 
@@ -14,39 +15,35 @@ public class Ufo extends Sprite {
     private long timeToSpawn;
     private long spawnTimer = System.currentTimeMillis();
     AudioPlayer quackSound = new AudioPlayer("quack2.wav");
-    private Animation duckAnim, ufoAnim;
-    SpriteSheet sheet2;
-    private boolean duck;
+    private HashMap<String, Animation> anim;
+    SpriteSheet duckSheet, ufoSheet;
+    private String type;
 
     public Ufo() {
 
-        sheet = new SpriteSheet("ufo-duck.png", 33, 36);
-        BufferedImage[] images = new BufferedImage[7];
-        images[0] = sheet.grabImage(1, 1);
-        images[1] = sheet.grabImage(1, 2);
-        images[2] = sheet.grabImage(1, 3);
-        images[3] = sheet.grabImage(1, 4);
-        images[4] = sheet.grabImage(2, 1);
-        images[5] = sheet.grabImage(2, 2);
-        images[6] = sheet.grabImage(2, 3);
-        duckAnim = new Animation(0, images);
+        anim = new HashMap<>();
 
-        sheet2 = new SpriteSheet("ufo.png", 36, 19);
-        BufferedImage[] images2 = new BufferedImage[13];
-        images2[0] = sheet2.grabImage(1, 1);
-        images2[1] = sheet2.grabImage(1, 2);
-        images2[2] = sheet2.grabImage(1, 3);
-        images2[3] = sheet2.grabImage(1, 4);
-        images2[4] = sheet2.grabImage(2, 1);
-        images2[5] = sheet2.grabImage(2, 2);
-        images2[6] = sheet2.grabImage(2, 3);
-        images2[7] = sheet2.grabImage(2, 4);
-        images2[8] = sheet2.grabImage(3, 1);
-        images2[9] = sheet2.grabImage(3, 2);
-        images2[10] = sheet2.grabImage(3, 3);
-        images2[11] = sheet2.grabImage(3, 4);
-        images2[12] = sheet2.grabImage(4, 1);
-        ufoAnim = new Animation(1, images2);
+        duckSheet = new SpriteSheet("duck-sheet.png", 173, 190);
+        BufferedImage[] duckImages = new BufferedImage[15];
+        int n = 0;
+        for (int i = 1; i <= 3; i++) {
+            for (int j = 1; j <= 5; j++) {
+                duckImages[n] = duckSheet.grabImage(i, j);
+                n++;
+            }
+        }
+        anim.put("duck", new Animation(10, duckImages));
+
+        ufoSheet = new SpriteSheet("ufo-sheet.png", 200, 106);
+        BufferedImage[] ufoImages = new BufferedImage[32];
+        int h = 0;
+        for (int i = 1; i <= 4; i++) {
+            for (int j = 1; j <= 8; j++) {
+                ufoImages[h] = ufoSheet.grabImage(i, j);
+                h++;
+            }
+        }
+        anim.put("ufo", new Animation(1, ufoImages));
 
 
         setY(3);
@@ -63,16 +60,17 @@ public class Ufo extends Sprite {
         points = randomWithRange(50, 300);
 
         if (randomWithRange(1, 10) == 1) {
-            duck = true;
-            width = duckAnim.getCurrentImage().getWidth();
-            height = duckAnim.getCurrentImage().getHeight();
+            type = "duck";
+            width = DUCK_WIDTH;
+            height = DUCK_HEIGHT;
             quackSound.playFromBeginning();
         }
         else {
-            duck = false;
-            width = ufoAnim.getCurrentImage().getWidth();
-            height = ufoAnim.getCurrentImage().getHeight();
+            type = "ufo";
+            width = UFO_WIDTH;
+            height = UFO_HEIGHT;
         }
+
         setVisible(true);
         setDying(false);
         resetTimeToSpawn();
@@ -80,7 +78,7 @@ public class Ufo extends Sprite {
         int random = randomWithRange(1, 2);
         if (random == 1) {
             direction = 1;
-            setX(-1 * width);
+            setX(-width);
         }
         else {
             direction = -1;
@@ -96,15 +94,14 @@ public class Ufo extends Sprite {
         }
 
         if (isVisible()) {
+
             this.x += direction * speed;
+
             if ((x > BOARD_WIDTH && direction == 1) || (x < -width && direction == -1)) {
-                duck = false;
                 die();
             }
-            if (duck) {
-                duckAnim.run();
-            } else
-                ufoAnim.run();
+
+            anim.get(type).run();
 
         }
     }
@@ -115,9 +112,6 @@ public class Ufo extends Sprite {
     }
 
     public BufferedImage getCurrentImage() {
-        if (duck) {
-            return duckAnim.getCurrentImage();
-        } else
-            return ufoAnim.getCurrentImage();
+        return anim.get(type).getCurrentImage();
     }
 }

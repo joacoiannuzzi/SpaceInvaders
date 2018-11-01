@@ -1,12 +1,15 @@
 package game;
 
+import other.Animation;
 import other.AudioPlayer;
+import other.SpriteSheet;
 import sprites.*;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -26,6 +29,9 @@ public class Board extends JPanel implements Runnable, Commons {
 
     private boolean ingame = true;
     private String message = "Game Over";
+    private SpriteSheet sheet = new SpriteSheet("background.png", 1280, 640);
+    private Animation backgroundAnim;
+    private int goDown = GO_DOWN;
 
 
     private Thread animator;
@@ -49,6 +55,17 @@ public class Board extends JPanel implements Runnable, Commons {
         setFocusable(true);
         d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
         setBackground(Color.black);
+
+        BufferedImage[] background = new BufferedImage[24];
+        int n = 0;
+        for (int i = 1; i <= 4; i++) {
+            for (int j = 1; j <= 6; j++) {
+                background[n] = sheet.grabImage(i, j);
+                n++;
+            }
+        }
+
+        backgroundAnim = new Animation(5, background);
 
         gameInit();
         setDoubleBuffered(true);
@@ -93,8 +110,11 @@ public class Board extends JPanel implements Runnable, Commons {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.setColor(Color.black);
-        g.fillRect(0, 0, d.width, d.height);
+        g.drawImage(backgroundAnim.getCurrentImage(), -120, 0,
+                BOARD_WIDTH + 140, GROUND, 0, 0,
+                backgroundAnim.getCurrentImage().getWidth(),
+                backgroundAnim.getCurrentImage().getHeight(), null );
+        backgroundAnim.run();
         g.setColor(Color.green);
 
         Font small = new Font("Helvetica", Font.BOLD, 15);
@@ -118,9 +138,10 @@ public class Board extends JPanel implements Runnable, Commons {
                 ingame = false;
             }
             ufo.draw(g);
+
             g.drawString("Level " + currentLevel,
                     (BOARD_WIDTH - metr.stringWidth("Level " + currentLevel)) / 2,
-                    BOARD_HEIGHT - 24);
+                    BOARD_HEIGHT - 30);
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -186,7 +207,7 @@ public class Board extends JPanel implements Runnable, Commons {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        gameSound.playFromBeginning();
+        gameSound.loop(5);
     }
 
     public void animationCycle() {
@@ -213,7 +234,7 @@ public class Board extends JPanel implements Runnable, Commons {
                     direction = -direction;
 
                     for (Alien alien1 : aliens) {
-                        alien1.setY(alien1.getY() + GO_DOWN);
+                        alien1.setY(alien1.getY() + goDown);
                     }
                 }
             }
@@ -266,7 +287,7 @@ public class Board extends JPanel implements Runnable, Commons {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        gameSound.playFromBeginning();
+        gameSound.loop(5);
 
         while (ingame) {
 
@@ -354,7 +375,9 @@ public class Board extends JPanel implements Runnable, Commons {
 
         Alien.increaseSpeed();
         Bomb.increaseSpeed();
-        //delay -=2;
+
+        backgroundAnim.increaseSpeed();
+        goDown--;
 
         levelScreen();
     }

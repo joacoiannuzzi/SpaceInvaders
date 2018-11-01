@@ -37,7 +37,13 @@ public class Animation {
         count = index = 0;
     }
 
+    public void increaseSpeed() {
+        speed += 2;
+    }
+
     public BufferedImage getCurrentImage() {
         return currentImage;
     }
+
+
 }

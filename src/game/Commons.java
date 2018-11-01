@@ -15,6 +15,12 @@ public interface Commons {
     int PLAYER_WIDTH = 25;
     int PLAYER_HEIGHT = (int) ((160d / 120d) * PLAYER_WIDTH);
 
+    int DUCK_WIDTH = 40;
+    int DUCK_HEIGHT = (int) ((190d / 173d) * DUCK_WIDTH);
+
+    int UFO_WIDTH = 50;
+    int UFO_HEIGHT = (int) ((106d / 200d) * UFO_WIDTH);
+
     int NUMBER_OF_ALIENS_TO_DESTROY = 24;
     int DELAY = 17;
     int SHIELD_LIVES = 10;

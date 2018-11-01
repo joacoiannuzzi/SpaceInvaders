@@ -16,25 +16,25 @@ public class Alien extends Sprite {
 
     protected Bomb bomb;
     private AlienType alienType;
-    private SpriteSheet sheet;
+    private SpriteSheet alienSheet;
     private HashMap<String, Animation> anim;
     private int startX, startY;
 
     public Alien(int x, int y) {
-        sheet = new SpriteSheet("alien-sheet.png", 60, 54);
+        alienSheet = new SpriteSheet("alien-sheet.png", 60, 54);
         anim = new HashMap<>();
         anim.put("small", new Animation(15,
-                sheet.grabImage(3, 1),
-                sheet.grabImage(3, 2),
-                sheet.grabImage(3, 3)));
+                alienSheet.grabImage(3, 1),
+                alienSheet.grabImage(3, 2),
+                alienSheet.grabImage(3, 3)));
         anim.put("medium", new Animation(15,
-                sheet.grabImage(2, 1),
-                sheet.grabImage(2, 2),
-                sheet.grabImage(2, 3)));
+                alienSheet.grabImage(2, 1),
+                alienSheet.grabImage(2, 2),
+                alienSheet.grabImage(2, 3)));
         anim.put("big", new Animation(15,
-                sheet.grabImage(1, 1),
-                sheet.grabImage(1, 2),
-                sheet.grabImage(1, 3)));
+                alienSheet.grabImage(1, 1),
+                alienSheet.grabImage(1, 2),
+                alienSheet.grabImage(1, 3)));
 
         this.width = ALIEN_WIDTH;
         this.height = ALIEN_HEIGHT;

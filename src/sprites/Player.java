@@ -2,7 +2,7 @@ package sprites;
 
 
 import other.Animation;
-import game.Commons;
+import other.ImageLoader;
 import other.SpriteSheet;
 
 import java.awt.*;
@@ -25,34 +25,36 @@ public class Player extends Sprite {
     private boolean freezeInvaders = false;
     private boolean doubleDamage = false;
     private Animation immunityForce;
-    private SpriteSheet force;
+    private SpriteSheet forceSheet, playerSheet;
     private boolean multipleShots = false;
     private Animation left, center, right;
+    private BufferedImage heart = ImageLoader.load("heart.png");
+    private BufferedImage shotPic = ImageLoader.load("shot.png");
 
 
     public Player() {
 
-        force = new SpriteSheet("force-sheet.png", 26, 32);
-        sheet = new SpriteSheet("ship-sheet.png", 120, 160);
+        forceSheet = new SpriteSheet("force-sheet.png", 26, 32);
+        playerSheet = new SpriteSheet("ship-sheet.png", 120, 160);
         left = new Animation(0,
-                sheet.grabImage(1, 1),
-                sheet.grabImage(2, 1),
-                sheet.grabImage(3, 1));
+                playerSheet.grabImage(1, 1),
+                playerSheet.grabImage(2, 1),
+                playerSheet.grabImage(3, 1));
         center = new Animation(0,
-                sheet.grabImage(1, 2),
-                sheet.grabImage(2, 2),
-                sheet.grabImage(3, 2));
+                playerSheet.grabImage(1, 2),
+                playerSheet.grabImage(2, 2),
+                playerSheet.grabImage(3, 2));
         right = new Animation(0,
-                sheet.grabImage(1, 3),
-                sheet.grabImage(2, 3),
-                sheet.grabImage(3, 3));
+                playerSheet.grabImage(1, 3),
+                playerSheet.grabImage(2, 3),
+                playerSheet.grabImage(3, 3));
         immunityForce = new Animation(1,
-                force.grabImage(1, 1),//mientras mas chico mas rapido
-                force.grabImage(1, 2),
-                force.grabImage(1, 3),
-                force.grabImage(1, 4),
-                force.grabImage(1, 5),
-                force.grabImage(1,6));
+                forceSheet.grabImage(1, 1),//mientras mas chico mas rapido
+                forceSheet.grabImage(1, 2),
+                forceSheet.grabImage(1, 3),
+                forceSheet.grabImage(1, 4),
+                forceSheet.grabImage(1, 5),
+                forceSheet.grabImage(1,6));
 
         width = PLAYER_WIDTH;
         height = PLAYER_HEIGHT;
@@ -239,18 +241,32 @@ public class Player extends Sprite {
         for (Shot shot : shots) {
             shot.draw(g);
         }
-        g.drawString("Score: " + points, 0,
-                Commons.BOARD_HEIGHT - 24);
 
-        g.drawString("Lives: " + lives,
-                Commons.BOARD_WIDTH - metr.stringWidth("Lives: " + lives),
-                Commons.BOARD_HEIGHT - 24);
+        g.drawString("Score: " + points,
+                (BOARD_WIDTH - metr.stringWidth("Score: " + points)) / 2,
+                BOARD_HEIGHT - 50);
 
-        g.drawString("Streak: " + shotStreak, 0, Commons.BOARD_HEIGHT - 45);
+        for (int i = 0; i < lives; i++) {
 
-        g.drawString("Aliens: " + (Commons.NUMBER_OF_ALIENS_TO_DESTROY - kills),
-                (Commons.BOARD_WIDTH - metr.stringWidth("Aliens: " + (NUMBER_OF_ALIENS_TO_DESTROY - kills))) / 2,
-                Commons.BOARD_HEIGHT - 45);
+            int heartX = BOARD_WIDTH - 50 - (25 * i);
+            int heartY = BOARD_HEIGHT - 63;
+
+            g.drawImage(heart, heartX, heartY, heartX + 35, heartY + 35,
+                    0, 0, heart.getWidth(), heart.getHeight(), null);
+        }
+
+        for (int i = 0; i < shotStreak; i++) {
+
+            int shotX = 10 + (25 * i);
+            int shotY = BOARD_HEIGHT - 60;
+
+            g.drawImage(shotPic, shotX, shotY, shotX + 20, shotY + 30,
+                    0, 0, shotPic.getWidth(), shotPic.getHeight(), null);
+        }
+
+        g.drawString("Aliens: " + (NUMBER_OF_ALIENS_TO_DESTROY - kills), 0, 150);
+
+
     }
 
     public BufferedImage getCurrentImage() {

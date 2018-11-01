@@ -16,7 +16,6 @@ public class Sprite implements Commons {
     private boolean dying;
     int width;
     int height;
-    SpriteSheet sheet;
 
 
     public Sprite() {
@@ -112,9 +111,5 @@ public class Sprite implements Commons {
         if (isDying()) {
             die();
         }
-    }
-
-    public SpriteSheet getSheet() {
-        return sheet;
     }
 }
