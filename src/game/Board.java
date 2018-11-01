@@ -330,6 +330,8 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void levelUp() {
 
+        gameSound.stop();
+
         currentLevel++;
 
         resetAliens();
@@ -355,6 +357,8 @@ public class Board extends JPanel implements Runnable, Commons {
         //delay -=2;
 
         levelScreen();
+
+        gameSound.loop(15);
     }
 
     public void resetAliens() {
