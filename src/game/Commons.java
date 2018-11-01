@@ -6,7 +6,7 @@ public interface Commons {
     int GROUND = BOARD_HEIGHT - 80;
     int GO_DOWN = 15;
 
-    int ALIEN_WIDTH = 60;
+    int ALIEN_WIDTH = 50;
     int ALIEN_HEIGHT = (int) ((54d / 60d) * ALIEN_WIDTH);
 
     int SHIELD_WIDTH = 50;
