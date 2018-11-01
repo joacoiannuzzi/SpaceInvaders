@@ -61,6 +61,8 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void gameInit() {
 
+        AudioPlayer gameSound = new AudioPlayer("ducktales.wav");
+
         aliens = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
@@ -85,6 +87,8 @@ public class Board extends JPanel implements Runnable, Commons {
             animator = new Thread(this);
             animator.start();
         }
+
+        //gameSound.loop(15);
     }
 
     @Override
@@ -313,6 +317,10 @@ public class Board extends JPanel implements Runnable, Commons {
                 }
                 if (key == KeyEvent.VK_U) {
                     ufo.appear();
+                }
+                if (key == KeyEvent.VK_1) {
+                    message = "Game won!";
+                    ingame = false;
                 }
             }
         }
