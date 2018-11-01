@@ -153,6 +153,9 @@ public class Board extends JPanel implements Runnable, Commons {
                 (BOARD_WIDTH - metr.stringWidth(message)) / 2,
                 BOARD_HEIGHT / 2 - 15);
 
+        g.drawString("Retry?", (BOARD_WIDTH - metr.stringWidth("Retry?")) / 2,
+        BOARD_HEIGHT / 2 + 60);
+
         g.drawString("Score: " + player.getPoints(),
                 (BOARD_WIDTH - metr.stringWidth("Score: " + player.getPoints())) / 2,
                 (BOARD_HEIGHT) / 2 + 15);
