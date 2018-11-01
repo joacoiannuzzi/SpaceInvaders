@@ -35,6 +35,8 @@ public class Board extends JPanel implements Runnable, Commons {
 
     private int delay = DELAY;
 
+    private AudioPlayer gameSound = new AudioPlayer("Ape Invaders.wav");
+
 
     public Board() {
 
@@ -60,8 +62,6 @@ public class Board extends JPanel implements Runnable, Commons {
     }
 
     public void gameInit() {
-
-        AudioPlayer gameSound = new AudioPlayer("Ape Invaders.wav");
 
         aliens = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
@@ -133,9 +133,11 @@ public class Board extends JPanel implements Runnable, Commons {
 
         if (message.equals("Game won!")) {
             AudioPlayer wonSound = new AudioPlayer("won-sound.wav");
+            gameSound.stop();
             wonSound.play();
         } else {
             AudioPlayer lostSound = new AudioPlayer("mission-failed.wav");
+            gameSound.stop();
             lostSound.play();
         }
 
