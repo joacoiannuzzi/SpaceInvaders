@@ -1,11 +1,11 @@
 package game;
 
 public interface Commons {
-    int BOARD_WIDTH = 500;
-    int BOARD_HEIGHT = 450;
+    int BOARD_WIDTH = 900;
+    int BOARD_HEIGHT = 700;
     int GROUND = BOARD_HEIGHT - 80;
     int GO_DOWN = 15;
-    int ALIEN_WIDTH = 13;
+    int ALIEN_WIDTH = 63;
     int SHIELD_WIDTH = 36;
     int NUMBER_OF_ALIENS_TO_DESTROY = 24;
     int DELAY = 17;

@@ -66,8 +66,8 @@ public class Board extends JPanel implements Runnable, Commons {
         aliens = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 6; j++) {
-                aliens.add(new Alien(ALIEN_INIT_X + 18 * j,
-                        ALIEN_INIT_Y + 18 * i));
+                aliens.add(new Alien(ALIEN_INIT_X + 50 * j,
+                        ALIEN_INIT_Y + 30 * i));
             }
         }
 

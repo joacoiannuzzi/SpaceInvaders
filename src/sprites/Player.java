@@ -35,7 +35,7 @@ public class Player extends Sprite {
         force = new SpriteSheet("force-sheet.png", 26, 32);
         sheet = new SpriteSheet("space-ship.png", 18, 24);
         blue = new Animation(1,
-                force.grabImage(1, 1),
+                force.grabImage(1, 1),//mientras mas chico mas rapido
                 force.grabImage(1, 2),
                 force.grabImage(1, 3),
                 force.grabImage(1, 4),
