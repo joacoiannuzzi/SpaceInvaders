@@ -20,12 +20,11 @@ public class AlienType implements Commons {
                 type = "BigAlien";
                 points = 10;
 //                image = "src/images/big-alien.png";
-                sheet = new SpriteSheet("big-alien.png", 12, 17);
+                sheet = new SpriteSheet("shrek alien.png", 63, 63);
                 animation = new Animation(15,
                         sheet.grabImage(1, 1),
                         sheet.grabImage(1, 2),
-                        sheet.grabImage(1, 3),
-                        sheet.grabImage(1, 4));
+                        sheet.grabImage(1, 3));
                 width = 12;
                 height = 17;
                 break;
@@ -33,7 +32,7 @@ public class AlienType implements Commons {
                 type = "MediumAlien";
                 points = 20;
                 //image = "src/images/medium-alien.png";
-                sheet = new SpriteSheet("medium-alien.png", 13, 14);
+                sheet = new SpriteSheet("fiona alien.png", 63, 60);
                 animation = new Animation(15,
                         sheet.grabImage(1, 1),
                         sheet.grabImage(1, 2),
@@ -45,10 +44,11 @@ public class AlienType implements Commons {
                 type = "SmallAlien";
                 points = 30;
                 //image = "src/images/small_alien.png";
-                sheet = new SpriteSheet("small-alien.png", 10, 14);
+                sheet = new SpriteSheet("king alien.png", 64, 63);
                 animation = new Animation(15,
                         sheet.grabImage(1, 1),
-                        sheet.grabImage(1, 2));
+                        sheet.grabImage(1, 2),
+                        sheet.grabImage(1,3));
                 width = 10;
                 height = 14;
                 break;
