@@ -7,11 +7,11 @@ public class AudioPlayer {
 
     private Clip clip;
 
-    public AudioPlayer(String s) {
+    public AudioPlayer(String name) {
 
         try {
             AudioInputStream ais =
-                    AudioSystem.getAudioInputStream(getClass().getResourceAsStream(s));
+                    AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/sounds/" + name));
 
             clip = AudioSystem.getClip();
             clip.open(ais);

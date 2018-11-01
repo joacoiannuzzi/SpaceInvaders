@@ -3,6 +3,7 @@ package sprites;
 
 import other.Animation;
 import game.Commons;
+import other.ImageLoader;
 import other.SpriteSheet;
 
 import java.awt.*;
@@ -11,12 +12,11 @@ import java.awt.image.BufferedImage;
 
 public class Player extends Sprite {
 
-    private final String playerImg = "/images/ship - Copy.png";
     private int points = 0;
-    int lives = 3;
+    private int lives = 3;
     private int speed = 3;
-    int dx;
-    //private Shot[] shots = new Shot[2];
+    private int direction;
+    private Shot[] shots = new Shot[6];
     private int kills = 0;
     private int shotStreak = 0;
     private boolean powered = false;
@@ -27,12 +27,13 @@ public class Player extends Sprite {
     private boolean doubleDamage = false;
     private Animation blue;
     private SpriteSheet force;
+    private boolean multipleShots = false;
 
 
     public Player() {
 
-        force = new SpriteSheet("/images/force-sheet.png", 26, 32);
-        sheet = new SpriteSheet(playerImg, 18, 24);
+        force = new SpriteSheet("force-sheet.png", 26, 32);
+        sheet = new SpriteSheet("space-ship.png", 18, 24);
         blue = new Animation(1,
                 force.grabImage(1, 1),
                 force.grabImage(1, 2),
@@ -44,28 +45,31 @@ public class Player extends Sprite {
         width = sheet.grabImage(1, 1).getWidth();
         height = sheet.grabImage(1, 1).getHeight();
 
-//        for (int i = 0; i < shots.length; i++) {
-//            shots[i] = new Shot();
-//        }
+        for (int i = 0; i < shots.length; i++) {
+            shots[i] = new Shot();
+        }
         resetPosition();
     }
 
     public void act() {
 
-        x += dx;
+        x += direction * speed;
 
         if (x <= 2) {
             x = 2;
         }
-
-        if (x >= Commons.BOARD_WIDTH - width) {
-            x = Commons.BOARD_WIDTH - width;
+        if (x >= BOARD_WIDTH - width) {
+            x = BOARD_WIDTH - width;
         }
         if (immunity) {
             blue.run();
         }
-
         powerDown();
+
+        for (Shot shot : shots) {
+            if (!shot.act() && !powered)
+                shotStreak = 0;
+        }
     }
 
     public void keyPressed(KeyEvent e) {
@@ -74,31 +78,48 @@ public class Player extends Sprite {
 
         if (key == KeyEvent.VK_LEFT) {
 
-            dx = -1 * speed;
+            direction = -1 ;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
 
-            dx = speed;
+            direction = 1;
         }
 
-//        if (key == KeyEvent.VK_SPACE) {
-//
-//            if (!shots[0].isVisible()) {
-//                if (doubleDamage) {
-//                    shots[0].appear(x, y);
-//                    shots[1].appear(x + width, y);
-//                } else {
-//                    shots[0].appear(x + width / 2, y);
-//                }
-//            }
-//        }
+        if (key == KeyEvent.VK_SPACE) {
+
+            if (multipleShots) {
+                for (int i = 0; i < shots.length; i++) {
+                    Shot shot = shots[i];
+                    if (!shot.isVisible()) {
+                        shot.appear(x + width / 2, y);
+                        return;
+                    }
+                }
+            }
+
+            if (!shots[0].isVisible()) {
+                if (doubleDamage) {
+                    shots[0].appear(x, y);
+                    shots[1].appear(x + width, y);
+                } else {
+                    shots[0].appear(x + width / 2, y);
+                }
+            }
+        }
 
         if (key == KeyEvent.VK_P) {
             powerUp();
         }
         if (key == KeyEvent.VK_L) {
-            kills = Commons.NUMBER_OF_ALIENS_TO_DESTROY;
+            kills = NUMBER_OF_ALIENS_TO_DESTROY;
+        }
+        if (key == KeyEvent.VK_M) {
+            if (multipleShots) {
+                multipleShots = false;
+                return;
+            }
+            multipleShots = true;
         }
     }
 
@@ -108,12 +129,12 @@ public class Player extends Sprite {
 
         if (key == KeyEvent.VK_LEFT) {
 
-            dx = 0;
+            direction = 0;
         }
 
         if (key == KeyEvent.VK_RIGHT) {
 
-            dx = 0;
+            direction = 0;
         }
     }
 
@@ -128,30 +149,36 @@ public class Player extends Sprite {
     }
 
 
-    public void attack(Shot shot, Ufo ufo) {
-        if (shot.hit(ufo))
-            points += ufo.getPoints();
-    }
-
-    public void attack(Shot shot, Alien alien) {
-         if (shot.hit(alien)) {
-             kills++;
-             points += alien.getAlienType().getPoints();
-
-           if (!powered) {
-               shotStreak++;
-               power();
-           }
+    public void attack(Ufo ufo) {
+        for (Shot shot : shots) {
+            if (shot.hit(ufo))
+                points += ufo.getPoints();
         }
     }
 
-    public void attack(Shot shot, Shield shield) {
-        if (shot.hit(shield) && !powered)
-            shotStreak = 0;
+    public void attack(Alien alien) {
+        for (Shot shot : shots) {
+            if (shot.hit(alien)) {
+                kills++;
+                points += alien.getAlienType().getPoints();
+
+                if (!powered) {
+                    shotStreak++;
+                    power();
+                }
+            }
+        }
+    }
+
+    public void attack(Shield shield) {
+        for (Shot shot : shots) {
+            if (shot.hit(shield) && !powered)
+                shotStreak = 0;
+        }
     }
 
     public void power() {
-        if (!powered && shotStreak == Commons.SHOT_STREAK) {
+        if (!powered && shotStreak == SHOT_STREAK) {
             powerUp();
         }
     }
@@ -182,13 +209,8 @@ public class Player extends Sprite {
     }
 
     public void resetPosition() {
-        setX((Commons.BOARD_WIDTH - width) / 2);
-        setY(Commons.GROUND - height);
-    }
-
-    public void shotAct(Shot shot) {
-        if (!shot.act() && !powered)
-            shotStreak = 0;
+        setX((BOARD_WIDTH - width) / 2);
+        setY(GROUND - height);
     }
 
     public void draw(Graphics g, FontMetrics metr) {
@@ -197,9 +219,9 @@ public class Player extends Sprite {
             g.drawImage(getforce(), x - 4, y - 4, null);
         }
 
-//        for (Shot shot : shots) {
-//            shot.draw(g);
-//        }
+        for (Shot shot : shots) {
+            shot.draw(g);
+        }
         g.drawString("Score: " + points, 0,
                 Commons.BOARD_HEIGHT - 24);
 
@@ -210,12 +232,17 @@ public class Player extends Sprite {
         g.drawString("Streak: " + shotStreak, 0, Commons.BOARD_HEIGHT - 45);
 
         g.drawString("Aliens: " + (Commons.NUMBER_OF_ALIENS_TO_DESTROY - kills),
-                (Commons.BOARD_WIDTH - metr.stringWidth("Aliens: " + (Commons.NUMBER_OF_ALIENS_TO_DESTROY - kills))) / 2,
+                (Commons.BOARD_WIDTH - metr.stringWidth("Aliens: " + (NUMBER_OF_ALIENS_TO_DESTROY - kills))) / 2,
                 Commons.BOARD_HEIGHT - 45);
     }
 
     public BufferedImage getCurrentImage() {
-        return sheet.grabImage(1, 1);
+        if (direction == -1) {
+            return sheet.grabImage(1, 1);
+        } else if (direction == 1) {
+            return sheet.grabImage(1, 3);
+        }
+        return sheet.grabImage(1, 2);
     }
 
     public BufferedImage getforce() {
@@ -233,10 +260,6 @@ public class Player extends Sprite {
     public int getPoints() {
         return points;
     }
-
-//    public Shot[] getShots() {
-//        return shots;
-//    }
 
 
     public boolean isPowered() {
@@ -263,5 +286,9 @@ public class Player extends Sprite {
 
     public boolean isDoubleDamage() {
         return doubleDamage;
+    }
+
+    public Shot[] getShots() {
+        return shots;
     }
 }

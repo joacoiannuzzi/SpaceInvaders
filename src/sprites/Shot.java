@@ -1,24 +1,18 @@
 package sprites;
 
 import other.AudioPlayer;
+import other.ImageLoader;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class Shot extends Weapon {
 
     private int speed = 10;
-    private AudioPlayer shotSound = new AudioPlayer("/sounds/player-shot.wav");
+    private AudioPlayer shotSound = new AudioPlayer("player-shot.wav");
 
     public Shot() {
 
-        BufferedImage shotImg = null;
-        try {
-            shotImg = ImageIO.read(getClass().getResourceAsStream("/images/shot.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        BufferedImage shotImg = ImageLoader.load("shot.png");
         setImage(shotImg);
         width = shotImg.getWidth();
         height = shotImg.getHeight();
@@ -35,14 +29,17 @@ public class Shot extends Weapon {
     }
 
     public boolean act() {
-        y -= speed;
+        if (isVisible()) {
+            y -= speed;
 
-        if (y > 0) {
-            setY(y);
-            return true;
+            if (y > 0) {
+                setY(y);
+                return true;
+            }
+            die();
+            return false;
         }
-        die();
-        return false;
+        return true;
     }
 
 }

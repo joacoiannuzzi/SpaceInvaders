@@ -2,6 +2,7 @@ package sprites;
 
 import other.AudioPlayer;
 import game.Commons;
+import other.ImageLoader;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -13,15 +14,10 @@ public class Bomb extends Weapon {
     public static void increaseSpeed() {
         speed++;
     }
-    private final AudioPlayer bombSound = new AudioPlayer("/sounds/alien-shot.wav");
+    private final AudioPlayer bombSound = new AudioPlayer("alien-shot.wav");
 
     public Bomb() {
-        BufferedImage bombImg = null;
-        try {
-            bombImg = ImageIO.read(getClass().getResourceAsStream("/images/bomb.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        BufferedImage bombImg = ImageLoader.load("bomb.png");
         setImage(bombImg);
         width = bombImg.getWidth();
         height = bombImg.getHeight();
@@ -47,7 +43,7 @@ public class Bomb extends Weapon {
 
         y += speed;
 
-        if (y + height >= Commons.GROUND) {
+        if (y + height >= GROUND) {
             die();
         }
     }

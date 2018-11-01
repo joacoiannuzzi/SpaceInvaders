@@ -13,13 +13,8 @@ public class SpriteSheet {
         this(s, size, size);
     }
 
-    public SpriteSheet(String s, int width, int height) {
-        try {
-            sheet = ImageIO.read(getClass().getResourceAsStream(s));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+    public SpriteSheet(String name, int width, int height) {
+        sheet = ImageLoader.load(name);
         this.width = width;
         this.height = height;
     }

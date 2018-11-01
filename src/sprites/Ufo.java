@@ -13,14 +13,14 @@ public class Ufo extends Sprite {
     private int speed = 2;
     private long timeToSpawn;
     private long spawnTimer = System.currentTimeMillis();
-    AudioPlayer quackSound = new AudioPlayer("/sounds/quack2.wav");
+    AudioPlayer quackSound = new AudioPlayer("quack2.wav");
     private Animation duckAnim, ufoAnim;
     SpriteSheet sheet2;
     private boolean duck;
 
     public Ufo() {
 
-        sheet = new SpriteSheet("/images/ufo-duck.png", 33, 36);
+        sheet = new SpriteSheet("ufo-duck.png", 33, 36);
         BufferedImage[] images = new BufferedImage[7];
         images[0] = sheet.grabImage(1, 1);
         images[1] = sheet.grabImage(1, 2);
@@ -31,7 +31,7 @@ public class Ufo extends Sprite {
         images[6] = sheet.grabImage(2, 3);
         duckAnim = new Animation(0, images);
 
-        sheet2 = new SpriteSheet("/images/ufo.png", 36, 19);
+        sheet2 = new SpriteSheet("ufo.png", 36, 19);
         BufferedImage[] images2 = new BufferedImage[13];
         images2[0] = sheet2.grabImage(1, 1);
         images2[1] = sheet2.grabImage(1, 2);

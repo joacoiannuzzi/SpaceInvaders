@@ -1,12 +1,12 @@
 package sprites;
 
 import game.Commons;
+import other.ImageLoader;
 import other.SpriteSheet;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class Sprite implements Commons {
 
@@ -98,12 +98,7 @@ public class Sprite implements Commons {
     }
 
     public void getHit() {
-        BufferedImage explosion = null;
-        try {
-            explosion = ImageIO.read(getClass().getResourceAsStream("/images/explosion2.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        BufferedImage explosion = ImageLoader.load("explosion2.png");
         setImage(explosion);
         setDying(true);
     }

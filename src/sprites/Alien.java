@@ -15,7 +15,6 @@ public class Alien extends Sprite {
     }
 
     protected Bomb bomb;
-    private String alienImg;
     private AlienType alienType;
     private SpriteSheet sheet;
     private Animation anim;
@@ -52,7 +51,7 @@ public class Alien extends Sprite {
     }
 
     public boolean touchGround() {
-        if (y + height >= Commons.GROUND) {
+        if (y + height >= GROUND) {
             return true;
         }
         return false;

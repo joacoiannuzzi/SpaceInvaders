@@ -1,28 +1,29 @@
 package sprites;
 
 import game.Commons;
+import other.ImageLoader;
 
 import javax.swing.*;
+import java.awt.image.BufferedImage;
 
 public class Shield extends Sprite {
 
-    private final String shieldImg = "src/images/shield.png";
     private int lives;
     private int shotQuantity = 0;
     private int startX;
+    BufferedImage shieldImg = ImageLoader.load("shield.png");
 
     public Shield(int x) {
-        y = Commons.GROUND - 60;
+        y = GROUND - 60;
         this.startX = x;
         reset();
     }
 
     public void reset() {
 
-        ImageIcon ii = new ImageIcon(shieldImg);
-        setImage(ii.getImage());
-        width = ii.getImage().getWidth(null);
-        height = ii.getImage().getHeight(null);
+        setImage(shieldImg);
+        width = shieldImg.getWidth();
+        height = shieldImg.getHeight();
         x = startX;
         lives = Commons.SHIELD_LIVES;
         setDying(false);

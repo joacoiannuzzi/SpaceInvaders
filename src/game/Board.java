@@ -1,6 +1,5 @@
 package game;
 
-import highscore.LeaderBoard;
 import other.AudioPlayer;
 import sprites.*;
 
@@ -9,7 +8,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import javax.swing.*;
 
@@ -20,7 +18,6 @@ public class Board extends JPanel implements Runnable, Commons {
     private Player player;
     private Ufo ufo;
     private Shield[] shields;
-    private Shot[] shots = new Shot[2];
     private int shieldsToRemove = 0;
 
     private final int ALIEN_INIT_X = 200;
@@ -37,8 +34,6 @@ public class Board extends JPanel implements Runnable, Commons {
     private int currentLevel = 1;
 
     private int delay = DELAY;
-
-    String playerName;
 
 
     public Board() {
@@ -84,9 +79,6 @@ public class Board extends JPanel implements Runnable, Commons {
         ufo = new Ufo();
 
         player = new Player();
-        for (int i = 0; i < shots.length; i++) {
-            shots[i] = new Shot();
-        }
 
         if (animator == null || !ingame) {
 
@@ -111,9 +103,6 @@ public class Board extends JPanel implements Runnable, Commons {
 
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
 
-            for (Shot shot : shots) {
-                shot.draw(g);
-            }
             for (Shield shield : shields) {
                 shield.draw(g);
             }
@@ -139,10 +128,10 @@ public class Board extends JPanel implements Runnable, Commons {
     public void gameOver() {
 
         if (message.equals("Game won!")) {
-            AudioPlayer wonSound = new AudioPlayer("/sounds/won-sound.wav");
+            AudioPlayer wonSound = new AudioPlayer("won-sound.wav");
             wonSound.play();
         } else {
-            AudioPlayer lostSound = new AudioPlayer("/sounds/mission-failed.wav");
+            AudioPlayer lostSound = new AudioPlayer("mission-failed.wav");
             lostSound.play();
         }
 
@@ -195,24 +184,16 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void animationCycle() {
 
-        // player
-        player.act();
+        // player && shots
+        player.attack(ufo);
 
-        // shots
-        for (Shot shot : shots) {
-            if (shot.isVisible()) {
-
-                player.attack(shot, ufo);
-
-                for (Alien alien : aliens) {
-                    player.attack(shot, alien);
-                }
-                for (Shield shield : shields) {
-                    player.attack(shot, shield);
-                }
-                player.shotAct(shot);
-            }
+        for (Alien alien : aliens) {
+            player.attack(alien);
         }
+        for (Shield shield : shields) {
+            player.attack(shield);
+        }
+        player.act();
 
         // aliens
         for (Alien alien : aliens) {
@@ -327,17 +308,6 @@ public class Board extends JPanel implements Runnable, Commons {
             if (ingame) {
                 player.keyPressed(e);
 
-                if (key == KeyEvent.VK_SPACE) {
-
-                    if (!shots[0].isVisible()) {
-                        if (player.isDoubleDamage()) {
-                            shots[0].appear(player.getX(), player.getY());
-                            shots[1].appear(player.getX() + player.getWidth(), player.getY());
-                        } else {
-                            shots[0].appear(player.getX() + player.getWidth() / 2, player.getY());
-                        }
-                    }
-                }
                 if (key == KeyEvent.VK_G) {
                     ingame = false;
                 }
@@ -345,7 +315,6 @@ public class Board extends JPanel implements Runnable, Commons {
                     ufo.appear();
                 }
             }
-
         }
     }
 
