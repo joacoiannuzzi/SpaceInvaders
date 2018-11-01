@@ -185,7 +185,7 @@ public class Board extends JPanel implements Runnable, Commons {
                 (BOARD_HEIGHT) / 2 + 15);
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -335,6 +335,11 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void levelUp() {
 
+        AudioPlayer levelupSound = new AudioPlayer("levelup.wav");
+
+        gameSound.stop();
+        levelupSound.playFromBeginning();
+
         currentLevel++;
 
         resetAliens();
@@ -360,6 +365,8 @@ public class Board extends JPanel implements Runnable, Commons {
         //delay -=2;
 
         levelScreen();
+
+        gameSound.playFromBeginning();
     }
 
     public void resetAliens() {
