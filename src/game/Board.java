@@ -61,7 +61,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void gameInit() {
 
-        AudioPlayer gameSound = new AudioPlayer("ducktales.wav");
+        AudioPlayer gameSound = new AudioPlayer("Ape Invaders.wav");
 
         aliens = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
@@ -88,7 +88,7 @@ public class Board extends JPanel implements Runnable, Commons {
             animator.start();
         }
 
-        //gameSound.loop(15);
+        gameSound.loop(15);
     }
 
     @Override
