@@ -1,5 +1,6 @@
 package game;
 
+import highscore.LeaderBoard;
 import other.Animation;
 import other.AudioPlayer;
 import other.SpriteSheet;
@@ -39,9 +40,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private int totalLevels = 5;
     private int currentLevel = 1;
 
-    private int delay = DELAY;
-
-    AudioPlayer gameSound = new AudioPlayer("Ape invaders.wav");
+    private AudioPlayer gameSound = new AudioPlayer("Ape invaders.wav");
 
 
     public Board() {
@@ -66,6 +65,8 @@ public class Board extends JPanel implements Runnable, Commons {
         }
 
         backgroundAnim = new Animation(5, background);
+
+        gameSound.changeVolume(-15);
 
         gameInit();
         setDoubleBuffered(true);
@@ -150,7 +151,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void gameOver() {
 
-        gameSound.stop();
+        gameSound.close();
 
         if (message.equals("Game won!")) {
             AudioPlayer wonSound = new AudioPlayer("won-sound.wav");
@@ -181,6 +182,12 @@ public class Board extends JPanel implements Runnable, Commons {
                 (BOARD_WIDTH - metr.stringWidth("Score: " + player.getPoints())) / 2,
                 (BOARD_HEIGHT) / 2 + 15);
 
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        LeaderBoard.rank(player.getPoints());
     }
 
     public void levelScreen() {
@@ -298,7 +305,7 @@ public class Board extends JPanel implements Runnable, Commons {
             animationCycle();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = delay - timeDiff;
+            sleep = DELAY - timeDiff;
 
             if (sleep < 0) {
                 sleep = 2;
@@ -318,7 +325,6 @@ public class Board extends JPanel implements Runnable, Commons {
                     message = "Game won!";
                 } else levelUp();
             }
-
         }
 
         gameOver();
@@ -329,7 +335,9 @@ public class Board extends JPanel implements Runnable, Commons {
         @Override
         public void keyReleased(KeyEvent e) {
 
-            player.keyReleased(e);
+            if (ingame) {
+                player.keyReleased(e);
+            }
         }
 
         @Override

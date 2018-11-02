@@ -8,6 +8,7 @@ import other.SpriteSheet;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 public class Player extends Sprite {
 
@@ -25,31 +26,36 @@ public class Player extends Sprite {
     private boolean freezeInvaders = false;
     private boolean doubleDamage = false;
     private Animation immunityForce;
-    private SpriteSheet forceSheet, playerSheet;
     private boolean multipleShots = false;
-    private Animation left, center, right;
+    private HashMap<Integer, Animation> shipAnim;
     private BufferedImage heart = ImageLoader.load("heart.png");
     private BufferedImage shotPic = ImageLoader.load("shot.png");
 
 
     public Player() {
 
-        forceSheet = new SpriteSheet("force-sheet.png", 26, 32);
-        playerSheet = new SpriteSheet("ship-sheet.png", 120, 160);
-        left = new Animation(0,
+        shipAnim = new HashMap<>();
+
+        SpriteSheet forceSheet = new SpriteSheet("force-sheet.png", 26, 32);
+        SpriteSheet playerSheet = new SpriteSheet("ship-sheet.png", 120, 160);
+
+        shipAnim.put(-1, new Animation(0,
                 playerSheet.grabImage(1, 1),
                 playerSheet.grabImage(2, 1),
-                playerSheet.grabImage(3, 1));
-        center = new Animation(0,
+                playerSheet.grabImage(3, 1)));
+
+        shipAnim.put(0, new Animation(0,
                 playerSheet.grabImage(1, 2),
                 playerSheet.grabImage(2, 2),
-                playerSheet.grabImage(3, 2));
-        right = new Animation(0,
+                playerSheet.grabImage(3, 2)));
+
+        shipAnim.put(1, new Animation(0,
                 playerSheet.grabImage(1, 3),
                 playerSheet.grabImage(2, 3),
-                playerSheet.grabImage(3, 3));
-        immunityForce = new Animation(1,
-                forceSheet.grabImage(1, 1),//mientras mas chico mas rapido
+                playerSheet.grabImage(3, 3)));
+
+        immunityForce = new Animation(1,       //mientras mas chico mas rapido
+                forceSheet.grabImage(1, 1),
                 forceSheet.grabImage(1, 2),
                 forceSheet.grabImage(1, 3),
                 forceSheet.grabImage(1, 4),
@@ -103,8 +109,7 @@ public class Player extends Sprite {
         if (key == KeyEvent.VK_SPACE) {
 
             if (multipleShots) {
-                for (int i = 0; i < shots.length; i++) {
-                    Shot shot = shots[i];
+                for (Shot shot : shots) {
                     if (!shot.isVisible()) {
                         shot.appear(x + width / 2, y);
                         return;
@@ -141,12 +146,7 @@ public class Player extends Sprite {
 
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_LEFT) {
-
-            direction = 0;
-        }
-
-        if (key == KeyEvent.VK_RIGHT) {
+        if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_RIGHT) {
 
             direction = 0;
         }
@@ -156,15 +156,14 @@ public class Player extends Sprite {
     public void getHit() {
         if (!immunity) {
             lives--;
-            right.run();
-            center.run();
-            left.run();
+            shipAnim.get(-1).run();
+            shipAnim.get(0).run();
+            shipAnim.get(1).run();
 
             if (lives == 0)
                 super.getHit();
         }
     }
-
 
     public void attack(Ufo ufo) {
         for (Shot shot : shots) {
@@ -249,7 +248,7 @@ public class Player extends Sprite {
         for (int i = 0; i < lives; i++) {
 
             int heartX = BOARD_WIDTH - 50 - (25 * i);
-            int heartY = BOARD_HEIGHT - 73;
+            int heartY = BOARD_HEIGHT - 80;
 
             g.drawImage(heart, heartX, heartY, heartX + 35, heartY + 35,
                     0, 0, heart.getWidth(), heart.getHeight(), null);
@@ -263,19 +262,10 @@ public class Player extends Sprite {
             g.drawImage(shotPic, shotX, shotY, shotX + 20, shotY + 30,
                     0, 0, shotPic.getWidth(), shotPic.getHeight(), null);
         }
-
-        g.drawString("Aliens: " + (NUMBER_OF_ALIENS_TO_DESTROY - kills), 0, 150);
-
-
     }
 
     public BufferedImage getCurrentImage() {
-        if (direction == -1) {
-            return left.getCurrentImage();
-        } else if (direction == 1) {
-            return right.getCurrentImage();
-        }
-        return center.getCurrentImage();
+        return shipAnim.get(direction).getCurrentImage();
     }
 
     public BufferedImage getforce() {

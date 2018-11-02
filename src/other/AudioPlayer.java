@@ -51,4 +51,10 @@ public class AudioPlayer {
         stop();
         clip.start();
     }
+
+    public void changeVolume(float volume) {
+        FloatControl gainControl =
+                (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(volume);
+    }
 }

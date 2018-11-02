@@ -3,7 +3,7 @@ package sprites;
 public class Weapon extends Sprite {
 
     public boolean hit(Sprite entity) {
-        if (entity.isVisible() && isVisible()) {
+        if (entity.isVisible() && !entity.isDying() && isVisible()) {
 
             int entityX = entity.getX();
             int entityY = entity.getY();
