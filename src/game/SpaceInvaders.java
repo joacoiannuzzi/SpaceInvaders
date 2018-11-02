@@ -1,35 +1,26 @@
 package game;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.*;
+import javax.swing.JFrame;
 
 public class SpaceInvaders extends JFrame implements Commons {
 
     public SpaceInvaders() {
-
-            JFrame frame = new JFrame("Space Inavders");
-            frame.setVisible(true);
-            frame.setSize(250,100);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            JPanel panel = new JPanel();
-            frame.add(panel);
-            JButton button = new JButton("Start");
-            panel.add(button);
-            button.addActionListener (new Action1());
-
+        Menu menu = new Menu();
+        menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menu.setSize(300,170);
+        menu.setVisible(true);
 
     }
 
-    private void initUI() {
+    public void initUI() {
         add(new Board());
         setTitle("Space Invaders");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(BOARD_WIDTH, BOARD_HEIGHT);
         setLocationRelativeTo(null);
         setResizable(false);
+
     }
 
     public static void main(String[] args) {
@@ -38,13 +29,5 @@ public class SpaceInvaders extends JFrame implements Commons {
             SpaceInvaders ex = new SpaceInvaders();
             ex.setVisible(true);
         });
-    }
-
-    class Action1 implements ActionListener {
-        public void actionPerformed (ActionEvent e) {
-
-            initUI();
-
-        }
     }
 }
