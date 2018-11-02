@@ -1,17 +1,9 @@
 package game;
 
-import java.awt.EventQueue;
+import java.awt.*;
 import javax.swing.JFrame;
 
 public class SpaceInvaders extends JFrame implements Commons {
-
-    public SpaceInvaders() {
-        Menu menu = new Menu();
-        menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        menu.setSize(300,170);
-        menu.setVisible(true);
-
-    }
 
     public void initUI() {
         add(new Board());
@@ -26,8 +18,8 @@ public class SpaceInvaders extends JFrame implements Commons {
     public static void main(String[] args) {
 
         EventQueue.invokeLater(() -> {
-            SpaceInvaders ex = new SpaceInvaders();
-            ex.setVisible(true);
+            Menu menu = new Menu();
+            menu.setVisible(true);
         });
     }
 }

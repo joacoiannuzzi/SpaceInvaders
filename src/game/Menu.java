@@ -1,5 +1,5 @@
 package game;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -15,7 +15,12 @@ public class Menu extends JFrame{
     private SpaceInvaders spaceInvaders;
 
     public Menu(){
-        super("Space invaders");
+
+        setTitle("Space invaders");
+        setSize(300,170);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
         setLayout(new FlowLayout());
 
         start = new JButton("start");
@@ -32,10 +37,14 @@ public class Menu extends JFrame{
     private  class theHandler implements ActionListener,Commons{
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource()==start){
+            if (e.getSource() == start) {
+                setVisible(false);
                 SpaceInvaders ex = new SpaceInvaders();
                 ex.initUI();
                 ex.setVisible(true);
+
+            }
+            if (e.getSource() == scoreBoard) {
 
             }
         }
