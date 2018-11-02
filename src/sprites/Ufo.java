@@ -43,7 +43,7 @@ public class Ufo extends Sprite {
                 h++;
             }
         }
-        anim.put("ufo", new Animation(1, ufoImages));
+        anim.put("ufo", new Animation(0, ufoImages));
 
 
         setY(3);
@@ -64,7 +64,6 @@ public class Ufo extends Sprite {
             width = DUCK_WIDTH;
             height = DUCK_HEIGHT;
             quackSound.playFromBeginning();
-            //quackSound.loop(2);
         }
         else {
             type = "ufo";
