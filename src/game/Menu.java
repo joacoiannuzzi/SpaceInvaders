@@ -17,7 +17,7 @@ public class Menu extends JFrame{
     public Menu(){
 
         setTitle("Space invaders");
-        setSize(300,170);
+        setSize(300,100);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
