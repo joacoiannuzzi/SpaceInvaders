@@ -141,7 +141,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
             g.drawString("Level " + currentLevel,
                     (BOARD_WIDTH - metr.stringWidth("Level " + currentLevel)) / 2,
-                    BOARD_HEIGHT - 30);
+                    BOARD_HEIGHT - 40);
         }
 
         Toolkit.getDefaultToolkit().sync();

@@ -3,7 +3,7 @@ package game;
 public interface Commons {
     int BOARD_WIDTH = 900;
     int BOARD_HEIGHT = (int) ((700d / 900d) * BOARD_WIDTH);
-    int GROUND = BOARD_HEIGHT - 80;
+    int GROUND = BOARD_HEIGHT - 100;
     int GO_DOWN = 15;
 
     int ALIEN_WIDTH = 50;

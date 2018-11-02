@@ -244,12 +244,12 @@ public class Player extends Sprite {
 
         g.drawString("Score: " + points,
                 (BOARD_WIDTH - metr.stringWidth("Score: " + points)) / 2,
-                BOARD_HEIGHT - 50);
+                BOARD_HEIGHT - 70);
 
         for (int i = 0; i < lives; i++) {
 
             int heartX = BOARD_WIDTH - 50 - (25 * i);
-            int heartY = BOARD_HEIGHT - 63;
+            int heartY = BOARD_HEIGHT - 73;
 
             g.drawImage(heart, heartX, heartY, heartX + 35, heartY + 35,
                     0, 0, heart.getWidth(), heart.getHeight(), null);
@@ -258,7 +258,7 @@ public class Player extends Sprite {
         for (int i = 0; i < shotStreak; i++) {
 
             int shotX = 10 + (25 * i);
-            int shotY = BOARD_HEIGHT - 60;
+            int shotY = BOARD_HEIGHT - 75;
 
             g.drawImage(shotPic, shotX, shotY, shotX + 20, shotY + 30,
                     0, 0, shotPic.getWidth(), shotPic.getHeight(), null);
