@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 
 public class Menu extends JFrame implements Commons {
     private JButton start;
@@ -17,12 +18,18 @@ public class Menu extends JFrame implements Commons {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+        getContentPane().setBackground(Color.BLACK);
+        setUndecorated(true);
 
         panel = new JPanel();
         start = new JButton("start");
+        start.setBackground(Color.BLACK);
+        start.setForeground(Color.green);
         panel.add(start);
 
         scoreBoard = new JButton("Scoreboard");
+        scoreBoard.setBackground(Color.BLACK);
+        scoreBoard.setForeground(Color.green);
         panel.add(scoreBoard);
 
         setLayout(new FlowLayout());
