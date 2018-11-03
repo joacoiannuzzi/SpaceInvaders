@@ -1,21 +1,25 @@
 package sprites;
 
+import other.Animation;
 import other.AudioPlayer;
-import other.ImageLoader;
-
-import java.awt.image.BufferedImage;
 
 public class Shot extends Weapon {
 
-    private int speed = 10;
+    private int speed = 7;
     private AudioPlayer shotSound = new AudioPlayer("player-shot.wav");
 
     public Shot() {
 
-        BufferedImage shotImg = ImageLoader.load("shot.png");
-        setImage(shotImg);
-        width = shotImg.getWidth();
-        height = shotImg.getHeight();
+        anim = new Animation(5, sheet.grabImage(1, 1),
+                sheet.grabImage(1,2),
+                sheet.grabImage(1,3),
+                sheet.grabImage(1,4),
+                sheet.grabImage(1,5),
+                sheet.grabImage(1,6)
+                );
+
+        width = PROJECTILE_WIDTH;
+        height = PROJECTILE_HEIGHT;
         die();
     }
 
@@ -31,6 +35,7 @@ public class Shot extends Weapon {
     public boolean act() {
         if (isVisible()) {
             y -= speed;
+            anim.run();
 
             if (y > 0) {
                 setY(y);
@@ -41,5 +46,4 @@ public class Shot extends Weapon {
         }
         return true;
     }
-
 }

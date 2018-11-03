@@ -34,8 +34,10 @@ public class Board extends JPanel implements Runnable, Commons {
     private Animation backgroundAnim;
     private int goDown = GO_DOWN;
 
-
     private Thread animator;
+    private long desiredFPS = 60;
+    private long desiredDeltaLoop = (1000*1000*1000) / desiredFPS;
+    private long averageFps = 0;
 
     private int totalLevels = 5;
     private int currentLevel = 1;
@@ -52,7 +54,9 @@ public class Board extends JPanel implements Runnable, Commons {
 
         addKeyListener(new TAdapter());
         setFocusable(true);
+
         d = new Dimension(BOARD_WIDTH, BOARD_HEIGHT);
+        setPreferredSize(d);
         setBackground(Color.black);
 
         BufferedImage[] background = new BufferedImage[24];
@@ -66,7 +70,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
         backgroundAnim = new Animation(5, background);
 
-        gameSound.changeVolume(-15);
+        gameSound.changeVolume(-10);
 
         gameInit();
         setDoubleBuffered(true);
@@ -100,6 +104,9 @@ public class Board extends JPanel implements Runnable, Commons {
 
         player = new Player();
 
+    }
+
+    public void startGame() {
         if (animator == null || !ingame) {
 
             animator = new Thread(this);
@@ -143,6 +150,8 @@ public class Board extends JPanel implements Runnable, Commons {
             g.drawString("Level " + currentLevel,
                     (BOARD_WIDTH - metr.stringWidth("Level " + currentLevel)) / 2,
                     BOARD_HEIGHT - 40);
+
+            g.drawString("fps: " + averageFps,  0, 20);
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -175,20 +184,12 @@ public class Board extends JPanel implements Runnable, Commons {
                 (BOARD_WIDTH - metr.stringWidth(message)) / 2,
                 BOARD_HEIGHT / 2 - 15);
 
-        g.drawString("Retry", (BOARD_WIDTH - metr.stringWidth("Retry")) / 2,
-        BOARD_HEIGHT / 2 + 60);
-
-        add(new JButton());
-
-        g.drawString("Exit", (BOARD_WIDTH - metr.stringWidth("Exit")) / 2,
-                BOARD_HEIGHT / 2 + 100);
-
         g.drawString("Score: " + player.getPoints(),
                 (BOARD_WIDTH - metr.stringWidth("Score: " + player.getPoints())) / 2,
                 (BOARD_HEIGHT) / 2 + 15);
 
         try {
-            Thread.sleep(4000);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -292,37 +293,38 @@ public class Board extends JPanel implements Runnable, Commons {
     @Override
     public void run() {
 
-        long beforeTime, timeDiff, sleep;
-        beforeTime = System.currentTimeMillis();
-
-        repaint();
-
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         gameSound.loop(5);
 
+        long timeThen;
+        long timeNow;
+        long totalTime = 0;
+        long gapTo;
+
+        int framecount = 0;
+
         while (ingame) {
+
+            timeThen = System.nanoTime();
 
             repaint();
             animationCycle();
 
-            timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = DELAY - timeDiff;
-
-            if (sleep < 0) {
-                sleep = 2;
+            gapTo = desiredDeltaLoop + timeThen;
+            timeNow = System.nanoTime();
+            while (gapTo > timeNow) {
+                try { Thread.sleep(1);
+                } catch (InterruptedException ignored) {}
+                timeNow = System.nanoTime();
             }
 
-            try {
-                Thread.sleep(sleep);
-            } catch (InterruptedException e) {
-                System.out.println("interrupted");
+            totalTime += System.nanoTime() - timeThen;
+            framecount++;
+            if (framecount == desiredFPS) {
+                averageFps = (long) 1000.0 / ((totalTime / framecount) / 1000000);
+                framecount = 0;
+                totalTime = 0;
             }
 
-            beforeTime = System.currentTimeMillis();
 
             if (player.getKills() == NUMBER_OF_ALIENS_TO_DESTROY) {
                 if (currentLevel == totalLevels) {
@@ -391,8 +393,9 @@ public class Board extends JPanel implements Runnable, Commons {
             shield.die();
         }
 
-        player.resetKills();
-        player.resetPosition();
+        ufo.die();
+
+        player.reset();
 
         Alien.increaseSpeed();
         Bomb.increaseSpeed();

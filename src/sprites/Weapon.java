@@ -1,6 +1,14 @@
 package sprites;
 
+import other.Animation;
+import other.SpriteSheet;
+
+import java.awt.image.BufferedImage;
+
 public class Weapon extends Sprite {
+
+    SpriteSheet sheet = new SpriteSheet("proyectiles-sheet.png", 5, 15);
+    Animation anim;
 
     public boolean hit(Sprite entity) {
         if (entity.isVisible() && !entity.isDying() && isVisible()) {
@@ -18,5 +26,10 @@ public class Weapon extends Sprite {
             }
         }
         return false;
+    }
+
+    @Override
+    public BufferedImage getCurrentImage() {
+        return anim.getCurrentImage();
     }
 }

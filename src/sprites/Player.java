@@ -14,7 +14,7 @@ public class Player extends Sprite {
 
     private int points = 0;
     private int lives = 3;
-    private int speed = 3;
+    private int speed = 4;
     private int direction;
     private Shot[] shots = new Shot[6];
     private int kills = 0;
@@ -29,7 +29,6 @@ public class Player extends Sprite {
     private boolean multipleShots = false;
     private HashMap<Integer, Animation> shipAnim;
     private BufferedImage heart = ImageLoader.load("heart.png");
-    private BufferedImage shotPic = ImageLoader.load("shot.png");
 
 
     public Player() {
@@ -68,7 +67,7 @@ public class Player extends Sprite {
         for (int i = 0; i < shots.length; i++) {
             shots[i] = new Shot();
         }
-        resetPosition();
+        reset();
     }
 
     public void act() {
@@ -224,10 +223,17 @@ public class Player extends Sprite {
         }
     }
 
-    public void resetPosition() {
+    public void reset() {
         setX((BOARD_WIDTH - width) / 2);
         setY(GROUND - height);
+
+        for (Shot shot : shots) {
+            shot.die();
+        }
+        kills = 0;
+        powerDown();
     }
+
 
     public void draw(Graphics g, FontMetrics metr) {
         super.draw(g);
@@ -259,8 +265,8 @@ public class Player extends Sprite {
             int shotX = 10 + (25 * i);
             int shotY = BOARD_HEIGHT - 75;
 
-            g.drawImage(shotPic, shotX, shotY, shotX + 20, shotY + 30,
-                    0, 0, shotPic.getWidth(), shotPic.getHeight(), null);
+            g.drawImage(shots[0].getCurrentImage(), shotX, shotY, shotX + 20, shotY + 30,
+                    0, 0, shots[0].getCurrentImage().getWidth(), shots[0].getCurrentImage().getHeight(), null);
         }
     }
 
@@ -291,10 +297,6 @@ public class Player extends Sprite {
 
     public int getKills() {
         return kills;
-    }
-
-    public void resetKills() {
-        kills = 0;
     }
 
     public int getShotStreak() {

@@ -1,9 +1,7 @@
 package sprites;
 
+import other.Animation;
 import other.AudioPlayer;
-import other.ImageLoader;
-
-import java.awt.image.BufferedImage;
 
 public class Bomb extends Weapon {
 
@@ -14,10 +12,16 @@ public class Bomb extends Weapon {
     private final AudioPlayer bombSound = new AudioPlayer("alien-shot.wav");
 
     public Bomb() {
-        BufferedImage bombImg = ImageLoader.load("bomb.png");
-        setImage(bombImg);
-        width = bombImg.getWidth();
-        height = bombImg.getHeight();
+
+        anim = new Animation(5, sheet.grabImage(2, 1),
+                sheet.grabImage(2, 2),
+                sheet.grabImage(2, 3),
+                sheet.grabImage(2, 4),
+                sheet.grabImage(2, 5),
+                sheet.grabImage(2, 6)
+                );
+        width = PROJECTILE_WIDTH;
+        height = PROJECTILE_HEIGHT;
     }
 
     public void reset(int x, int y) {
@@ -39,6 +43,7 @@ public class Bomb extends Weapon {
     public void act() {
 
         y += speed;
+        anim.run();
 
         if (y + height >= GROUND) {
             die();
