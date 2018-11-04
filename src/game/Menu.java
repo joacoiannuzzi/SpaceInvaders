@@ -1,4 +1,6 @@
 package game;
+import highscore.LeaderBoard;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,12 +11,13 @@ public class Menu extends JFrame implements Commons {
     private JButton start;
     private JButton scoreBoard;
     private SpaceInvaders si = new SpaceInvaders();
+    private LeaderBoard lb = new LeaderBoard();
     JPanel panel;
 
     public Menu(){
 
         setTitle("Space invaders");
-        setSize(300,100);
+        setSize(200,50);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -52,6 +55,9 @@ public class Menu extends JFrame implements Commons {
 
             }
             if (e.getSource() == scoreBoard) {
+
+                JOptionPane.showMessageDialog(null, LeaderBoard.toText(),"Leaderboard", JOptionPane.PLAIN_MESSAGE);
+
 
             }
         }

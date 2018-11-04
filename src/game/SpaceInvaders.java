@@ -1,6 +1,7 @@
 package game;
 
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.*;
 
 public class SpaceInvaders extends JFrame implements Commons {
 
@@ -19,6 +20,8 @@ public class SpaceInvaders extends JFrame implements Commons {
         setSize(BOARD_WIDTH, BOARD_HEIGHT);
         setLocationRelativeTo(null);
         setResizable(false);
+        setUndecorated(true);
+        getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.WHITE));
         setVisible(true);
         board.startGame();
 

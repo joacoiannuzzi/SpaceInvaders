@@ -368,6 +368,9 @@ public class Board extends JPanel implements Runnable, Commons {
                     message = "Game won!";
                     ingame = false;
                 }
+                if (key == KeyEvent.VK_ESCAPE) {
+                    System.exit(0);
+                }
             }
         }
     }

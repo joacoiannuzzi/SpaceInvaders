@@ -68,11 +68,5 @@ public class Menu_over extends JFrame implements Commons {
         EventQueue.invokeLater(Menu_over::new);
 
     }
-
-    /* public static void main(String[] args) {
-        EventQueue.invokeLater(Menu_over::new);
-    }*/
-
-
 }
 
