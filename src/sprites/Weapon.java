@@ -11,7 +11,7 @@ public class Weapon extends Sprite {
     Animation anim;
 
     public boolean hit(Sprite entity) {
-        if (entity.isVisible() && !entity.isDying() && isVisible()) {
+        if (entity.isVisible() && isVisible()) {
 
             int entityX = entity.getX();
             int entityY = entity.getY();

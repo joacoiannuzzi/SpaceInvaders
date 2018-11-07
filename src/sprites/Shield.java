@@ -26,7 +26,6 @@ public class Shield extends Sprite {
         height = SHIELD_HEIGHT;
         x = startX;
         lives = Commons.SHIELD_LIVES;
-        setDying(false);
         setVisible(true);
     }
 

@@ -30,9 +30,5 @@ public interface Commons {
     int SHIELD_LIVES = 8;
     int SHOT_STREAK = 4;
 
-    default int randomWithRange(int min, int max) {
-        int range = (max - min) + 1;
-        return (int)(Math.random() * range) + min;
-    }
 
 }

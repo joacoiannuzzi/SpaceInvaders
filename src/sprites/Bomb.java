@@ -2,12 +2,16 @@ package sprites;
 
 import other.Animation;
 import other.AudioPlayer;
+import other.Random;
 
 public class Bomb extends Weapon {
 
     private static int speed = 1;
     public static void increaseSpeed() {
         speed++;
+    }
+    public static  void resetSpeed() {
+        speed = 1;
     }
     private final AudioPlayer bombSound = new AudioPlayer("alien-shot.wav");
 
@@ -32,7 +36,7 @@ public class Bomb extends Weapon {
 
     public void appear(int x, int y) {
 
-        if (randomWithRange(1, 14) == 5 && !isVisible()) {
+        if (Random.randomWithRange(1, 14) == 5 && !isVisible()) {
             setVisible(true);
             this.x = x;
             this.y = y;

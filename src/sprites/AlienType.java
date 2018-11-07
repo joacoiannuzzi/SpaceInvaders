@@ -1,6 +1,7 @@
 package sprites;
 
 import game.Commons;
+import other.Random;
 
 public class AlienType implements Commons {
 
@@ -9,7 +10,7 @@ public class AlienType implements Commons {
 
     public AlienType() {
 
-        int n = randomWithRange(1, 3);
+        int n = Random.randomWithRange(1, 3);
 
         switch (n) {
             case 1:

@@ -1,6 +1,7 @@
 package highscore;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -109,21 +110,32 @@ public class LeaderBoard {
         }
     }
 
-    public static String toText() {
+    public static void toText(Graphics g) {
+
 
         ArrayList<Score> highScores = deserialize();
+
+//        if (line >= highScores.size()) {
+//            return "";
+//        }
 
         String scores = "";
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
 
+//        g.drawString("");
+
         for (int i = 0; i < highScores.size(); i++) {
+
             Score score = highScores.get(i);
-            scores += String.format("%-10d %-30s %-15d %10s %n",
-                    i + 1, score.getName(), score.getPoints(),
-                    dateFormat.format(score.getDate()));
+//
+            g.drawString("" + (i + 1), 10, 50 + 20 * i);
+            g.drawString(score.getName(), 70, 50 + 20 * i);
+            g.drawString("" + score.getPoints(),400,50 + 20 * i);
+            g.drawString("" + dateFormat.format(score.getDate()),700,50 + 20 * i);
         }
-        return scores;
     }
+
+
 }
 

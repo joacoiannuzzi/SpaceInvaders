@@ -13,6 +13,9 @@ public class Alien extends Sprite {
     public static void increaseSpeed() {
         speed++;
     }
+    public static  void resetSpeed() {
+        speed = 1;
+    }
 
     protected Bomb bomb;
     private AlienType alienType;
@@ -52,7 +55,6 @@ public class Alien extends Sprite {
         this.x = startX;
         this.y = startY;
         setVisible(true);
-        setDying(false);
         bomb.reset(startX, startY);
     }
 

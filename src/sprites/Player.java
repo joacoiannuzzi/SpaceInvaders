@@ -4,6 +4,7 @@ package sprites;
 import other.Animation;
 import other.ImageLoader;
 import other.SpriteSheet;
+import things.PowerUp;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -17,14 +18,8 @@ public class Player extends Sprite {
     private int speed = 4;
     private int direction;
     private Shot[] shots = new Shot[6];
+    private PowerUp power = new PowerUp();
     private int kills = 0;
-    private int shotStreak = 0;
-    private boolean powered = false;
-    private long powerTimer;
-    private int endPower;
-    private boolean immunity = false;
-    private boolean freezeInvaders = false;
-    private boolean doubleDamage = false;
     private Animation immunityForce;
     private boolean multipleShots = false;
     private HashMap<Integer, Animation> shipAnim;
@@ -80,14 +75,14 @@ public class Player extends Sprite {
         if (x >= BOARD_WIDTH - width) {
             x = BOARD_WIDTH - width;
         }
-        if (immunity) {
+        if (PowerUp.immunity) {
             immunityForce.run();
         }
-        powerDown();
+        power.update();
 
         for (Shot shot : shots) {
-            if (!shot.act() && !powered)
-                shotStreak = 0;
+            if (!shot.act() && !PowerUp.powered)
+                PowerUp.shotStreak = 0;
         }
     }
 
@@ -117,7 +112,7 @@ public class Player extends Sprite {
             }
 
             if (!shots[0].isVisible()) {
-                if (doubleDamage) {
+                if (PowerUp.doubleDamage) {
                     shots[0].appear(x, y);
                     shots[1].appear(x + width, y);
                 } else {
@@ -127,7 +122,7 @@ public class Player extends Sprite {
         }
 
         if (key == KeyEvent.VK_P) {
-            powerUp();
+            power.powerUp();
         }
         if (key == KeyEvent.VK_L) {
             kills = NUMBER_OF_ALIENS_TO_DESTROY;
@@ -153,7 +148,7 @@ public class Player extends Sprite {
 
     @Override
     public void getHit() {
-        if (!immunity) {
+        if (!PowerUp.immunity) {
             lives--;
             shipAnim.get(-1).run();
             shipAnim.get(0).run();
@@ -177,9 +172,8 @@ public class Player extends Sprite {
                 kills++;
                 points += alien.getPoints();
 
-                if (!powered) {
-                    shotStreak++;
-                    power();
+                if (!PowerUp.powered) {
+                    PowerUp.shotStreak++;
                 }
             }
         }
@@ -187,41 +181,11 @@ public class Player extends Sprite {
 
     public void attack(Shield shield) {
         for (Shot shot : shots) {
-            if (shot.hit(shield) && !powered)
-                shotStreak = 0;
+            if (shot.hit(shield) && !PowerUp.powered)
+                PowerUp.shotStreak = 0;
         }
     }
 
-    public void power() {
-        if (!powered && shotStreak == SHOT_STREAK) {
-            powerUp();
-        }
-    }
-
-    public void powerUp() {
-        powered = true;
-        powerTimer = System.currentTimeMillis();
-        endPower = randomWithRange(3000, 5000);
-        int random = randomWithRange(1, 10);
-        if (random < 7) {
-            immunity = true;
-        } else if (random < 9) {
-            doubleDamage = true;
-        } else if (random < 11) {
-            freezeInvaders = true;
-        }
-    }
-
-    public void powerDown() {
-        if (powered && System.currentTimeMillis() - powerTimer >= endPower) {
-            powered = false;
-            shotStreak = 0;
-            powerTimer = 0;
-            immunity = false;
-            freezeInvaders = false;
-            doubleDamage = false;
-        }
-    }
 
     public void reset() {
         setX((BOARD_WIDTH - width) / 2);
@@ -231,14 +195,14 @@ public class Player extends Sprite {
             shot.die();
         }
         kills = 0;
-        powerDown();
+        power.powerDown();
     }
 
 
     public void draw(Graphics g, FontMetrics metr) {
         super.draw(g);
 
-        if (immunity) {
+        if (PowerUp.immunity) {
             g.drawImage(getforce(), x - 4, y - 4, x + width + 4, y + height + 4 ,
                     0, 0, getforce().getWidth(), getforce().getHeight(), null);
         }
@@ -260,7 +224,7 @@ public class Player extends Sprite {
                     0, 0, heart.getWidth(), heart.getHeight(), null);
         }
 
-        for (int i = 0; i < shotStreak; i++) {
+        for (int i = 0; i < PowerUp.shotStreak; i++) {
 
             int shotX = 10 + (25 * i);
             int shotY = BOARD_HEIGHT - 75;
@@ -278,10 +242,6 @@ public class Player extends Sprite {
         return immunityForce.getCurrentImage();
     }
 
-    public int getLives() {
-        return lives;
-    }
-
     public void increaseSpeed() {
         this.speed++;
     }
@@ -290,30 +250,8 @@ public class Player extends Sprite {
         return points;
     }
 
-
-    public boolean isPowered() {
-        return powered;
-    }
-
     public int getKills() {
         return kills;
     }
 
-    public int getShotStreak() {
-        return shotStreak;
-    }
-
-    public boolean isImmune(){return immunity;}
-
-    public boolean freezeInvaders() {
-        return freezeInvaders;
-    }
-
-    public boolean isDoubleDamage() {
-        return doubleDamage;
-    }
-
-    public Shot[] getShots() {
-        return shots;
-    }
 }

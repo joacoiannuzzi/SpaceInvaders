@@ -13,7 +13,6 @@ public class Sprite implements Commons {
     private BufferedImage image;
     int x;
     int y;
-    private boolean dying;
     int width;
     int height;
 
@@ -69,16 +68,6 @@ public class Sprite implements Commons {
         return x;
     }
 
-    public void setDying(boolean dying) {
-
-        this.dying = dying;
-    }
-
-    public boolean isDying() {
-
-        return this.dying;
-    }
-
     public int getWidth() {
         return width;
     }
@@ -96,20 +85,14 @@ public class Sprite implements Commons {
     }
 
     public void getHit() {
-        BufferedImage explosion = ImageLoader.load("explosion2.png");
-        setImage(explosion);
-        setDying(true);
+        die();
     }
 
     public void draw(Graphics g) {
         if (isVisible()) {
 
-            g.drawImage(getCurrentImage(), x, y, x + width, y + height, 0 , 0,
+            g.drawImage(getCurrentImage(), x, y, x + width, y + height, 0, 0,
                     getCurrentImage().getWidth(), getCurrentImage().getHeight(), null);
-        }
-
-        if (isDying()) {
-            die();
         }
     }
 }

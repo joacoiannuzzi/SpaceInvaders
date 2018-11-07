@@ -2,6 +2,7 @@ package sprites;
 
 import other.Animation;
 import other.AudioPlayer;
+import other.Random;
 import other.SpriteSheet;
 
 import java.awt.image.BufferedImage;
@@ -52,14 +53,14 @@ public class Ufo extends Sprite {
     }
 
     private void resetTimeToSpawn() {
-        timeToSpawn = randomWithRange(45000, 60000);
+        timeToSpawn = Random.randomWithRange(45000, 60000);
     }
 
     public void appear() {
 
-        points = randomWithRange(50, 300);
+        points = Random.randomWithRange(50, 300);
 
-        if (randomWithRange(1, 10) == 1) {
+        if (Random.randomWithRange(1, 10) == 1) {
             type = "duck";
             width = DUCK_WIDTH;
             height = DUCK_HEIGHT;
@@ -72,10 +73,9 @@ public class Ufo extends Sprite {
         }
 
         setVisible(true);
-        setDying(false);
         resetTimeToSpawn();
 
-        int random = randomWithRange(1, 2);
+        int random = Random.randomWithRange(1, 2);
         if (random == 1) {
             direction = 1;
             setX(-width);

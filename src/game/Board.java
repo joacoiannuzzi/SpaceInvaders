@@ -3,8 +3,10 @@ package game;
 import highscore.LeaderBoard;
 import other.Animation;
 import other.AudioPlayer;
+import other.Random;
 import other.SpriteSheet;
 import sprites.*;
+import things.PowerUp;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -43,10 +45,13 @@ public class Board extends JPanel implements Runnable, Commons {
     private int currentLevel = 1;
 
     private AudioPlayer gameSound = new AudioPlayer("Ape invaders.wav");
+    private AudioPlayer levelupSound = new AudioPlayer("levelup.wav");
+    private ApeInvaders apeInvaders;
 
 
-    public Board() {
 
+    public Board(ApeInvaders apeInvaders) {
+        this.apeInvaders = apeInvaders;
         initBoard();
     }
 
@@ -103,10 +108,14 @@ public class Board extends JPanel implements Runnable, Commons {
         ufo = new Ufo();
 
         player = new Player();
+        Alien.resetSpeed();
+        Bomb.resetSpeed();
 
     }
 
     public void startGame() {
+
+        requestFocus();
         if (animator == null || !ingame) {
 
             animator = new Thread(this);
@@ -188,8 +197,6 @@ public class Board extends JPanel implements Runnable, Commons {
                 (BOARD_WIDTH - metr.stringWidth("Score: " + player.getPoints())) / 2,
                 (BOARD_HEIGHT) / 2 + 15);
 
-        ApeInvaders Menu = new ApeInvaders();
-        Menu.endmenu();
 
         try {
             Thread.sleep(3000);
@@ -197,6 +204,8 @@ public class Board extends JPanel implements Runnable, Commons {
             e.printStackTrace();
         }
         LeaderBoard.rank(player.getPoints());
+        apeInvaders.showScores();
+
     }
 
     public void levelScreen() {
@@ -261,7 +270,7 @@ public class Board extends JPanel implements Runnable, Commons {
 
         for (Alien alien : aliens) {
 
-            if (alien.isVisible() && !player.freezeInvaders()) {
+            if (alien.isVisible() && !PowerUp.freezeInvaders) {
 
                 if (alien.touchGround()) {
                     ingame = false;
@@ -273,16 +282,16 @@ public class Board extends JPanel implements Runnable, Commons {
 
         // bombs
         for (Alien alien: aliens) {
-            if (alien.isVisible() && !player.freezeInvaders()) {
+            if (alien.isVisible() && !PowerUp.freezeInvaders) {
                 alien.shoot();
             }
             Bomb bomb = alien.getBomb();
-            if (bomb.isVisible() && !player.freezeInvaders()) {
+            if (bomb.isVisible() && !PowerUp.freezeInvaders) {
 
                 for (Shield shield : shields) {
                     bomb.hit(shield);
                 }
-                if (bomb.hit(player) && !player.isImmune()) {
+                if (bomb.hit(player) && !PowerUp.immunity) {
                     shieldDetect();
                 }
                 bomb.act();
@@ -377,8 +386,6 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public void levelUp() {
 
-        AudioPlayer levelupSound = new AudioPlayer("levelup.wav");
-
         gameSound.stop();
         levelupSound.playFromBeginning();
 
@@ -427,7 +434,7 @@ public class Board extends JPanel implements Runnable, Commons {
     }
 
     public void shieldRemove() {
-        int n = randomWithRange(0, 3);
+        int n = Random.randomWithRange(0, 3);
 
         if (shields[n].isVisible()) {
             shields[n].die();
@@ -451,7 +458,7 @@ public class Board extends JPanel implements Runnable, Commons {
     }
 
     public int chooseShield() {
-        int n = randomWithRange(0, 3);
+        int n = Random.randomWithRange(0, 3);
         Shield shield = shields[n];
 
         if (shield.isVisible()) {

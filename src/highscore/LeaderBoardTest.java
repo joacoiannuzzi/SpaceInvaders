@@ -8,7 +8,7 @@ public class LeaderBoardTest {
         //LeaderBoard.addScore("vhvh", 6446);
         //LeaderBoard.clear();
 
-        System.out.println(LeaderBoard.toText());
+        //System.out.println(LeaderBoard.toText());
     }
 
 }
