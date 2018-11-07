@@ -7,10 +7,9 @@ import other.SpriteSheet;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Sprite implements Commons {
+public abstract class Sprite implements Commons {
 
     private boolean visible;
-    private BufferedImage image;
     int x;
     int y;
     int width;
@@ -37,15 +36,7 @@ public class Sprite implements Commons {
         this.visible = visible;
     }
 
-    public void setImage(BufferedImage image) {
-
-        this.image = image;
-    }
-
-    public BufferedImage getCurrentImage() {
-
-        return image;
-    }
+    public abstract BufferedImage getCurrentImage();
 
 
     public void setX(int x) {

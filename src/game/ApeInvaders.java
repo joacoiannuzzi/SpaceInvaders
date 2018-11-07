@@ -17,13 +17,12 @@ public class ApeInvaders extends JFrame implements Commons {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-        getContentPane().setBackground(null);
+        //getContentPane().setBackground(null);
         //setUndecorated(true);
         setVisible(true);
         restartGame();
 
     }
-
 
      public void startGame() {
         remove(startMenu);
@@ -41,11 +40,12 @@ public class ApeInvaders extends JFrame implements Commons {
      }
 
      public void restartGame() {
-        startMenu = new StartMenu(this);
         board = new Board(this);
+        startMenu = new StartMenu(this);
         if (endMenu != null)
             remove(endMenu);
         add(startMenu);
+        startMenu.requestFocus();
         revalidate();
      }
 

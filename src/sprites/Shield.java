@@ -1,7 +1,9 @@
 package sprites;
 
 import game.Commons;
+import other.Animation;
 import other.ImageLoader;
+import other.SpriteSheet;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -12,21 +14,36 @@ public class Shield extends Sprite {
     private int shotQuantity = 0;
     private int startX;
     BufferedImage shieldImg = ImageLoader.load("shield.png");
+    private SpriteSheet sheet = new SpriteSheet("shield-sheet.png", 101, 99);
+    private Animation anim;
 
     public Shield(int x) {
+        BufferedImage[] images = new BufferedImage[20];
+        int n = 0;
+        for (int i = 1; i <= 4; i++) {
+            for (int j = 1; j <= 5; j++) {
+                images[n] = sheet.grabImage(i, j);
+                n++;
+            }
+        }
+        anim = new Animation(5, images);
         y = GROUND - 100;
         this.startX = x;
+        width = SHIELD_WIDTH;
+        height = SHIELD_HEIGHT;
         reset();
     }
 
     public void reset() {
 
-        setImage(shieldImg);
-        width = SHIELD_WIDTH;
-        height = SHIELD_HEIGHT;
+        //setImage(shieldImg);
         x = startX;
         lives = Commons.SHIELD_LIVES;
         setVisible(true);
+    }
+
+    public void update() {
+        anim.run();
     }
 
     @Override
@@ -45,6 +62,11 @@ public class Shield extends Sprite {
             }
         }
 
+    }
+
+    @Override
+    public BufferedImage getCurrentImage() {
+        return shieldImg;
     }
 
     public int getLives() {

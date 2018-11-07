@@ -145,6 +145,7 @@ public class Board extends JPanel implements Runnable, Commons {
             for (Shield shield : shields) {
                 shield.draw(g);
             }
+
             for (Alien alien : aliens) {
                 Bomb bomb = alien.getBomb();
                 bomb.draw(g);
@@ -296,6 +297,10 @@ public class Board extends JPanel implements Runnable, Commons {
                 }
                 bomb.act();
             }
+        }
+
+        for (Shield shield : shields) {
+            shield.update();
         }
 
         // ufo

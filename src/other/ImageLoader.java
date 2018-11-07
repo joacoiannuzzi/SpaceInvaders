@@ -15,4 +15,10 @@ public class ImageLoader {
         }
         return image;
     }
+
+    public static BufferedImage loadSubImage(String name, int width, int height) {
+        BufferedImage image = load(name);
+        image = image.getSubimage(0, 0, width, height);
+        return image;
+    }
 }

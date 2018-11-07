@@ -2,6 +2,7 @@ package sprites;
 
 import other.Animation;
 import other.AudioPlayer;
+import things.PowerUp;
 
 public class Shot extends Weapon {
 
@@ -32,18 +33,19 @@ public class Shot extends Weapon {
         shotSound.playFromBeginning();
     }
 
-    public boolean act() {
+    public void act() {
+
         if (isVisible()) {
             y -= speed;
             anim.run();
 
-            if (y > 0) {
-                setY(y);
-                return true;
+            if (y < 0) {
+                die();
+                if (!PowerUp.powered)
+                    PowerUp.shotStreak = 0;
             }
-            die();
-            return false;
+            setY(y);
+
         }
-        return true;
     }
 }

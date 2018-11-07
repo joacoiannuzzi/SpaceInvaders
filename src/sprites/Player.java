@@ -81,8 +81,7 @@ public class Player extends Sprite {
         power.update();
 
         for (Shot shot : shots) {
-            if (!shot.act() && !PowerUp.powered)
-                PowerUp.shotStreak = 0;
+            shot.act();
         }
     }
 
