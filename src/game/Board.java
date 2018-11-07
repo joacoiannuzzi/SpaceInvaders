@@ -188,7 +188,7 @@ public class Board extends JPanel implements Runnable, Commons {
                 (BOARD_WIDTH - metr.stringWidth("Score: " + player.getPoints())) / 2,
                 (BOARD_HEIGHT) / 2 + 15);
 
-        Menu_over Menu = new Menu_over();
+        ApeInvaders Menu = new ApeInvaders();
         Menu.endmenu();
 
         try {
