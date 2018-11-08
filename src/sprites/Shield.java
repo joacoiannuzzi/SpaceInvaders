@@ -14,19 +14,10 @@ public class Shield extends Sprite {
     private int shotQuantity = 0;
     private int startX;
     BufferedImage shieldImg = ImageLoader.load("shield.png");
-    private SpriteSheet sheet = new SpriteSheet("shield-sheet.png", 101, 99);
+    private SpriteSheet sheet = new SpriteSheet("shield-sheet.png", 42, 38);
     private Animation anim;
 
     public Shield(int x) {
-        BufferedImage[] images = new BufferedImage[20];
-        int n = 0;
-        for (int i = 1; i <= 4; i++) {
-            for (int j = 1; j <= 5; j++) {
-                images[n] = sheet.grabImage(i, j);
-                n++;
-            }
-        }
-        anim = new Animation(5, images);
         y = GROUND - 100;
         this.startX = x;
         width = SHIELD_WIDTH;
@@ -35,15 +26,12 @@ public class Shield extends Sprite {
     }
 
     public void reset() {
-
-        //setImage(shieldImg);
         x = startX;
         lives = Commons.SHIELD_LIVES;
         setVisible(true);
     }
 
     public void update() {
-        anim.run();
     }
 
     @Override
