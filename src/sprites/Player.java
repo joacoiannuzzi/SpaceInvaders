@@ -4,7 +4,7 @@ package sprites;
 import other.Animation;
 import other.ImageLoader;
 import other.SpriteSheet;
-import things.PowerUp;
+import other.PowerUp;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

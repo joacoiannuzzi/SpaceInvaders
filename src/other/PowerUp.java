@@ -1,4 +1,4 @@
-package things;
+package other;
 
 import game.Commons;
 import other.Random;

@@ -6,7 +6,7 @@ import other.AudioPlayer;
 import other.Random;
 import other.SpriteSheet;
 import sprites.*;
-import things.PowerUp;
+import other.PowerUp;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -171,6 +171,8 @@ public class Board extends JPanel implements Runnable, Commons {
     public void gameOver() {
 
         gameSound.close();
+
+        PowerUp.shotStreak = 0;
 
         if (message.equals("Game won!")) {
             AudioPlayer wonSound = new AudioPlayer("won-sound.wav");
