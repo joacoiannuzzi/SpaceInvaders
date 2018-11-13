@@ -2,11 +2,9 @@ package sprites;
 
 import game.Commons;
 import other.Animation;
-import other.ImageLoader;
 import other.SpriteSheet;
 
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 public class Shield extends Sprite {
 
@@ -66,6 +64,13 @@ public class Shield extends Sprite {
             shotQuantity = 0;
 
             lives = (int) (lives - Commons.SHIELD_LIVES * 0.1);
+
+            if (lives <= (Commons.SHIELD_LIVES * 0.6)) {
+                currentState++;
+            }
+            if (lives <= (Commons.SHIELD_LIVES * 0.3)) {
+                currentState++;
+            }
 
             if (lives <= 0) {
                 super.getHit();
