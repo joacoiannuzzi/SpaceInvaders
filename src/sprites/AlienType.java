@@ -6,6 +6,7 @@ import other.Random;
 public class AlienType implements Commons {
 
     private String type;
+    private int points;
 
     public AlienType() {
 
@@ -13,15 +14,18 @@ public class AlienType implements Commons {
 
         switch (n) {
             case 1:
-                type = "100";
+                type = "big";
+                points = 10;
                 break;
             case 2:
-                type = "66";
+                type = "medium";
+                points = 20;
+
                 break;
             case 3:
-                type = "33";
+                type = "small";
+                points = 30;
                 break;
-
         }
 
     }
@@ -29,4 +33,9 @@ public class AlienType implements Commons {
     public String getType() {
         return type;
     }
+
+    public int getPoints() {
+        return points;
+    }
+
 }
