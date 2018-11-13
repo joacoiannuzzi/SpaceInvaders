@@ -111,6 +111,8 @@ public class Board extends JPanel implements Runnable, Commons {
         Alien.resetSpeed();
         Bomb.resetSpeed();
 
+
+
     }
 
     public void startGame() {
@@ -127,18 +129,18 @@ public class Board extends JPanel implements Runnable, Commons {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        g.drawImage(backgroundAnim.getCurrentImage(), -120, 0,
-                BOARD_WIDTH + 140, GROUND, 0, 0,
-                backgroundAnim.getCurrentImage().getWidth(),
-                backgroundAnim.getCurrentImage().getHeight(), null );
-        backgroundAnim.run();
-        g.setColor(Color.green);
-
-        Font small = new Font("Helvetica", Font.BOLD, 15);
-        FontMetrics metr = this.getFontMetrics(small);
-        g.setFont(small);
-
         if (ingame) {
+
+            g.drawImage(backgroundAnim.getCurrentImage(), -120, 0,
+                    BOARD_WIDTH + 140, GROUND, 0, 0,
+                    backgroundAnim.getCurrentImage().getWidth(),
+                    backgroundAnim.getCurrentImage().getHeight(), null );
+            backgroundAnim.run();
+            g.setColor(Color.green);
+
+            Font small = new Font("Helvetica", Font.BOLD, 15);
+            FontMetrics metr = this.getFontMetrics(small);
+            g.setFont(small);
 
             g.drawLine(0, GROUND, BOARD_WIDTH, GROUND);
 
@@ -313,7 +315,6 @@ public class Board extends JPanel implements Runnable, Commons {
     public void run() {
 
         gameSound.loop(5);
-
         long timeThen;
         long timeNow;
         long totalTime = 0;

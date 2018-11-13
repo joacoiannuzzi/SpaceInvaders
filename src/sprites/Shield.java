@@ -5,7 +5,6 @@ import other.Animation;
 import other.ImageLoader;
 import other.SpriteSheet;
 
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
@@ -15,61 +14,30 @@ public class Shield extends Sprite {
     private int shotQuantity = 0;
     private int startX;
 
-    private ShieldLife ShiledLife;
-    private SpriteSheet alienSheet;
-    private HashMap<String, Animation> anim;
+    private Animation[] anim;
+    private int currentState;
 
     public Shield(int x) {
         SpriteSheet sheet = new SpriteSheet("shield-sheet.png", 42, 38);
-        anim = new HashMap<>();
-        anim.put("100", new Animation(15,
-                alienSheet.grabImage(1, 1),
-                alienSheet.grabImage(1, 2),
-                alienSheet.grabImage(1, 3),
-                alienSheet.grabImage(1, 4),
-                alienSheet.grabImage(1, 5),
-                alienSheet.grabImage(2, 1),
-                alienSheet.grabImage(2, 2),
-                alienSheet.grabImage(2, 3),
-                alienSheet.grabImage(2, 4),
-                alienSheet.grabImage(2, 5),
-                alienSheet.grabImage(3, 1),
-                alienSheet.grabImage(3, 2),
-                alienSheet.grabImage(3, 3),
-                alienSheet.grabImage(3, 4),
-                alienSheet.grabImage(3, 5)));
-        anim.put("66", new Animation(15,
-                alienSheet.grabImage(1, 1),
-                alienSheet.grabImage(1, 2),
-                alienSheet.grabImage(1, 3),
-                alienSheet.grabImage(1, 4),
-                alienSheet.grabImage(1, 5),
-                alienSheet.grabImage(2, 1),
-                alienSheet.grabImage(2, 2),
-                alienSheet.grabImage(2, 3),
-                alienSheet.grabImage(2, 4),
-                alienSheet.grabImage(2, 5),
-                alienSheet.grabImage(3, 1),
-                alienSheet.grabImage(3, 2),
-                alienSheet.grabImage(3, 3),
-                alienSheet.grabImage(3, 4),
-                alienSheet.grabImage(3, 5)));
-        anim.put("33", new Animation(15,
-                alienSheet.grabImage(1, 1),
-                alienSheet.grabImage(1, 2),
-                alienSheet.grabImage(1, 3),
-                alienSheet.grabImage(1, 4),
-                alienSheet.grabImage(1, 5),
-                alienSheet.grabImage(2, 1),
-                alienSheet.grabImage(2, 2),
-                alienSheet.grabImage(2, 3),
-                alienSheet.grabImage(2, 4),
-                alienSheet.grabImage(2, 5),
-                alienSheet.grabImage(3, 1),
-                alienSheet.grabImage(3, 2),
-                alienSheet.grabImage(3, 3),
-                alienSheet.grabImage(3, 4),
-                alienSheet.grabImage(3, 5)));
+        anim = new Animation[3];
+        anim[0] = new Animation(2,
+                sheet.grabImage(1, 1),
+                sheet.grabImage(1, 2),
+                sheet.grabImage(1, 3),
+                sheet.grabImage(1, 4),
+                sheet.grabImage(1, 5));
+        anim[1] = new Animation(2,
+                sheet.grabImage(2, 1),
+                sheet.grabImage(2, 2),
+                sheet.grabImage(2, 3),
+                sheet.grabImage(2, 4),
+                sheet.grabImage(2, 5));
+        anim[2] = new Animation(2,
+                sheet.grabImage(3, 1),
+                sheet.grabImage(3, 2),
+                sheet.grabImage(3, 3),
+                sheet.grabImage(3, 4),
+                sheet.grabImage(3, 5));
 
         y = GROUND - 100;
         this.startX = x;
@@ -85,6 +53,7 @@ public class Shield extends Sprite {
     }
 
     public void update() {
+        anim[currentState].run();
     }
 
     @Override
@@ -107,7 +76,7 @@ public class Shield extends Sprite {
 
     @Override
     public BufferedImage getCurrentImage() {
-        return anim.get(ShieldLife.getType()).getCurrentImage();
+        return anim[currentState].getCurrentImage();
     }
 
     public int getLives() {

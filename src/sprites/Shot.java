@@ -41,8 +41,7 @@ public class Shot extends Weapon {
 
             if (y < 0) {
                 die();
-                if (!PowerUp.powered)
-                    PowerUp.shotStreak = 0;
+                PowerUp.shotStreak = 0;
             }
             setY(y);
 

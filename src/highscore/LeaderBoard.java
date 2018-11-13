@@ -60,6 +60,12 @@ public class LeaderBoard {
         serialize(highScores);
     }
 
+    public static void remove(int position) {
+        ArrayList<Score> highScores = deserialize();
+        highScores.remove(position - 1);
+        serialize(highScores);
+    }
+
     private static ArrayList<Score> sort(ArrayList<Score> highScores) {
 
         ScoreComparator comparator = new ScoreComparator();
@@ -74,7 +80,6 @@ public class LeaderBoard {
     public static void addScore(String name, int score) {
         ArrayList<Score> highScores = deserialize();
         highScores.add(new Score(name, score));
-        highScores = sort(highScores);
         serialize(highScores);
     }
 
@@ -101,6 +106,7 @@ public class LeaderBoard {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     new BufferedOutputStream(
                             new FileOutputStream(HIGHSCORE_FILE)));
+            highScores = sort(highScores);
             outputStream.writeObject(highScores);
 
             outputStream.flush();

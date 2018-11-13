@@ -10,8 +10,8 @@ public interface Commons {
     int ALIEN_WIDTH = 55;
     int ALIEN_HEIGHT = (int) ((54d / 60d) * ALIEN_WIDTH);
 
-    int SHIELD_WIDTH = 50;
-    int SHIELD_HEIGHT = (int) ((22d / 36d) * SHIELD_WIDTH);
+    int SHIELD_WIDTH = 42;
+    int SHIELD_HEIGHT = (int) ((38d / 42d) * SHIELD_WIDTH);
 
     int PLAYER_WIDTH = 25;
     int PLAYER_HEIGHT = (int) ((160d / 120d) * PLAYER_WIDTH);

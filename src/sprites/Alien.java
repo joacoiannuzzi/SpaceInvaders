@@ -19,12 +19,11 @@ public class Alien extends Sprite {
 
     protected Bomb bomb;
     private AlienType alienType;
-    private SpriteSheet alienSheet;
     private HashMap<String, Animation> anim;
     private int startX, startY;
 
     public Alien(int x, int y) {
-        alienSheet = new SpriteSheet("alien-sheet.png", 60, 54);
+        SpriteSheet alienSheet = new SpriteSheet("alien-sheet.png", 60, 54);
         anim = new HashMap<>();
         anim.put("small", new Animation(15,
                 alienSheet.grabImage(3, 1),
@@ -69,10 +68,7 @@ public class Alien extends Sprite {
     }
 
     public boolean touchGround() {
-        if (y + height >= GROUND) {
-            return true;
-        }
-        return false;
+        return y + height >= GROUND;
     }
 
     public Bomb getBomb() {
