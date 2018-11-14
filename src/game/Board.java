@@ -44,7 +44,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private int totalLevels = 5;
     private int currentLevel = 1;
 
-    private AudioPlayer gameSound = new AudioPlayer("Ape invaders.wav");
+    private AudioPlayer gameSound;
     private AudioPlayer levelupSound = new AudioPlayer("levelup.wav");
     private ApeInvaders apeInvaders;
 
@@ -52,6 +52,8 @@ public class Board extends JPanel implements Runnable, Commons {
 
     public Board(ApeInvaders apeInvaders) {
         this.apeInvaders = apeInvaders;
+        gameSound = new AudioPlayer("ape-invaders.wav");
+        gameSound.changeVolume(-10);
         initBoard();
     }
 
@@ -74,8 +76,6 @@ public class Board extends JPanel implements Runnable, Commons {
         }
 
         backgroundAnim = new Animation(5, background);
-
-        gameSound.changeVolume(-10);
 
         gameInit();
         setDoubleBuffered(true);

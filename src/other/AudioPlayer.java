@@ -1,6 +1,7 @@
 package other;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 
 public class AudioPlayer {
@@ -11,7 +12,9 @@ public class AudioPlayer {
 
         try {
             AudioInputStream ais =
-                    AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/sounds/" + name));
+                    AudioSystem.getAudioInputStream(
+                            new BufferedInputStream(
+                                    AudioPlayer.class.getResourceAsStream("/sounds/" + name)));
 
             clip = AudioSystem.getClip();
             clip.open(ais);

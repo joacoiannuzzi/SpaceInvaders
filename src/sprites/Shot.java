@@ -7,7 +7,7 @@ import other.PowerUp;
 public class Shot extends Weapon {
 
     private int speed = 7;
-    private AudioPlayer shotSound = new AudioPlayer("player-shot.wav");
+    private AudioPlayer shotSound;
 
     public Shot() {
 
@@ -22,6 +22,7 @@ public class Shot extends Weapon {
         width = PROJECTILE_WIDTH;
         height = PROJECTILE_HEIGHT;
         die();
+        shotSound = new AudioPlayer("player-shot.wav");
     }
 
 
