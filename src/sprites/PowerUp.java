@@ -36,6 +36,15 @@ public class PowerUp implements Commons {
         }
     }
 
+    public void godMode() {
+        powered = true;
+        powerTimer = System.currentTimeMillis();
+        endPower = Random.randomWithRange(3000, 5000);
+        immunity = true;
+        freezeInvaders = true;
+        doubleDamage = true;
+    }
+
     public void powerDown() {
         if (powered && System.currentTimeMillis() - powerTimer >= endPower) {
             powered = false;

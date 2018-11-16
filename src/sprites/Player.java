@@ -159,8 +159,12 @@ public class Player extends Sprite {
 
     public void attack(Ufo ufo) {
         for (Shot shot : shots) {
-            if (shot.hit(ufo))
+            if (shot.hit(ufo)){
                 points += ufo.getPoints();
+                if (ufo.getType().equals("duck")) {
+                    power.godMode();
+                }
+            }
         }
     }
 

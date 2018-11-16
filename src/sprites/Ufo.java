@@ -110,6 +110,10 @@ public class Ufo extends Sprite {
         return points;
     }
 
+    public String getType() {
+        return type;
+    }
+
     public BufferedImage getCurrentImage() {
         return anim.get(type).getCurrentImage();
     }
