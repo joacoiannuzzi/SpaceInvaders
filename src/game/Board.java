@@ -6,7 +6,7 @@ import other.AudioPlayer;
 import other.Random;
 import other.SpriteSheet;
 import sprites.*;
-import other.PowerUp;
+import sprites.PowerUp;
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -30,7 +30,7 @@ public class Board extends JPanel implements Runnable, Commons {
     private final int ALIEN_INIT_Y = 37;
     private int direction = -1;
 
-    private boolean ingame = true;
+    private boolean ingame = false;
     private String message = "Game Over";
     private SpriteSheet sheet = new SpriteSheet("background.png", 1280, 640);
     private Animation backgroundAnim;
@@ -153,17 +153,13 @@ public class Board extends JPanel implements Runnable, Commons {
                 bomb.draw(g);
                 alien.draw(g);
             }
-            player.draw(g, metr);
-            if (!player.isVisible()) {
-                ingame = false;
-            }
+            player.draw(g);
+
             ufo.draw(g);
 
             g.drawString("Level " + currentLevel,
                     (BOARD_WIDTH - metr.stringWidth("Level " + currentLevel)) / 2,
                     BOARD_HEIGHT - 40);
-
-            g.drawString("fps: " + averageFps,  0, 20);
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -315,6 +311,9 @@ public class Board extends JPanel implements Runnable, Commons {
     public void run() {
 
         gameSound.loop(5);
+        repaint();
+        levelScreen();
+        ingame = true;
         long timeThen;
         long timeNow;
         long totalTime = 0;
@@ -351,6 +350,9 @@ public class Board extends JPanel implements Runnable, Commons {
                     ingame = false;
                     message = "Game won!";
                 } else levelUp();
+            }
+            if (!player.isVisible()) {
+                ingame = false;
             }
         }
 

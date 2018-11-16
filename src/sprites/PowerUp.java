@@ -1,4 +1,4 @@
-package other;
+package sprites;
 
 import game.Commons;
 import other.Random;

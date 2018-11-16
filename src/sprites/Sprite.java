@@ -82,8 +82,7 @@ public abstract class Sprite implements Commons {
     public void draw(Graphics g) {
         if (isVisible()) {
 
-            g.drawImage(getCurrentImage(), x, y, x + width, y + height, 0, 0,
-                    getCurrentImage().getWidth(), getCurrentImage().getHeight(), null);
+            g.drawImage(getCurrentImage(), x, y, width, height, null);
         }
     }
 }

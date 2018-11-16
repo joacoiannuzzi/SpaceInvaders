@@ -2,7 +2,6 @@ package sprites;
 
 import other.Animation;
 import other.AudioPlayer;
-import other.PowerUp;
 
 public class Shot extends Weapon {
 

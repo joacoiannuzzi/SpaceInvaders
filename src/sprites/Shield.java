@@ -47,6 +47,7 @@ public class Shield extends Sprite {
     public void reset() {
         x = startX;
         lives = Commons.SHIELD_LIVES;
+        currentState = 0;
         setVisible(true);
     }
 
@@ -63,14 +64,15 @@ public class Shield extends Sprite {
 
             shotQuantity = 0;
 
-            lives = (int) (lives - Commons.SHIELD_LIVES * 0.1);
+            lives = (int) (lives - SHIELD_LIVES * 0.1);
 
-            if (lives <= (Commons.SHIELD_LIVES * 0.6)) {
-                currentState++;
+            if (lives <= (SHIELD_LIVES * 0.6) && currentState == 0) {
+                currentState = 1;
             }
-            if (lives <= (Commons.SHIELD_LIVES * 0.3)) {
-                currentState++;
+            if (lives <= (SHIELD_LIVES * 0.3) && currentState == 1) {
+                currentState = 2;
             }
+
 
             if (lives <= 0) {
                 super.getHit();

@@ -6,6 +6,7 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class LeaderBoard {
@@ -68,8 +69,12 @@ public class LeaderBoard {
 
     private static ArrayList<Score> sort(ArrayList<Score> highScores) {
 
-        ScoreComparator comparator = new ScoreComparator();
-        highScores.sort(comparator);
+        highScores.sort((score1, score2) -> {
+            int sc1 = score1.getPoints();
+            int sc2 = score2.getPoints();
+
+            return Integer.compare(sc2, sc1);
+        });
 
         while (highScores.size() > 10) {
             highScores.remove(10);
@@ -121,20 +126,13 @@ public class LeaderBoard {
 
         ArrayList<Score> highScores = deserialize();
 
-//        if (line >= highScores.size()) {
-//            return "";
-//        }
-
-        String scores = "";
-
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
 
-//        g.drawString("");
 
         for (int i = 0; i < highScores.size(); i++) {
 
             Score score = highScores.get(i);
-//
+
             g.drawString("" + (i + 1), 10, 50 + 20 * i);
             g.drawString(score.getName(), 70, 50 + 20 * i);
             g.drawString("" + score.getPoints(),400,50 + 20 * i);

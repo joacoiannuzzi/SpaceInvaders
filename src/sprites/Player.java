@@ -4,7 +4,6 @@ package sprites;
 import other.Animation;
 import other.ImageLoader;
 import other.SpriteSheet;
-import other.PowerUp;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -198,7 +197,7 @@ public class Player extends Sprite {
     }
 
 
-    public void draw(Graphics g, FontMetrics metr) {
+    public void draw(Graphics g) {
         super.draw(g);
 
         if (PowerUp.immunity) {
@@ -209,6 +208,9 @@ public class Player extends Sprite {
         for (Shot shot : shots) {
             shot.draw(g);
         }
+
+        Font small = new Font("Helvetica", Font.BOLD, 15);
+        FontMetrics metr = g.getFontMetrics(small);
 
         g.drawString("Score: " + points,
                 (BOARD_WIDTH - metr.stringWidth("Score: " + points)) / 2,
