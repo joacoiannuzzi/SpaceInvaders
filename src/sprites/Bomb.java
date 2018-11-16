@@ -13,7 +13,7 @@ public class Bomb extends Weapon {
     public static  void resetSpeed() {
         speed = 1;
     }
-    private final AudioPlayer bombSound = new AudioPlayer("alien-shot.wav");
+    //private final AudioPlayer bombSound = new AudioPlayer("alien-shot.wav");
 
     public Bomb() {
 
@@ -40,7 +40,7 @@ public class Bomb extends Weapon {
             setVisible(true);
             this.x = x;
             this.y = y;
-            bombSound.playFromBeginning();
+            //bombSound.playFromBeginning();
         }
     }
 
