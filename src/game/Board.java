@@ -383,6 +383,9 @@ public class Board extends JPanel implements Runnable, Commons {
                 if (key == KeyEvent.VK_U) {
                     ufo.appear();
                 }
+                if (key == KeyEvent.VK_D) {
+                    ufo.duckappear();
+                }
                 if (key == KeyEvent.VK_1) {
                     message = "Game won!";
                     ingame = false;

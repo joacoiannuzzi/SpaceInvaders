@@ -85,6 +85,26 @@ public class Ufo extends Sprite {
         }
     }
 
+    public void duckappear() {
+        type = "duck";
+        width = DUCK_WIDTH;
+        height = DUCK_HEIGHT;
+        quackSound.playFromBeginning();
+
+        setVisible(true);
+        resetTimeToSpawn();
+
+        int random = Random.randomWithRange(1, 2);
+        if (random == 1) {
+            direction = 1;
+            setX(-width);
+        }
+        else {
+            direction = -1;
+            setX(BOARD_WIDTH + width);
+        }
+    }
+
     public void act() {
 
         if (System.currentTimeMillis() - spawnTimer >= timeToSpawn && !isVisible()) {
