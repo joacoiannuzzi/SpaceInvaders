@@ -57,6 +57,4 @@ public class ApeInvaders extends JFrame implements Commons {
 
         EventQueue.invokeLater(ApeInvaders::new);
     }
-
-
 }
