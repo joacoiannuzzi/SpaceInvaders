@@ -71,9 +71,10 @@ public class Ufo extends Sprite {
             height = UFO_HEIGHT;
         }
 
-        setVisible(true);
-        resetTimeToSpawn();
+        ufofunction();
+    }
 
+    public void ufofunction() {
         int random = Random.randomWithRange(1, 2);
         if (random == 1) {
             direction = 1;
@@ -83,6 +84,9 @@ public class Ufo extends Sprite {
             direction = -1;
             setX(BOARD_WIDTH + width);
         }
+
+        setVisible(true);
+        resetTimeToSpawn();
     }
 
     public void duckappear() {
@@ -91,18 +95,7 @@ public class Ufo extends Sprite {
         height = DUCK_HEIGHT;
         quackSound.playFromBeginning();
 
-        setVisible(true);
-        resetTimeToSpawn();
-
-        int random = Random.randomWithRange(1, 2);
-        if (random == 1) {
-            direction = 1;
-            setX(-width);
-        }
-        else {
-            direction = -1;
-            setX(BOARD_WIDTH + width);
-        }
+        ufofunction();
     }
 
     public void act() {
