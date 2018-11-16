@@ -12,7 +12,8 @@ public class ApeInvaders extends JFrame implements Commons {
     public ApeInvaders(){
         board = new Board(this);
 
-        setTitle("Ape invaders");
+        setTitle("\uD83D\uDC7E Ape Invaders \uD83D\uDC7E");
+        //setIconImage();
         setSize(BOARD_WIDTH,BOARD_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

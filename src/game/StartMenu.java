@@ -54,7 +54,7 @@ public class StartMenu extends JPanel implements Commons {
         FontMetrics titleMetr = this.getFontMetrics(title);
         g.setFont(title);
 
-        g.drawString("APE INVADERS", (BOARD_WIDTH - titleMetr.stringWidth("APE INAVDERS")) / 2,
+        g.drawString("\uD83D\uDC7E APE INVADERS \uD83D\uDC7E", (BOARD_WIDTH - titleMetr.stringWidth("\uD83D\uDC7E APE INVADERS \uD83D\uDC7E")) / 2,
                 200);
 
         Font small = new Font("Helvetica", Font.BOLD, 25);
