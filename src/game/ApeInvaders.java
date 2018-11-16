@@ -1,5 +1,7 @@
 package game;
 
+import other.ImageLoader;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -12,8 +14,8 @@ public class ApeInvaders extends JFrame implements Commons {
     public ApeInvaders(){
         board = new Board(this);
 
-        setTitle("\uD83D\uDC7E Ape Invaders \uD83D\uDC7E");
-        //setIconImage();
+        setTitle("Ape Invaders");
+        setIconImage(ImageLoader.load("alien.png"));
         setSize(BOARD_WIDTH,BOARD_HEIGHT);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
